@@ -8,6 +8,7 @@ from django_extensions.db.fields import (
     CreationDateTimeField, ModificationDateTimeField,
 )
 from django.http import HttpResponse
+from django.utils.crypto import get_random_string
 from django.utils.translation import ugettext_lazy as _
 
 from core.constants import IP_RETRIEVER_NAME_GOV_UK, IP_RETRIEVER_NAME_IPWARE
@@ -125,3 +126,10 @@ class TimeStampedModel(models.Model):
         get_latest_by = 'modified'
         ordering = ('-modified', '-created',)
         abstract = True
+
+
+def make_random_string(length):
+    allowed_chars = (
+        'abcdefghjkmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ23456789'
+    )
+    return get_random_string(length, allowed_chars)

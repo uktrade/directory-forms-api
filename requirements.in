@@ -10,6 +10,6 @@ psycopg2==2.6.1
 raven==5.19.0
 requests[security]==2.18.4
 waitress==1.1.0
-sigauth==2.1.2
+sigauth==3.0.0
 directory-healthcheck==0.4.2
 django-admin-ip-restrictor==0.1.0

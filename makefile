@@ -45,7 +45,10 @@ DOCKER_SET_DEBUG_ENV_VARS := \
 	export DIRECTORY_FORMS_API_POSTGRES_PASSWORD=debug; \
 	export DIRECTORY_FORMS_API_POSTGRES_DB=directory_forms_api_debug; \
 	export DIRECTORY_FORMS_API_DATABASE_URL=postgres://debug:debug@postgres:5432/directory_forms_api_debug; \
-	export DIRECTORY_FORMS_API_HEALTH_CHECK_TOKEN=debug
+	export DIRECTORY_FORMS_API_HEALTH_CHECK_TOKEN=debug; \
+	export DIRECTORY_FORMS_API_CSRF_COOKIE_SECURE=false; \
+	export DIRECTORY_FORMS_API_SESSION_COOKIE_SECURE=false; \
+	export DIRECTORY_FORMS_API_SESSION_COOKIE_DOMAIN=.trade.great
 
 
 docker_test_env_files:
@@ -99,7 +102,10 @@ DEBUG_SET_ENV_VARS := \
 	export DB_USER=debug; \
 	export DB_PASSWORD=debug; \
 	export DATABASE_URL=postgres://debug:debug@localhost:5432/directory_forms_api_debug; \
-	export HEALTH_CHECK_TOKEN=debug
+	export HEALTH_CHECK_TOKEN=debug; \
+	export CSRF_COOKIE_SECURE=false; \
+	export SESSION_COOKIE_SECURE=false; \
+	export SESSION_COOKIE_DOMAIN=.trade.great
 
 
 debug_webserver:

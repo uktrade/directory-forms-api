@@ -46,7 +46,7 @@ pytz==2017.2              # via directory-healthcheck, django
 raven==5.19.0
 requests[security]==2.18.4
 requests_mock==1.1.0
-sigauth==2.1.2
+sigauth==3.0.0
 six==1.11.0               # via cryptography, django-extensions, faker, freezegun, mohawk, pyopenssl, python-dateutil, requests-mock
 termcolor==1.1.0          # via pytest-sugar
 text-unidecode==1.2       # via faker

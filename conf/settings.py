@@ -26,12 +26,13 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
+    'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django.contrib.admin',
+    'django.contrib.postgres',
     'rest_framework',
     'raven.contrib.django.raven_compat',
     'core.apps.CoreConfig',
@@ -47,7 +48,8 @@ MIDDLEWARE_CLASSES = [
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'core.middleware.AdminIPRestrictorMiddleware'
+    'core.middleware.AdminIPRestrictorMiddleware',
+    'core.middleware.SignatureCheckMiddleware',
 ]
 
 ROOT_URLCONF = 'conf.urls'
@@ -131,9 +133,7 @@ REST_FRAMEWORK = {
     'DEFAULT_FILTER_BACKENDS': (
         'django_filters.rest_framework.DjangoFilterBackend',
     ),
-    'DEFAULT_PERMISSION_CLASSES': (
-        'conf.signature.SignatureCheckPermission',
-    ),
+    'DEFAULT_PERMISSION_CLASSES': (),
     'DEFAULT_RENDERER_CLASSES': (
         'rest_framework.renderers.JSONRenderer',
     )

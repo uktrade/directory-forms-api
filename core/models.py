@@ -24,7 +24,7 @@ class APIClient(helpers.TimeStampedModel):
     access_key = models.CharField(
         help_text='Value is plain text during create. Hashed on edit.',
         max_length=128,
-        default=partial(get_random_string, length=32),
+        default=partial(get_random_string, length=64),
     )
     client_name = models.CharField(
         help_text='Human friendly name to help identify the record.',

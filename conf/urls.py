@@ -14,17 +14,17 @@ urlpatterns = [
         include(admin.site.urls)
     ),
     url(
-        r'^api/v1/healthcheck/database/$',
+        r'^api/healthcheck/database/$',
         healthcheck.views.DatabaseAPIView.as_view(),
         name='health-check-database'
     ),
     url(
-        r'^api/v1/healthcheck/ping/$',
+        r'^api/healthcheck/ping/$',
         healthcheck.views.PingAPIView.as_view(),
         name='health-check-ping'
     ),
     url(
-        r'^api/v1/generic-submit/$',
+        r'^api/submission/$',
         core.views.FormSubmissionCreateAPIView.as_view(),
         name='generic-submit'
     ),

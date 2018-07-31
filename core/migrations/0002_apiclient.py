@@ -22,7 +22,7 @@ class Migration(migrations.Migration):
                 ('created', django_extensions.db.fields.CreationDateTimeField(auto_now_add=True, null=True, verbose_name='created')),
                 ('modified', django_extensions.db.fields.ModificationDateTimeField(auto_now=True, null=True, verbose_name='modified')),
                 ('client_id', models.UUIDField(default=uuid.uuid4, primary_key=True, serialize=False, unique=True)),
-                ('access_key', models.CharField(default=functools.partial(django.utils.crypto.get_random_string, *(), **{'length': 32}), help_text='Value is plain text during create. Hashed on edit.', max_length=128)),
+                ('access_key', models.CharField(default=functools.partial(django.utils.crypto.get_random_string, *(), **{'length': 64}), help_text='Value is plain text during create. Hashed on edit.', max_length=128)),
                 ('client_name', models.CharField(help_text='Human friendly name to help identify the record.', max_length=150, unique=True)),
                 ('is_active', models.BooleanField(default=True)),
             ],

@@ -2,10 +2,10 @@ import datetime
 import pprint
 
 from django.contrib import admin
-from django.contrib import messages
 from django.contrib.admin import SimpleListFilter
 
-from core import helpers, models
+import core.helpers
+from submission import models
 
 
 class BackendFilter(SimpleListFilter):
@@ -25,32 +25,8 @@ class BackendFilter(SimpleListFilter):
         return queryset
 
 
-@admin.register(models.APIClient)
-class APIClientAdmin(admin.ModelAdmin):
-    search_fields = ('client_name',)
-    list_display = ('client_name', 'client_id', 'is_active',)
-    list_filter = ('created', 'is_active',)
-    readonly_fields = ('client_id',)
-
-    MESSAGE_CREATE = 'Client {obj.client_id} created with key {obj.access_key}'
-
-    def get_exclude(self, request, obj):
-        if obj:
-            return ('access_key',)
-        return []
-
-    def save_model(self, request, obj, form, change):
-        if not change:
-            message = self.MESSAGE_CREATE.format(obj=obj)
-            self.message_user(request, message, messages.SUCCESS)
-        return super().save_model(request, obj, form, change)
-
-    def has_delete_permission(self, request, obj=None):
-        return False
-
-
-@admin.register(models.FormSubmission)
-class FormSubmissionAdmin(admin.ModelAdmin):
+@admin.register(models.Submission)
+class SubmissionAdmin(admin.ModelAdmin):
     search_fields = ('data', 'meta',)
     readonly_fields = ('created',)
     list_display = ('get_backend_name', 'created')
@@ -62,7 +38,7 @@ class FormSubmissionAdmin(admin.ModelAdmin):
                 datetime.datetime.now().strftime("%Y%m%d%H%M%S"))
 
     def download_csv(self, request, queryset):
-        return helpers.generate_csv_response(
+        return core.helpers.generate_csv_response(
             queryset=queryset,
             filename=self.csv_filename,
             excluded_fields=self.csv_excluded_fields

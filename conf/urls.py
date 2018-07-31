@@ -2,7 +2,7 @@ from django.conf.urls import url, include
 from django.contrib import admin
 
 import healthcheck.views
-import core.views
+import submission.views
 
 
 admin.autodiscover()
@@ -25,8 +25,8 @@ urlpatterns = [
     ),
     url(
         r'^api/submission/$',
-        core.views.FormSubmissionCreateAPIView.as_view(),
-        name='generic-submit'
+        submission.views.SubmissionCreateAPIView.as_view(),
+        name='submission'
     ),
 
 

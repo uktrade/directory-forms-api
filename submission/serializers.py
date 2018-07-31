@@ -1,12 +1,12 @@
 from rest_framework import serializers
 
-from core import models
+from submission import models
 
 
-class FormSubmissionModelSerializer(serializers.ModelSerializer):
+class SubmissionModelSerializer(serializers.ModelSerializer):
 
     class Meta:
-        model = models.FormSubmission
+        model = models.Submission
         fields = (
             'data',
             'meta',

@@ -36,6 +36,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'raven.contrib.django.raven_compat',
     'core.apps.CoreConfig',
+    'submission.apps.SubmissionConfig',
+    'client.apps.ClientConfig',
     'directory_healthcheck',
     'health_check',
     'health_check.db',

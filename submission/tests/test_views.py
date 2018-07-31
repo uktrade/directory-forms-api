@@ -2,7 +2,7 @@ import pytest
 
 from django.urls import reverse
 
-from core import models
+from submission import models
 
 from rest_framework.test import APIClient
 
@@ -11,24 +11,24 @@ from rest_framework.test import APIClient
 def test_generic_form_submission_submit(settings):
     client = APIClient()
 
-    settings.SIGAUTH_URL_NAMES_WHITELIST = ['generic-submit']
+    settings.SIGAUTH_URL_NAMES_WHITELIST = ['submission']
 
-    assert models.FormSubmission.objects.count() == 0
+    assert models.Submission.objects.count() == 0
 
     payload = {
         'data': {'title': 'hello'},
         'meta': {'backend': 'email', 'recipients': ['foo@bar.com']}
     }
     response = client.post(
-        reverse('generic-submit'),
+        reverse('submission'),
         data=payload,
         format='json'
     )
 
     assert response.status_code == 201
-    assert models.FormSubmission.objects.count() == 1
+    assert models.Submission.objects.count() == 1
 
-    instance = models.FormSubmission.objects.last()
+    instance = models.Submission.objects.last()
 
     assert instance.data == payload['data']
     assert instance.meta == payload['meta']

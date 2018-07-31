@@ -1,4 +1,4 @@
-from core import serializers
+from submission import serializers
 
 
 def test_form_submission_serializer():
@@ -6,7 +6,7 @@ def test_form_submission_serializer():
         'data': {'title': 'hello'},
         'meta': {'backend': 'email', 'recipients': ['foo@bar.com']}
     }
-    serializer = serializers.FormSubmissionModelSerializer(data=data)
+    serializer = serializers.SubmissionModelSerializer(data=data)
 
     assert serializer.is_valid()
     assert serializer.validated_data == data

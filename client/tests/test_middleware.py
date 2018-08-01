@@ -59,11 +59,12 @@ def test_signature_check_middleware_inactive_client(admin_client, settings):
     client_model_instance = factories.ClientFactory(
         name='test',
         is_active=False,
+        access_key='test-key',
     )
     url = reverse('test_view')
 
     signer = sigauth.helpers.RequestSigner(
-        secret=client_model_instance.access_key,
+        secret='test-key',
         sender_id=str(client_model_instance.identifier),
     )
     headers = signer.get_signature_headers(
@@ -85,11 +86,14 @@ def test_signature_check_middleware_inactive_client(admin_client, settings):
 def test_signature_check_middleware_valid_client(admin_client, settings):
     settings.MIDDLEWARE_CLASSES = SIGNATURE_CHECK_REQUIRED_MIDDLEWARE_CLASSES
 
-    client_model_instance = factories.ClientFactory(name='test')
+    client_model_instance = factories.ClientFactory(
+        name='test',
+        access_key='test-key',
+    )
     url = reverse('test_view')
 
     signer = sigauth.helpers.RequestSigner(
-        secret=client_model_instance.access_key,
+        secret='test-key',
         sender_id=str(client_model_instance.identifier),
     )
     headers = signer.get_signature_headers(
@@ -103,3 +107,31 @@ def test_signature_check_middleware_valid_client(admin_client, settings):
     )
 
     assert response.status_code == 200
+
+
+@pytest.mark.urls('client.tests.urls')
+@pytest.mark.django_db
+def test_signature_check_middleware_incorrect_secret(admin_client, settings):
+    settings.MIDDLEWARE_CLASSES = SIGNATURE_CHECK_REQUIRED_MIDDLEWARE_CLASSES
+
+    client_model_instance = factories.ClientFactory(
+        name='test',
+        access_key='test-key',
+    )
+    url = reverse('test_view')
+
+    signer = sigauth.helpers.RequestSigner(
+        secret='incorrect-secret',
+        sender_id=str(client_model_instance.identifier),
+    )
+    headers = signer.get_signature_headers(
+        url=url,
+        body=None,
+        method='get',
+        content_type='text/plain',
+    )
+    response = admin_client.get(
+        url, {}, HTTP_X_SIGNATURE=headers[signer.header_name]
+    )
+
+    assert response.status_code == 401

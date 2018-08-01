@@ -11,7 +11,7 @@ class ClientAdmin(admin.ModelAdmin):
     list_filter = ('created', 'is_active',)
     readonly_fields = ('identifier',)
 
-    MESSAGE_CREATE = 'Client {obj.identifier} created with key {obj.access_key}'
+    MESSAGE_CREATE = 'Client {obj.identifier} created. Key: {obj.access_key}'
 
     def get_readonly_fields(self, request, obj):
         if obj:

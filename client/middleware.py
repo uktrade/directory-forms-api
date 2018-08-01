@@ -8,9 +8,9 @@ from client import models
 
 class RequestSignatureChecker(sigauth.helpers.RequestSignatureChecker):
 
-    MESSAGE_UNKNOWN_SENDER = 'Unknown sender.'
-    MESSAGE_INVALID_SENDER = 'Invalid sender.'
-    MESSAGE_INACTIVE_SENDER = 'Inactive sender.'
+    MESSAGE_UNKNOWN_SENDER = 'Unknown sender'
+    MESSAGE_INVALID_SENDER = 'Invalid sender'
+    MESSAGE_INACTIVE_SENDER = 'Inactive sender'
 
     def lookup_credentials(self, sender_id):
         try:

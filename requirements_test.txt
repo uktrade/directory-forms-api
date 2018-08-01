@@ -11,10 +11,12 @@ chardet==3.0.4            # via requests
 codecov==2.0.9
 contextlib2==0.5.5        # via raven
 coverage==4.5.1           # via codecov, pytest-cov
-cryptography==2.1.4       # via pyopenssl, requests
+cryptography==2.1.4       # via django-cryptography, pyopenssl, requests
 directory-healthcheck==0.4.2
 dj-database-url==0.4.1
 django-admin-ip-restrictor==0.1.0
+django-appconf==1.0.2     # via django-cryptography
+django-cryptography==0.3.0
 django-environ==0.4.5
 django-filter==1.0.4
 django-health-check==3.0.0  # via directory-healthcheck

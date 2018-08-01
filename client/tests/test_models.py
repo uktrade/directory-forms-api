@@ -6,11 +6,11 @@ from client import models
 
 
 @pytest.mark.django_db
-def test_api_client_client_id_unique():
+def test_api_client_identifier_unique():
     instance = models.Client.objects.create()
 
     with pytest.raises(IntegrityError):
-        models.Client.objects.create(client_id=instance.client_id)
+        models.Client.objects.create(identifier=instance.identifier)
 
 
 @pytest.mark.django_db

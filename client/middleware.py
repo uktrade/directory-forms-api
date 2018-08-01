@@ -15,7 +15,7 @@ class RequestSignatureChecker(sigauth.helpers.RequestSignatureChecker):
     def lookup_credentials(self, sender_id):
         try:
             queryset = models.Client.objects.all()
-            sender = queryset.only('access_key').get(client_id=sender_id)
+            sender = queryset.only('access_key').get(identifier=sender_id)
         except ValidationError:
             raise LookupError(self.MESSAGE_INVALID_SENDER)
         except models.Client.DoesNotExist:

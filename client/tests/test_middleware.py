@@ -57,14 +57,14 @@ def test_signature_check_middleware_inactive_client(admin_client, settings):
     settings.MIDDLEWARE_CLASSES = SIGNATURE_CHECK_REQUIRED_MIDDLEWARE_CLASSES
 
     client_model_instance = factories.ClientFactory(
-        client_name='test',
+        name='test',
         is_active=False,
     )
     url = reverse('test_view')
 
     signer = sigauth.helpers.RequestSigner(
         secret=client_model_instance.access_key,
-        sender_id=str(client_model_instance.client_id),
+        sender_id=str(client_model_instance.identifier),
     )
     headers = signer.get_signature_headers(
         url=url,
@@ -85,12 +85,12 @@ def test_signature_check_middleware_inactive_client(admin_client, settings):
 def test_signature_check_middleware_valid_client(admin_client, settings):
     settings.MIDDLEWARE_CLASSES = SIGNATURE_CHECK_REQUIRED_MIDDLEWARE_CLASSES
 
-    client_model_instance = factories.ClientFactory(client_name='test')
+    client_model_instance = factories.ClientFactory(name='test')
     url = reverse('test_view')
 
     signer = sigauth.helpers.RequestSigner(
         secret=client_model_instance.access_key,
-        sender_id=str(client_model_instance.client_id),
+        sender_id=str(client_model_instance.identifier),
     )
     headers = signer.get_signature_headers(
         url=url,

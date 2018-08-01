@@ -21,7 +21,7 @@ class BackendFilter(SimpleListFilter):
     def queryset(self, request, queryset):
         value = self.value()
         if value:
-            queryset = queryset.filter(meta__backend=self.value())
+            queryset = queryset.filter(meta__backend=value)
         return queryset
 
 

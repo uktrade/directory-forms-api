@@ -6,12 +6,12 @@ from client import models
 
 @admin.register(models.Client)
 class ClientAdmin(admin.ModelAdmin):
-    search_fields = ('client_name',)
-    list_display = ('client_name', 'client_id', 'is_active',)
+    search_fields = ('name',)
+    list_display = ('name', 'identifier', 'is_active',)
     list_filter = ('created', 'is_active',)
-    readonly_fields = ('client_id',)
+    readonly_fields = ('identifier',)
 
-    MESSAGE_CREATE = 'Client {obj.client_id} created with key {obj.access_key}'
+    MESSAGE_CREATE = 'Client {obj.identifier} created with key {obj.access_key}'
 
     def get_readonly_fields(self, request, obj):
         if obj:

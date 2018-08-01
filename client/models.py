@@ -9,7 +9,7 @@ from core import helpers
 
 
 class Client(helpers.TimeStampedModel):
-    client_id = models.UUIDField(
+    identifier = models.UUIDField(
         max_length=150,
         unique=True,
         default=uuid.uuid4,
@@ -20,7 +20,7 @@ class Client(helpers.TimeStampedModel):
         max_length=128,
         default=partial(get_random_string, length=64),
     )
-    client_name = models.CharField(
+    name = models.CharField(
         help_text='Human friendly name to help identify the record.',
         max_length=150,
         unique=True,

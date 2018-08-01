@@ -51,7 +51,7 @@ MIDDLEWARE_CLASSES = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'core.middleware.AdminIPRestrictorMiddleware',
-    'core.middleware.SignatureCheckMiddleware',
+    'client.middleware.SignatureCheckMiddleware',
 ]
 
 ROOT_URLCONF = 'conf.urls'

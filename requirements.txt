@@ -29,7 +29,7 @@ pyopenssl==17.5.0         # via requests
 pytz==2017.2              # via directory-healthcheck, django
 raven==5.19.0
 requests[security]==2.18.4
-sigauth==3.0.0
+sigauth==4.0.1
 six==1.11.0               # via cryptography, django-extensions, mohawk, pyopenssl
 urllib3==1.22             # via requests
 waitress==1.1.0

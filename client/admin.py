@@ -9,14 +9,9 @@ class ClientAdmin(admin.ModelAdmin):
     search_fields = ('name',)
     list_display = ('name', 'identifier', 'is_active',)
     list_filter = ('created', 'is_active',)
-    readonly_fields = ('identifier',)
+    readonly_fields = ('identifier', 'access_key',)
 
     MESSAGE_CREATE = 'Client {obj.identifier} created. Key: {obj.access_key}'
-
-    def get_readonly_fields(self, request, obj):
-        if obj:
-            return self.readonly_fields + ('get_starred_access_key',)
-        return self.readonly_fields
 
     def get_exclude(self, request, obj=None):
         if obj:
@@ -31,8 +26,3 @@ class ClientAdmin(admin.ModelAdmin):
 
     def has_delete_permission(self, request, obj=None):
         return False
-
-    def get_starred_access_key(self, request, obj=None):
-        return '*' * 64
-
-    get_starred_access_key.short_description = 'Access key'

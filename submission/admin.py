@@ -10,7 +10,7 @@ from submission import models
 
 class BackendFilter(SimpleListFilter):
     title = 'backend'
-    parameter_name = 'backend'
+    parameter_name = 'backend_name'
 
     def lookups(self, request, model_admin):
         return (
@@ -21,7 +21,7 @@ class BackendFilter(SimpleListFilter):
     def queryset(self, request, queryset):
         value = self.value()
         if value:
-            queryset = queryset.filter(meta__backend=value)
+            queryset = queryset.filter(meta__backend_name=value)
         return queryset
 
 
@@ -56,7 +56,7 @@ class SubmissionAdmin(admin.ModelAdmin):
         return []
 
     def get_backend_name(self, obj):
-        return obj.meta.get('backend', '')
+        return obj.meta.get('backend_name', '')
 
     def get_pretty_data(self, obj):
         return pprint.pformat(obj.data)

@@ -16,8 +16,17 @@ def test_generic_form_submission_submit(settings):
     assert models.Submission.objects.count() == 0
 
     payload = {
-        'data': {'title': 'hello'},
-        'meta': {'backend': 'email', 'recipients': ['foo@bar.com']}
+        'data': {
+            'body_text': 'hello there',
+            'body_html': '<a>Hello there</a>',
+        },
+        'meta': {
+            'action_name': 'email',
+            'recipients': ['foo@bar.com'],
+            'subject': 'Hello',
+            'from_email': 'from@example.com',
+            'reply_to': ['reply@example.com'],
+        }
     }
     response = client.post(
         reverse('submission'),

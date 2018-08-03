@@ -40,7 +40,7 @@ pyflakes==1.2.3           # via flake8
 pyopenssl==17.5.0         # via requests
 pytest-catchlog==1.2.2
 pytest-cov==2.3.1
-pytest-django==3.0.0
+pytest-django==3.1.0
 pytest-sugar==0.8.0
 pytest==3.0.2
 python-dateutil==2.6.1    # via faker, freezegun

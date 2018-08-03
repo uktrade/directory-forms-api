@@ -5,23 +5,23 @@ from django.contrib import admin
 from django.contrib.admin import SimpleListFilter
 
 import core.helpers
-from submission import models
+from submission import constants, models
 
 
-class BackendFilter(SimpleListFilter):
-    title = 'backend'
-    parameter_name = 'backend_name'
+class ActionFilter(SimpleListFilter):
+    title = 'action'
+    parameter_name = 'action_name'
 
     def lookups(self, request, model_admin):
         return (
-            ('zendesk', 'Zendesk'),
-            ('email', 'Email'),
+            (constants.ACTION_NAME_ZENDESK, 'Create Zendesk ticket'),
+            (constants.ACTION_NAME_EMAIL, 'Send Email'),
         )
 
     def queryset(self, request, queryset):
         value = self.value()
         if value:
-            queryset = queryset.filter(meta__backend_name=value)
+            queryset = queryset.filter(meta__action_name=value)
         return queryset
 
 
@@ -29,8 +29,8 @@ class BackendFilter(SimpleListFilter):
 class SubmissionAdmin(admin.ModelAdmin):
     search_fields = ('data', 'meta',)
     readonly_fields = ('created',)
-    list_display = ('get_backend_name', 'created')
-    list_filter = (BackendFilter, 'created')
+    list_display = ('action_name', 'created')
+    list_filter = (ActionFilter, 'created')
     actions = ['download_csv']
 
     csv_excluded_fields = []
@@ -55,9 +55,6 @@ class SubmissionAdmin(admin.ModelAdmin):
             return ('data', 'meta', 'modified')
         return []
 
-    def get_backend_name(self, obj):
-        return obj.meta.get('backend_name', '')
-
     def get_pretty_data(self, obj):
         return pprint.pformat(obj.data)
 
@@ -67,6 +64,5 @@ class SubmissionAdmin(admin.ModelAdmin):
     download_csv.short_description = (
         "Download CSV report for selected form submissions"
     )
-    get_backend_name.short_description = 'Backend'
     get_pretty_data.short_description = 'Data'
     get_pretty_meta.short_description = 'Meta'

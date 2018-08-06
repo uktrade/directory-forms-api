@@ -19,8 +19,8 @@ class EmailActionSerializer(serializers.Serializer):
     from_email = serializers.EmailField()
     reply_to = serializers.ListField(child=serializers.EmailField())
     recipients = serializers.ListField(child=serializers.EmailField())
-    body_text = serializers.CharField()
-    body_html = serializers.CharField(required=False)
+    html_body = serializers.CharField()
+    text_body = serializers.CharField(required=False)
 
     @classmethod
     def from_submission(cls, submission):
@@ -30,8 +30,8 @@ class EmailActionSerializer(serializers.Serializer):
                 'from_email': submission.meta['from_email'],
                 'reply_to': submission.meta['reply_to'],
                 'recipients': submission.meta['recipients'],
-                'body_text': submission.data['body_text'],
-                'body_html': submission.data.get('body_html'),
+                'text_body': submission.data['text_body'],
+                'html_body': submission.data.get('html_body'),
             }
         except KeyError as error:
             raise serializers.ValidationError(str(error))

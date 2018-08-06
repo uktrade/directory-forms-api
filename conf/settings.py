@@ -271,3 +271,17 @@ SIGAUTH_URL_NAMES_WHITELIST = [
 ZENDESK_SUBDOMAIN = env.str('ZENDESK_SUBDOMAIN')
 ZENDESK_TOKEN = env.str('ZENDESK_TOKEN')
 ZENDESK_EMAIL = env.str('ZENDESK_EMAIL')
+
+# Email
+EMAIL_BACKED_CLASSES = {
+    'default': 'django.core.mail.backends.smtp.EmailBackend',
+    'console': 'django.core.mail.backends.console.EmailBackend'
+}
+EMAIL_BACKED_CLASS_NAME = env.str('EMAIL_BACKEND_CLASS_NAME', 'default')
+EMAIL_BACKEND = EMAIL_BACKED_CLASSES[EMAIL_BACKED_CLASS_NAME]
+EMAIL_HOST = env.str('EMAIL_HOST')
+EMAIL_PORT = env.str('EMAIL_PORT')
+EMAIL_HOST_USER = env.str('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = env.str('EMAIL_HOST_PASSWORD')
+EMAIL_USE_TLS = True
+

@@ -47,15 +47,15 @@ def create_zendesk_ticket(subject, full_name, email_address, payload):
 
 
 def send_email(
-    subject, from_email, reply_to, recipients, body_text, body_html=None
+    subject, from_email, reply_to, recipients, text_body, html_body=None
 ):
     message = EmailMultiAlternatives(
         subject=subject,
-        body=body_text,
+        body=text_body,
         from_email=from_email,
         reply_to=reply_to,
         to=recipients,
     )
-    if body_html:
-        message.attach_alternative(body_html, "text/html")
+    if html_body:
+        message.attach_alternative(html_body, "text/html")
     message.send()

@@ -262,7 +262,6 @@ ALLOWED_ADMIN_IPS = env.list('ALLOWED_ADMIN_IPS', default=[])
 ALLOWED_ADMIN_IP_RANGES = env.list('ALLOWED_ADMIN_IP_RANGES', default=[])
 
 # directory-signature-auth
-SIGNATURE_SECRET = env.str('SIGNATURE_SECRET')
 SIGAUTH_URL_NAMES_WHITELIST = [
     'health-check-database',
     'health-check-ping',

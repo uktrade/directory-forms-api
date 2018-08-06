@@ -40,7 +40,6 @@ DOCKER_SET_DEBUG_ENV_VARS := \
 	export DIRECTORY_FORMS_API_PORT=8011; \
 	export directory_forms_api_debug=true; \
 	export DIRECTORY_FORMS_API_SECRET_KEY=debug; \
-	export DIRECTORY_FORMS_API_SIGNATURE_SECRET=debug; \
 	export DIRECTORY_FORMS_API_POSTGRES_USER=debug; \
 	export DIRECTORY_FORMS_API_POSTGRES_PASSWORD=debug; \
 	export DIRECTORY_FORMS_API_POSTGRES_DB=directory_forms_api_debug; \
@@ -95,7 +94,6 @@ docker_build:
 
 DEBUG_SET_ENV_VARS := \
 	export SECRET_KEY=debug; \
-	export SIGNATURE_SECRET=debug; \
 	export PORT=8011; \
 	export DEBUG=true; \
 	export DB_NAME=directory_forms_api_debug; \

@@ -266,3 +266,8 @@ SIGAUTH_URL_NAMES_WHITELIST = [
     'health-check-database',
     'health-check-ping',
 ]
+
+# Zendesk
+ZENDESK_SUBDOMAIN = env.str('ZENDESK_SUBDOMAIN')
+ZENDESK_TOKEN = env.str('ZENDESK_TOKEN')
+ZENDESK_EMAIL = env.str('ZENDESK_EMAIL')

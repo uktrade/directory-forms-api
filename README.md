@@ -25,6 +25,20 @@ For more information on installation please check the [Developers Onboarding Che
     $ cd directory-forms-api
     $ make
 
+## Integrations
+Set the following env vars on your host machine in order to use third-party services:
+
+### Zendesk
+
+`DIRECTORY_FORMS_API_ZENDESK_EMAIL`
+`DIRECTORY_FORMS_API_ZENDESK_SUBDOMAIN`
+`DIRECTORY_FORMS_API_ZENDESK_TOKEN`
+
+### Email
+
+
+
+
 ## Running with Docker
 Requires all host environment variables to be set.
 

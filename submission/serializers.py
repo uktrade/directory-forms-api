@@ -5,12 +5,21 @@ from submission import constants, helpers, models
 
 class ZendeskActionSerializer(serializers.Serializer):
 
+    subject = serializers.CharField()
+    full_name = serializers.CharField()
+    email_address = serializers.EmailField()
+    payload = serializers.DictField()
+
     @classmethod
     def from_submission(cls, submission):
-        raise NotImplementedError()
+        data = {
+            **submission.meta,
+            'payload': submission.data,
+        }
+        return cls(data=data)
 
     def send(self):
-        raise NotImplementedError()
+        return helpers.create_zendesk_ticket(**self.validated_data)
 
 
 class EmailActionSerializer(serializers.Serializer):
@@ -24,22 +33,11 @@ class EmailActionSerializer(serializers.Serializer):
 
     @classmethod
     def from_submission(cls, submission):
-        try:
-            data = {
-                'subject': submission.meta['subject'],
-                'from_email': submission.meta['from_email'],
-                'reply_to': submission.meta['reply_to'],
-                'recipients': submission.meta['recipients'],
-                'text_body': submission.data['text_body'],
-                'html_body': submission.data.get('html_body'),
-            }
-        except KeyError as error:
-            raise serializers.ValidationError(str(error))
-        else:
-            return cls(data=data)
+        data = {**submission.meta, **submission.data}
+        return cls(data=data)
 
     def send(self):
-        helpers.send_email(**self.validated_data)
+        return helpers.send_email(**self.validated_data)
 
 
 class SubmissionModelSerializer(serializers.ModelSerializer):

@@ -36,8 +36,11 @@ Set the following env vars on your host machine in order to use third-party serv
 
 ### Email
 
-
-
+`DIRECTORY_FORMS_API_EMAIL_HOST`
+`DIRECTORY_FORMS_API_EMAIL_HOST_PASSWORD`
+`DIRECTORY_FORMS_API_EMAIL_HOST_USER`
+`DIRECTORY_FORMS_API_EMAIL_PORT`
+`DIRECTORY_FORMS_API_EMAIL_USE_TLS`
 
 ## Running with Docker
 Requires all host environment variables to be set.

@@ -9,8 +9,8 @@ from submission import constants, serializers
 def email_action_payload():
     return {
         'data': {
-            'body_text': 'hello there',
-            'body_html': '<a>Hello there</a>',
+            'text_body': 'hello there',
+            'html_body': '<a>Hello there</a>',
         },
         'meta': {
             'action_name': constants.ACTION_NAME_EMAIL,
@@ -23,9 +23,34 @@ def email_action_payload():
 
 
 @pytest.fixture
+def zendesk_action_payload():
+    return {
+        'data': {
+            'title': 'hello',
+        },
+        'meta': {
+            'action_name': constants.ACTION_NAME_EMAIL,
+            'subject': 'Hello',
+            'full_name': 'Jim Example',
+            'email_address': 'from@example.com',
+        }
+    }
+
+
+@pytest.fixture
 def email_submission(email_action_payload):
     serializer = serializers.SubmissionModelSerializer(
         data=email_action_payload
+    )
+
+    assert serializer.is_valid()
+    return serializer.save()
+
+
+@pytest.fixture
+def zendesk_submission(zendesk_action_payload):
+    serializer = serializers.SubmissionModelSerializer(
+        data=zendesk_action_payload
     )
 
     assert serializer.is_valid()
@@ -83,8 +108,8 @@ def test_email_action_serializer_from_submission(email_submission):
         'from_email': email_submission.meta['from_email'],
         'reply_to': email_submission.meta['reply_to'],
         'recipients': email_submission.meta['recipients'],
-        'body_text': email_submission.data['body_text'],
-        'body_html': email_submission.data['body_html'],
+        'text_body': email_submission.data['text_body'],
+        'html_body': email_submission.data['html_body'],
     }
 
 
@@ -104,6 +129,39 @@ def test_email_action_serializer_send(mock_send_email, email_submission):
         from_email=email_submission.meta['from_email'],
         reply_to=email_submission.meta['reply_to'],
         recipients=email_submission.meta['recipients'],
-        body_text=email_submission.data['body_text'],
-        body_html=email_submission.data['body_html'],
+        text_body=email_submission.data['text_body'],
+        html_body=email_submission.data['html_body'],
+    )
+
+
+@pytest.mark.django_db
+def test_zendesk_action_serializer_from_submission(zendesk_submission):
+    serializer = serializers.ZendeskActionSerializer.from_submission(
+        zendesk_submission
+    )
+    assert serializer.is_valid()
+    assert serializer.validated_data == {
+        'subject': zendesk_submission.meta['subject'],
+        'full_name': zendesk_submission.meta['full_name'],
+        'email_address': zendesk_submission.meta['email_address'],
+        'payload': zendesk_submission.data
+    }
+
+
+@pytest.mark.django_db
+@mock.patch('submission.helpers.create_zendesk_ticket')
+def test_zendesk_action_serializer_send(mock_send_email, zendesk_submission):
+    serializer = serializers.ZendeskActionSerializer.from_submission(
+        zendesk_submission
+    )
+
+    assert serializer.is_valid()
+    serializer.send()
+
+    assert mock_send_email.call_count == 1
+    assert mock_send_email.call_args == mock.call(
+        subject=zendesk_submission.meta['subject'],
+        full_name=zendesk_submission.meta['full_name'],
+        email_address=zendesk_submission.meta['email_address'],
+        payload=zendesk_submission.data
     )

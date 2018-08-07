@@ -1,5 +1,5 @@
+from django.conf import settings
 from django.core.mail import EmailMultiAlternatives
-
 
 from zenpy import Zenpy
 from zenpy.lib.api_objects import Ticket, User as ZendeskUser
@@ -8,18 +8,18 @@ from zenpy.lib.api_objects import Ticket, User as ZendeskUser
 class ZendeskClient:
 
     def __init__(self, email, token, subdomain):
-        self.zenpy_client = Zenpy(
+        self.client = Zenpy(
             timeout=5, email=email, token=token, subdomain=subdomain
         )
 
-    def get_or_create_user(full_name, email_address):
+    def get_or_create_user(self, full_name, email_address):
         zendesk_user = ZendeskUser(name=full_name, email=email_address)
-        return zenpy_client.users.create_or_update(zendesk_user)
+        return self.client.users.create_or_update(zendesk_user)
 
-    def create_ticket(subject, data, zendesk_user):
+    def create_ticket(self, subject, payload, zendesk_user):
         description = [
             '{0}: {1}'.format(key.title().replace('_', ' '), value)
-            for key, value in sorted(data.items())
+            for key, value in sorted(payload.items())
         ]
         ticket = Ticket(
             subject=subject,
@@ -27,21 +27,21 @@ class ZendeskClient:
             submitter_id=zendesk_user.id,
             requester_id=zendesk_user.id,
         )
-        return zenpy_client.tickets.create(ticket)
+        return self.client.tickets.create(ticket)
 
 
 def create_zendesk_ticket(subject, full_name, email_address, payload):
     client = ZendeskClient(
-        email = settings.ZENDESK_EMAIL,
-        token = settings.ZENDESK_TOKEN,
-        subdomain = settings.ZENDESK_SUBDOMAIN
+        email=settings.ZENDESK_EMAIL,
+        token=settings.ZENDESK_TOKEN,
+        subdomain=settings.ZENDESK_SUBDOMAIN
     )
     zendesk_user = client.get_or_create_user(
         full_name=full_name, email_address=email_address
     )
     return client.create_ticket(
         subject=subject,
-        data=data,
+        payload=payload,
         zendesk_user=zendesk_user,
     )
 

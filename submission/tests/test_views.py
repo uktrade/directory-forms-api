@@ -17,8 +17,8 @@ def test_generic_form_submission_submit(settings):
 
     payload = {
         'data': {
-            'body_text': 'hello there',
-            'body_html': '<a>Hello there</a>',
+            'text_body': 'hello there',
+            'html_body': '<a>Hello there</a>',
         },
         'meta': {
             'action_name': 'email',

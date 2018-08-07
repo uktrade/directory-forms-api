@@ -14,3 +14,4 @@ sigauth==4.0.1
 directory-healthcheck==0.4.2
 django-admin-ip-restrictor==0.1.0
 django-cryptography==0.3.0
+zenpy==1.1.10

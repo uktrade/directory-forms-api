@@ -16,7 +16,6 @@ def email_action_payload():
             'action_name': constants.ACTION_NAME_EMAIL,
             'recipients': ['foo@bar.com'],
             'subject': 'Hello',
-            'from_email': 'from@example.com',
             'reply_to': ['reply@example.com'],
         }
     }
@@ -105,7 +104,6 @@ def test_email_action_serializer_from_submission(email_submission):
     assert serializer.is_valid()
     assert serializer.validated_data == {
         'subject': email_submission.meta['subject'],
-        'from_email': email_submission.meta['from_email'],
         'reply_to': email_submission.meta['reply_to'],
         'recipients': email_submission.meta['recipients'],
         'text_body': email_submission.data['text_body'],
@@ -126,7 +124,6 @@ def test_email_action_serializer_send(mock_send_email, email_submission):
     assert mock_send_email.call_count == 1
     assert mock_send_email.call_args == mock.call(
         subject=email_submission.meta['subject'],
-        from_email=email_submission.meta['from_email'],
         reply_to=email_submission.meta['reply_to'],
         recipients=email_submission.meta['recipients'],
         text_body=email_submission.data['text_body'],

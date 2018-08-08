@@ -7,6 +7,7 @@ import environ
 from core.constants import IP_RETRIEVER_NAME_GOV_UK
 
 env = environ.Env()
+env.read_env()
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
@@ -280,7 +281,8 @@ EMAIL_BACKED_CLASSES = {
 EMAIL_BACKED_CLASS_NAME = env.str('EMAIL_BACKEND_CLASS_NAME', 'default')
 EMAIL_BACKEND = EMAIL_BACKED_CLASSES[EMAIL_BACKED_CLASS_NAME]
 EMAIL_HOST = env.str('EMAIL_HOST')
-EMAIL_PORT = env.str('EMAIL_PORT')
+EMAIL_PORT = env.int('EMAIL_PORT', 587)
 EMAIL_HOST_USER = env.str('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = env.str('EMAIL_HOST_PASSWORD')
 EMAIL_USE_TLS = env.bool('EMAIL_USE_TLS', True)
+DEFAULT_FROM_EMAIL = env.str('DEFAULT_FROM_EMAIL')

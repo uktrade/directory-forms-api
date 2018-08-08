@@ -26,21 +26,21 @@ For more information on installation please check the [Developers Onboarding Che
     $ make
 
 ## Integrations
-Set the following env vars on your host machine in order to use third-party services:
+Set the following values in your conf/.env file to use third-party services:
 
 ### Zendesk
 
-`DIRECTORY_FORMS_API_ZENDESK_EMAIL`
-`DIRECTORY_FORMS_API_ZENDESK_SUBDOMAIN`
-`DIRECTORY_FORMS_API_ZENDESK_TOKEN`
+`ZENDESK_EMAIL`
+`ZENDESK_SUBDOMAIN`
+`ZENDESK_TOKEN`
 
 ### Email
 
-`DIRECTORY_FORMS_API_EMAIL_HOST`
-`DIRECTORY_FORMS_API_EMAIL_HOST_PASSWORD`
-`DIRECTORY_FORMS_API_EMAIL_HOST_USER`
-`DIRECTORY_FORMS_API_EMAIL_PORT`
-`DIRECTORY_FORMS_API_EMAIL_USE_TLS`
+`EMAIL_HOST`
+`EMAIL_HOST_PASSWORD`
+`EMAIL_HOST_USER`
+`EMAIL_PORT`
+`EMAIL_USE_TLS`
 
 ## Running with Docker
 Requires all host environment variables to be set.

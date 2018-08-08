@@ -46,13 +46,10 @@ def create_zendesk_ticket(subject, full_name, email_address, payload):
     )
 
 
-def send_email(
-    subject, from_email, reply_to, recipients, text_body, html_body=None
-):
+def send_email(subject, reply_to, recipients, text_body, html_body=None):
     message = EmailMultiAlternatives(
         subject=subject,
         body=text_body,
-        from_email=from_email,
         reply_to=reply_to,
         to=recipients,
     )

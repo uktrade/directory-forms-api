@@ -24,7 +24,6 @@ def test_generic_form_submission_submit(settings):
             'action_name': 'email',
             'recipients': ['foo@bar.com'],
             'subject': 'Hello',
-            'from_email': 'from@example.com',
             'reply_to': ['reply@example.com'],
         }
     }

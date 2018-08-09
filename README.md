@@ -26,7 +26,7 @@ For more information on installation please check the [Developers Onboarding Che
     $ make
 
 ## Integrations
-Set the following values in your conf/.env file to use third-party services:
+Set the following values in your `conf/.env` file to use third-party services:
 
 ### Zendesk
 

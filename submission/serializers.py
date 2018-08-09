@@ -4,6 +4,10 @@ from submission import constants, helpers, models
 
 
 class ZendeskActionSerializer(serializers.Serializer):
+    MESSAGE_INCOMPLETE_CLIENT_CONFIGURATION = (
+        'Client is not setup to use zendesk, specify service name in '
+        'forms-api admin.'
+    )
 
     subject = serializers.CharField()
     full_name = serializers.CharField()
@@ -11,15 +15,22 @@ class ZendeskActionSerializer(serializers.Serializer):
     payload = serializers.DictField()
 
     @classmethod
-    def from_submission(cls, submission):
+    def from_submission(cls, submission, context=None):
         data = {
             **submission.meta,
             'payload': submission.data,
         }
-        return cls(data=data)
+        return cls(data=data, context=context)
 
     def send(self):
         return helpers.create_zendesk_ticket(**self.validated_data)
+
+    def validate(self, data):
+        if not self.context['request'].user.zendesk_service_name:
+            raise serializers.ValidationError(
+                self.MESSAGE_INCOMPLETE_CLIENT_CONFIGURATION
+            )
+        return super().validate(data)
 
 
 class EmailActionSerializer(serializers.Serializer):
@@ -31,9 +42,9 @@ class EmailActionSerializer(serializers.Serializer):
     text_body = serializers.CharField(required=False)
 
     @classmethod
-    def from_submission(cls, submission):
+    def from_submission(cls, submission, context=None):
         data = {**submission.meta, **submission.data}
-        return cls(data=data)
+        return cls(data=data, context=context)
 
     def send(self):
         return helpers.send_email(**self.validated_data)
@@ -62,4 +73,7 @@ class SubmissionModelSerializer(serializers.ModelSerializer):
 
     @property
     def action_serializer(self):
-        return self.action_serializer_class.from_submission(self.instance)
+        return self.action_serializer_class.from_submission(
+            self.instance,
+            context=self.context,
+        )

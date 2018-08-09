@@ -2,7 +2,7 @@ from django.conf import settings
 from django.core.mail import EmailMultiAlternatives
 
 from zenpy import Zenpy
-from zenpy.lib.api_objects import Ticket, User as ZendeskUser
+from zenpy.lib.api_objects import CustomField, Ticket, User as ZendeskUser
 
 
 class ZendeskClient:
@@ -16,7 +16,7 @@ class ZendeskClient:
         zendesk_user = ZendeskUser(name=full_name, email=email_address)
         return self.client.users.create_or_update(zendesk_user)
 
-    def create_ticket(self, subject, payload, zendesk_user):
+    def create_ticket(self, subject, payload, zendesk_user, service_name):
         description = [
             '{0}: {1}'.format(key.title().replace('_', ' '), value)
             for key, value in sorted(payload.items())
@@ -26,11 +26,19 @@ class ZendeskClient:
             description='\n'.join(description),
             submitter_id=zendesk_user.id,
             requester_id=zendesk_user.id,
+            custom_fields=[
+                CustomField(
+                    id=settings.ZENDESK_SERVICE_NAME_CUSTOM_FIELD_ID,
+                    value=service_name
+                )
+            ]
         )
         return self.client.tickets.create(ticket)
 
 
-def create_zendesk_ticket(subject, full_name, email_address, payload):
+def create_zendesk_ticket(
+    subject, full_name, email_address, payload, service_name
+):
     client = ZendeskClient(
         email=settings.ZENDESK_EMAIL,
         token=settings.ZENDESK_TOKEN,
@@ -43,6 +51,7 @@ def create_zendesk_ticket(subject, full_name, email_address, payload):
         subject=subject,
         payload=payload,
         zendesk_user=zendesk_user,
+        service_name=service_name,
     )
 
 

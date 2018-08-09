@@ -7,7 +7,7 @@ ZENDESK_SERVICE_NAMES = [
     'Datahub',
     'Digital Workspace',
     'Directory',
-    'E-Exporting S00 Triage   ', 
+    'E-Exporting S00 Triage',
     'EIG',
     'Export Ops',
     'Export Vouchers',

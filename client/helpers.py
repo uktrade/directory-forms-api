@@ -25,10 +25,10 @@ def lookup_client(identifier):
     try:
         client = models.Client.objects.all().get(identifier=identifier)
     except ValidationError:
-        raise LookupError(self.MESSAGE_INVALID_SENDER)
+        raise LookupError(MESSAGE_INVALID_SENDER)
     except models.Client.DoesNotExist:
-        raise LookupError(self.MESSAGE_UNKNOWN_SENDER)
+        raise LookupError(MESSAGE_UNKNOWN_SENDER)
     else:
         if client.is_active is False:
-            raise LookupError(self.MESSAGE_INACTIVE_SENDER)
+            raise LookupError(MESSAGE_INACTIVE_SENDER)
         return client

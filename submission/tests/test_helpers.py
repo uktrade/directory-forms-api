@@ -55,7 +55,10 @@ def test_zendesk_client_create_user(mock_user):
 
 
 @mock.patch('submission.helpers.Ticket')
-def test_zendesk_client_create_ticket(mock_ticket):
+@mock.patch('submission.helpers.CustomField')
+def test_zendesk_client_create_ticket(
+    mock_custom_field, mock_ticket, settings
+):
     client = helpers.ZendeskClient(
         email='test@example.com',
         token='token123',
@@ -68,6 +71,7 @@ def test_zendesk_client_create_ticket(mock_ticket):
             subject='subject123',
             payload={'field': 'value'},
             zendesk_user=user,
+            service_name='some-service'
         )
         assert stub.call_count == 1
         assert stub.call_args == mock.call(
@@ -76,6 +80,12 @@ def test_zendesk_client_create_ticket(mock_ticket):
                 description='field: value',
                 submitter_id=user.id,
                 requester_id=user.id,
+                custom_fields=[
+                    mock_custom_field(
+                        id=settings.ZENDESK_SERVICE_NAME_CUSTOM_FIELD_ID,
+                        value='some-service',
+                    )
+                ]
             )
         )
 
@@ -90,7 +100,8 @@ def test_create_zendesk_ticket(mock_zendesk_client, settings):
         subject='subject123',
         full_name='jim example',
         email_address='test@example.com',
-        payload={'field': 'value'}
+        payload={'field': 'value'},
+        service_name='some-service',
     )
 
     assert mock_zendesk_client.call_count == 1
@@ -111,4 +122,5 @@ def test_create_zendesk_ticket(mock_zendesk_client, settings):
         subject='subject123',
         payload={'field': 'value'},
         zendesk_user=client.get_or_create_user(),
+        service_name='some-service',
     )

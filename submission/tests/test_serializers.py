@@ -2,7 +2,10 @@ from unittest import mock
 
 import pytest
 
+from django.contrib.auth.models import AnonymousUser
+
 from submission import constants, serializers
+from client.models import Client
 
 
 @pytest.fixture
@@ -56,6 +59,27 @@ def zendesk_submission(zendesk_action_payload):
     return serializer.save()
 
 
+@pytest.fixture
+def incomplete_user_information_request(rf):
+    request = rf.get('/')
+    request.user = Client()
+    return request
+
+
+@pytest.fixture
+def authenticated_request(rf):
+    request = rf.get('/')
+    request.user = Client(zendesk_service_name='Great')
+    return request
+
+
+@pytest.fixture
+def anonymous_request(rf):
+    request = rf.get('/')
+    request.user = AnonymousUser()
+    return request
+
+
 def test_form_submission_serializer():
     data = {
         'data': {'title': 'hello'},
@@ -68,9 +92,12 @@ def test_form_submission_serializer():
 
 
 @pytest.mark.django_db
-def test_submissions_serializer_action_mapping(email_action_payload):
+def test_submissions_serializer_action_mapping(
+    email_action_payload, authenticated_request
+):
     serializer = serializers.SubmissionModelSerializer(
-        data=email_action_payload
+        data=email_action_payload,
+        context={'request': authenticated_request}
     )
 
     assert serializer.is_valid()
@@ -97,9 +124,11 @@ def test_submissions_serializer_unknown_action():
 
 
 @pytest.mark.django_db
-def test_email_action_serializer_from_submission(email_submission):
+def test_email_action_serializer_from_submission(
+    email_submission, authenticated_request
+):
     serializer = serializers.EmailActionSerializer.from_submission(
-        email_submission
+        email_submission, context={'request': authenticated_request}
     )
     assert serializer.is_valid()
     assert serializer.validated_data == {
@@ -115,7 +144,7 @@ def test_email_action_serializer_from_submission(email_submission):
 @mock.patch('submission.helpers.send_email')
 def test_email_action_serializer_send(mock_send_email, email_submission):
     serializer = serializers.EmailActionSerializer.from_submission(
-        email_submission
+        email_submission, context={'request': authenticated_request}
     )
 
     assert serializer.is_valid()
@@ -132,9 +161,12 @@ def test_email_action_serializer_send(mock_send_email, email_submission):
 
 
 @pytest.mark.django_db
-def test_zendesk_action_serializer_from_submission(zendesk_submission):
+def test_zendesk_action_serializer_from_submission(
+    zendesk_submission, authenticated_request
+):
     serializer = serializers.ZendeskActionSerializer.from_submission(
-        zendesk_submission
+        zendesk_submission,
+        context={'request': authenticated_request}
     )
     assert serializer.is_valid()
     assert serializer.validated_data == {
@@ -147,9 +179,12 @@ def test_zendesk_action_serializer_from_submission(zendesk_submission):
 
 @pytest.mark.django_db
 @mock.patch('submission.helpers.create_zendesk_ticket')
-def test_zendesk_action_serializer_send(mock_send_email, zendesk_submission):
+def test_zendesk_action_serializer_send(
+    mock_send_email, zendesk_submission, authenticated_request
+):
     serializer = serializers.ZendeskActionSerializer.from_submission(
-        zendesk_submission
+        zendesk_submission,
+        context={'request': authenticated_request}
     )
 
     assert serializer.is_valid()
@@ -160,5 +195,53 @@ def test_zendesk_action_serializer_send(mock_send_email, zendesk_submission):
         subject=zendesk_submission.meta['subject'],
         full_name=zendesk_submission.meta['full_name'],
         email_address=zendesk_submission.meta['email_address'],
-        payload=zendesk_submission.data
+        payload=zendesk_submission.data,
+        service_name=authenticated_request.user.zendesk_service_name,
     )
+
+
+@pytest.mark.django_db
+def test_zendesk_action_serializer_reject_incompatible_user_type(
+    zendesk_submission, anonymous_request
+):
+    with pytest.raises(TypeError):
+        serializers.ZendeskActionSerializer.from_submission(
+            zendesk_submission,
+            context={'request': anonymous_request}
+        )
+
+    with pytest.raises(TypeError):
+        serializers.ZendeskActionSerializer(
+            data={},
+            context={'request': anonymous_request}
+        )
+
+
+@pytest.mark.django_db
+def test_zendesk_action_serializer_reject_incompatible_user_data(
+    zendesk_submission, zendesk_action_payload,
+    incomplete_user_information_request, caplog
+):
+    request = incomplete_user_information_request
+    serializer_class = serializers.ZendeskActionSerializer
+    serializer_one = serializer_class.from_submission(
+        zendesk_submission, context={'request': request}
+    )
+
+    serializer_two = serializer_class(
+        data={
+            **zendesk_action_payload['meta'],
+            'payload': zendesk_action_payload['data'],
+        },
+        context={'request': request}
+    )
+
+    for serializer in [serializer_one, serializer_two]:
+        assert serializer.is_valid() is False
+        assert serializer.errors['non_field_errors'] == (
+            [serializer_class.MESSAGE_INCOMPLETE_CLIENT_CONFIGURATION]
+        )
+        log = caplog.records[0]
+        assert log.levelname == 'ERROR'
+        assert log.msg == serializer.MESSAGE_INCOMPLETE_CLIENT_CONFIGURATION
+        assert log.client == request.user.identifier

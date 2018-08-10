@@ -5,6 +5,7 @@
 #    pip-compile --output-file requirements_test.txt requirements_test.in
 #
 asn1crypto==0.24.0        # via cryptography
+cachetools==2.1.0         # via zenpy
 certifi==2018.1.18        # via requests
 cffi==1.11.5              # via cryptography
 chardet==3.0.4            # via requests
@@ -43,7 +44,7 @@ pytest-cov==2.3.1
 pytest-django==3.1.0
 pytest-sugar==0.8.0
 pytest==3.0.2
-python-dateutil==2.6.1    # via faker, freezegun
+python-dateutil==2.6.1    # via faker, freezegun, zenpy
 pytz==2017.2              # via directory-healthcheck, django
 raven==5.19.0
 requests[security]==2.18.4
@@ -55,3 +56,4 @@ text-unidecode==1.2       # via faker
 urllib3==1.22             # via requests
 waitress==1.1.0
 whitenoise==3.2.2
+zenpy==1.1.10

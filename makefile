@@ -47,7 +47,8 @@ DOCKER_SET_DEBUG_ENV_VARS := \
 	export DIRECTORY_FORMS_API_HEALTH_CHECK_TOKEN=debug; \
 	export DIRECTORY_FORMS_API_CSRF_COOKIE_SECURE=false; \
 	export DIRECTORY_FORMS_API_SESSION_COOKIE_SECURE=false; \
-	export DIRECTORY_FORMS_API_SESSION_COOKIE_DOMAIN=.trade.great
+	export DIRECTORY_FORMS_API_SESSION_COOKIE_DOMAIN=.trade.great; \
+	export DIRECTORY_FORMS_API_DEFAULT_FROM_EMAIL=debug@example.com
 
 
 docker_test_env_files:
@@ -103,7 +104,8 @@ DEBUG_SET_ENV_VARS := \
 	export HEALTH_CHECK_TOKEN=debug; \
 	export CSRF_COOKIE_SECURE=false; \
 	export SESSION_COOKIE_SECURE=false; \
-	export SESSION_COOKIE_DOMAIN=.trade.great
+	export SESSION_COOKIE_DOMAIN=.trade.great; \
+	export DEFAULT_FROM_EMAIL=debug@example.com
 
 
 debug_webserver:

@@ -151,11 +151,11 @@ integration_tests:
 	make docker_integration_tests
 
 compile_requirements:
-	python3 -m piptools compile requirements.in
+	pip-compile requirements.in
+	pip-compile requirements_test.in
 
-compile_test_requirements:
-	python3 -m piptools compile requirements_test.in
-
-compile_all_requirements: compile_requirements compile_test_requirements
+upgrade_requirements:
+	pip-compile --upgrade requirements.in
+	pip-compile --upgrade requirements_test.in
 
 .PHONY: build docker_run_test clean test_requirements docker_run docker_debug docker_webserver_bash docker_psql docker_test debug_webserver debug_db debug_test debug heroku_deploy_dev smoke_tests compile_all_requirements

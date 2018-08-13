@@ -24,6 +24,7 @@ django-pglocks==1.0.2
 django==1.11.15
 django_extensions==1.6.7
 djangorestframework==3.4.7
+gunicorn==19.5.0
 idna==2.6                 # via cryptography, requests
 mohawk==0.3.4             # via sigauth
 psycopg2==2.6.1

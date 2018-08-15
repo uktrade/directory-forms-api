@@ -48,7 +48,8 @@ DOCKER_SET_DEBUG_ENV_VARS := \
 	export DIRECTORY_FORMS_API_CSRF_COOKIE_SECURE=false; \
 	export DIRECTORY_FORMS_API_SESSION_COOKIE_SECURE=false; \
 	export DIRECTORY_FORMS_API_SESSION_COOKIE_DOMAIN=.trade.great; \
-	export DIRECTORY_FORMS_API_DEFAULT_FROM_EMAIL=debug@example.com
+	export DIRECTORY_FORMS_API_DEFAULT_FROM_EMAIL=debug@example.com; \
+	export DIRECTORY_FORMS_API_REDIS_CELERY_URL=redis://redis:6379
 
 
 docker_test_env_files:
@@ -105,8 +106,11 @@ DEBUG_SET_ENV_VARS := \
 	export CSRF_COOKIE_SECURE=false; \
 	export SESSION_COOKIE_SECURE=false; \
 	export SESSION_COOKIE_DOMAIN=.trade.great; \
-	export DEFAULT_FROM_EMAIL=debug@example.com
+	export DEFAULT_FROM_EMAIL=debug@example.com; \
+	export REDIS_CELERY_URL=redis://127.0.0.1:6379
 
+debug_celery_worker:
+	$(DEBUG_SET_ENV_VARS); celery -A api worker -l info
 
 debug_webserver:
 	 $(DEBUG_SET_ENV_VARS); $(DJANGO_WEBSERVER)
@@ -142,7 +146,7 @@ heroku_deploy_dev:
 	./docker/install_heroku_cli.sh
 	docker login --username=$$HEROKU_EMAIL --password=$$HEROKU_TOKEN registry.heroku.com
 	~/bin/heroku-cli/bin/heroku container:push --recursive --app directory-forms-api-dev
-	~/bin/heroku-cli/bin/heroku container:release web --app directory-forms-api-dev
+	~/bin/heroku-cli/bin/heroku container:release web celery_worker --app directory-forms-api-dev
 
 compile_requirements:
 	pip-compile requirements.in

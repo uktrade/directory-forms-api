@@ -4,8 +4,11 @@
 #
 #    pip-compile --output-file requirements.txt requirements.in
 #
+amqp==2.3.2               # via kombu
 asn1crypto==0.24.0        # via cryptography
+billiard==3.5.0.4         # via celery
 cachetools==2.1.0         # via zenpy
+celery==4.2.1
 certifi==2018.1.18        # via requests
 cffi==1.11.5              # via cryptography
 chardet==3.0.4            # via requests
@@ -26,17 +29,19 @@ django_extensions==1.6.7
 djangorestframework==3.4.7
 gunicorn==19.5.0
 idna==2.6                 # via cryptography, requests
+kombu==4.2.1              # via celery
 mohawk==0.3.4             # via sigauth
 psycopg2==2.6.1
 pycparser==2.18           # via cffi
 pyopenssl==17.5.0         # via requests
 python-dateutil==2.7.3    # via zenpy
-pytz==2017.2              # via directory-healthcheck, django
+pytz==2017.2              # via celery, directory-healthcheck, django
 raven==5.19.0
 requests[security]==2.18.4
 sigauth==4.0.1
 six==1.11.0               # via cryptography, django-extensions, mohawk, pyopenssl, python-dateutil
 urllib3==1.22             # via requests
+vine==1.1.4               # via amqp
 waitress==1.1.0
 whitenoise==3.2.2
 zenpy==1.1.10

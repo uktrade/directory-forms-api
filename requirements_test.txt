@@ -4,8 +4,11 @@
 #
 #    pip-compile --output-file requirements_test.txt requirements_test.in
 #
+amqp==2.3.2               # via kombu
 asn1crypto==0.24.0        # via cryptography
+billiard==3.5.0.4         # via celery
 cachetools==2.1.0         # via zenpy
+celery==4.2.1
 certifi==2018.1.18        # via requests
 cffi==1.11.5              # via cryptography
 chardet==3.0.4            # via requests
@@ -32,6 +35,7 @@ flake8==3.0.4
 freezegun==0.3.8
 gunicorn==19.5.0
 idna==2.6                 # via cryptography, requests
+kombu==4.2.1              # via celery
 mccabe==0.5.3             # via flake8
 mohawk==0.3.4             # via sigauth
 psycopg2==2.6.1
@@ -46,7 +50,7 @@ pytest-django==3.1.0
 pytest-sugar==0.8.0
 pytest==3.0.2
 python-dateutil==2.6.1    # via faker, freezegun, zenpy
-pytz==2017.2              # via directory-healthcheck, django
+pytz==2017.2              # via celery, directory-healthcheck, django
 raven==5.19.0
 requests[security]==2.18.4
 requests_mock==1.1.0
@@ -55,6 +59,7 @@ six==1.11.0               # via cryptography, django-extensions, faker, freezegu
 termcolor==1.1.0          # via pytest-sugar
 text-unidecode==1.2       # via faker
 urllib3==1.22             # via requests
+vine==1.1.4               # via amqp
 waitress==1.1.0
 whitenoise==3.2.2
 zenpy==1.1.10

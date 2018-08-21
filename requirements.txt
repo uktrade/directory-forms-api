@@ -8,7 +8,7 @@ amqp==2.3.2               # via kombu
 asn1crypto==0.24.0        # via cryptography
 billiard==3.5.0.4         # via celery
 cachetools==2.1.0         # via zenpy
-celery==4.2.1
+celery[redis]==4.2.1
 certifi==2018.1.18        # via requests
 cffi==1.11.5              # via cryptography
 chardet==3.0.4            # via requests
@@ -37,6 +37,7 @@ pyopenssl==17.5.0         # via requests
 python-dateutil==2.7.3    # via zenpy
 pytz==2017.2              # via celery, directory-healthcheck, django
 raven==5.19.0
+redis==2.10.6             # via celery
 requests[security]==2.18.4
 sigauth==4.0.1
 six==1.11.0               # via cryptography, django-extensions, mohawk, pyopenssl, python-dateutil

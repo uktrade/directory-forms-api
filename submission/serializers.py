@@ -2,7 +2,7 @@ import logging
 
 from rest_framework import serializers
 
-from submission import constants, helpers, models
+from submission import constants, models, tasks
 
 
 logger = logging.getLogger(__name__)
@@ -49,7 +49,7 @@ class ZendeskActionSerializer(serializers.Serializer):
         return super().validate(data)
 
     def send(self):
-        return helpers.create_zendesk_ticket(
+        return tasks.create_zendesk_ticket(
             **self.validated_data,
             service_name=self.context['request'].user.zendesk_service_name,
         )
@@ -69,7 +69,7 @@ class EmailActionSerializer(serializers.Serializer):
         return cls(data=data, context=context)
 
     def send(self):
-        return helpers.send_email(**self.validated_data)
+        return tasks.send_email(**self.validated_data)
 
 
 class SubmissionModelSerializer(serializers.ModelSerializer):

@@ -13,7 +13,7 @@ certifi==2018.1.18        # via requests
 cffi==1.11.5              # via cryptography
 chardet==3.0.4            # via requests
 contextlib2==0.5.5        # via raven
-cryptography==2.1.4       # via django-cryptography, pyopenssl, requests
+cryptography==2.3
 directory-healthcheck==0.4.2
 dj-database-url==0.4.1
 django-admin-ip-restrictor==0.1.0

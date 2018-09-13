@@ -18,3 +18,4 @@ django-cryptography==0.3.0
 zenpy==1.1.10
 celery[redis]
 cryptography==2.3
+notifications-python-client

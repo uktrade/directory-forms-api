@@ -27,12 +27,17 @@ django-pglocks==1.0.2
 django==1.11.15
 django_extensions==1.6.7
 djangorestframework==3.4.7
+docopt==0.6.2             # via notifications-python-client
+future==0.16.0            # via notifications-python-client
 gunicorn==19.5.0
 idna==2.6                 # via cryptography, requests
 kombu==4.2.1              # via celery
 mohawk==0.3.4             # via sigauth
+monotonic==1.5            # via notifications-python-client
+notifications-python-client==5.1.0
 psycopg2==2.6.1
 pycparser==2.18           # via cffi
+pyjwt==1.6.4              # via notifications-python-client
 pyopenssl==17.5.0         # via requests
 python-dateutil==2.7.3    # via zenpy
 pytz==2017.2              # via celery, directory-healthcheck, django

@@ -40,6 +40,20 @@ def zendesk_action_payload():
 
 
 @pytest.fixture
+def gov_notify_action_payload():
+    return {
+        'data': {
+            'title': 'hello',
+        },
+        'meta': {
+            'action_name': constants.ACTION_NAME_GOV_NOTIFY,
+            'template_id': '213123',
+            'email_address': 'from@example.com',
+        }
+    }
+
+
+@pytest.fixture
 def email_submission(email_action_payload):
     serializer = serializers.SubmissionModelSerializer(
         data=email_action_payload
@@ -53,6 +67,16 @@ def email_submission(email_action_payload):
 def zendesk_submission(zendesk_action_payload):
     serializer = serializers.SubmissionModelSerializer(
         data=zendesk_action_payload
+    )
+
+    assert serializer.is_valid()
+    return serializer.save()
+
+
+@pytest.fixture
+def gov_notify_submission(gov_notify_action_payload):
+    serializer = serializers.SubmissionModelSerializer(
+        data=gov_notify_action_payload
     )
 
     assert serializer.is_valid()
@@ -245,3 +269,40 @@ def test_zendesk_action_serializer_reject_incompatible_user_data(
         assert log.levelname == 'ERROR'
         assert log.msg == serializer.MESSAGE_INCOMPLETE_CLIENT_CONFIGURATION
         assert log.client == request.user.identifier
+
+
+@pytest.mark.django_db
+def test_gov_notify_action_serializer_from_submission(
+    gov_notify_submission, authenticated_request
+):
+    serializer = serializers.GovNotifySerializer.from_submission(
+        gov_notify_submission, context={'request': authenticated_request}
+    )
+    assert serializer.is_valid()
+    assert serializer.validated_data == {
+        'template_id': gov_notify_submission.meta['template_id'],
+        'email_address': gov_notify_submission.meta['email_address'],
+        'personalisation': {
+            'title': gov_notify_submission.data['title'],
+        }
+    }
+
+
+@pytest.mark.django_db
+@mock.patch('submission.helpers.send_gov_notify')
+def test_gov_notify_action_serializer_send(
+    mock_send_gov_notify, gov_notify_submission
+):
+    serializer = serializers.GovNotifySerializer.from_submission(
+        gov_notify_submission, context={'request': authenticated_request}
+    )
+
+    assert serializer.is_valid()
+    serializer.send()
+
+    assert mock_send_gov_notify.call_count == 1
+    assert mock_send_gov_notify.call_args == mock.call(
+        template_id=gov_notify_submission.meta['template_id'],
+        email_address=gov_notify_submission.meta['email_address'],
+        personalisation=gov_notify_submission.data,
+    )

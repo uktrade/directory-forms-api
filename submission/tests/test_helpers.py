@@ -124,3 +124,23 @@ def test_create_zendesk_ticket(mock_zendesk_client, settings):
         zendesk_user=client.get_or_create_user(),
         service_name='some-service',
     )
+
+
+@mock.patch('submission.helpers.NotificationsAPIClient')
+def test_send_gov_notify(mock_notify_client, settings):
+    settings.GOV_NOTIFY_API_KEY = '123456'
+
+    helpers.send_gov_notify(
+        email_address='test@example.com',
+        template_id='123-456-789',
+        personalisation={'title': 'Mr'},
+    )
+    assert mock_notify_client.call_count == 1
+    assert mock_notify_client.call_args == mock.call('123456')
+
+    assert mock_notify_client().send_email_notification.call_count == 1
+    assert mock_notify_client().send_email_notification.call_args == mock.call(
+        email_address='test@example.com',
+        template_id='123-456-789',
+        personalisation={'title': 'Mr'},
+    )

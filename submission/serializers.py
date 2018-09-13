@@ -72,11 +72,27 @@ class EmailActionSerializer(serializers.Serializer):
         return tasks.send_email(**self.validated_data)
 
 
+class GovNotifySerializer(serializers.Serializer):
+
+    template_id = serializers.CharField()
+    email_address = serializers.EmailField()
+    personalisation = serializers.DictField()
+
+    @classmethod
+    def from_submission(cls, submission, context):
+        data = {**submission.meta, 'personalisation': submission.data}
+        return cls(data=data, context=context)
+
+    def send(self):
+        return tasks.send_gov_notify(**self.validated_data)
+
+
 class SubmissionModelSerializer(serializers.ModelSerializer):
 
     serializer_map = {
         constants.ACTION_NAME_EMAIL: EmailActionSerializer,
         constants.ACTION_NAME_ZENDESK: ZendeskActionSerializer,
+        constants.ACTION_NAME_GOV_NOTIFY: GovNotifySerializer,
     }
 
     class Meta:

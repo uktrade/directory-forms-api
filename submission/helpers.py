@@ -1,8 +1,9 @@
-from django.conf import settings
-from django.core.mail import EmailMultiAlternatives
-
+from notifications_python_client import NotificationsAPIClient
 from zenpy import Zenpy
 from zenpy.lib.api_objects import CustomField, Ticket, User as ZendeskUser
+
+from django.conf import settings
+from django.core.mail import EmailMultiAlternatives
 
 
 class ZendeskClient:
@@ -65,3 +66,14 @@ def send_email(subject, reply_to, recipients, text_body, html_body=None):
     if html_body:
         message.attach_alternative(html_body, "text/html")
     message.send()
+
+
+def send_gov_notify(template_id, email_address, personalisation):
+    client = NotificationsAPIClient(
+        settings.GOV_NOTIFY_API_KEY
+    )
+    client.send_email_notification(
+        email_address=email_address,
+        template_id=template_id,
+        personalisation=personalisation,
+    )

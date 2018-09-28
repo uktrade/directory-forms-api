@@ -13,6 +13,6 @@ class SignatureCheckMiddleware(
         self.request_checker = helpers.RequestSignatureChecker(self.secret)
 
     def should_check(self, request):
-        if request.resolver_match.namespace == 'admin':
+        if request.resolver_match.namespace in ['admin', 'healthcheck']:
             return False
         return super().should_check(request)

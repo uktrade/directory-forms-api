@@ -21,6 +21,14 @@ def test_signature_check_middleware_admin(admin_client, settings):
     assert response.status_code == 200
 
 
+def test_signature_check_middleware_healthcheck(admin_client, settings):
+    settings.MIDDLEWARE_CLASSES = SIGNATURE_CHECK_REQUIRED_MIDDLEWARE_CLASSES
+
+    response = admin_client.get(reverse('healthcheck:ping'))
+
+    assert response.status_code == 200
+
+
 @pytest.mark.urls('client.tests.urls')
 @pytest.mark.django_db
 @pytest.mark.parametrize(

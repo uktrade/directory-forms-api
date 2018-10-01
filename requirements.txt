@@ -14,7 +14,7 @@ cffi==1.11.5              # via cryptography
 chardet==3.0.4            # via requests
 contextlib2==0.5.5        # via raven
 cryptography==2.3
-directory-healthcheck==0.4.2
+directory-healthcheck==0.6.0
 dj-database-url==0.4.1
 django-admin-ip-restrictor==0.1.0
 django-appconf==1.0.2     # via django-cryptography

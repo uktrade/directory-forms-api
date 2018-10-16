@@ -186,7 +186,7 @@ def test_email_action_serializer_send(mock_send_email, email_submission):
 
 @pytest.mark.django_db
 def test_zendesk_action_serializer_from_submission(
-    zendesk_submission, authenticated_request
+    zendesk_submission, authenticated_request, settings
 ):
     serializer = serializers.ZendeskActionSerializer.from_submission(
         zendesk_submission,
@@ -197,14 +197,15 @@ def test_zendesk_action_serializer_from_submission(
         'subject': zendesk_submission.meta['subject'],
         'full_name': zendesk_submission.meta['full_name'],
         'email_address': zendesk_submission.meta['email_address'],
-        'payload': zendesk_submission.data
+        'payload': zendesk_submission.data,
+        'subdomain': settings.ZENDESK_SUBDOMAIN_DEFAULT,
     }
 
 
 @pytest.mark.django_db
 @mock.patch('submission.helpers.create_zendesk_ticket')
 def test_zendesk_action_serializer_send(
-    mock_send_email, zendesk_submission, authenticated_request
+    mock_send_email, zendesk_submission, authenticated_request, settings
 ):
     serializer = serializers.ZendeskActionSerializer.from_submission(
         zendesk_submission,
@@ -221,6 +222,7 @@ def test_zendesk_action_serializer_send(
         email_address=zendesk_submission.meta['email_address'],
         payload=zendesk_submission.data,
         service_name=authenticated_request.user.zendesk_service_name,
+        subdomain=settings.ZENDESK_SUBDOMAIN_DEFAULT,
     )
 
 

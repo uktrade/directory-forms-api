@@ -1,5 +1,7 @@
 from unittest import mock
 
+import pytest
+
 from submission import helpers
 
 
@@ -92,9 +94,14 @@ def test_zendesk_client_create_ticket(
 
 @mock.patch('submission.helpers.ZendeskClient')
 def test_create_zendesk_ticket(mock_zendesk_client, settings):
-    settings.ZENDESK_EMAIL = 'test@example.com'
-    settings.ZENDESK_TOKEN = 'token123'
-    settings.ZENDESK_SUBDOMAIN = 'subdomain123'
+    zendesk_email = 'test@example.com'
+    zendesk_token = 'token123'
+    settings.ZENDESK_CREDENTIALS = {
+        settings.ZENDESK_SUBDOMAIN_DEFAULT: {
+            'token': zendesk_token,
+            'email': zendesk_email,
+        }
+    }
 
     helpers.create_zendesk_ticket(
         subject='subject123',
@@ -102,13 +109,14 @@ def test_create_zendesk_ticket(mock_zendesk_client, settings):
         email_address='test@example.com',
         payload={'field': 'value'},
         service_name='some-service',
+        subdomain=settings.ZENDESK_SUBDOMAIN_DEFAULT,
     )
 
     assert mock_zendesk_client.call_count == 1
     assert mock_zendesk_client.call_args == mock.call(
-        email=settings.ZENDESK_EMAIL,
-        token=settings.ZENDESK_TOKEN,
-        subdomain=settings.ZENDESK_SUBDOMAIN
+        email=zendesk_email,
+        token=zendesk_token,
+        subdomain=settings.ZENDESK_SUBDOMAIN_DEFAULT,
     )
     client = mock_zendesk_client()
 
@@ -124,6 +132,51 @@ def test_create_zendesk_ticket(mock_zendesk_client, settings):
         zendesk_user=client.get_or_create_user(),
         service_name='some-service',
     )
+
+
+@mock.patch('submission.helpers.ZendeskClient')
+def test_create_zendesk_ticket_subdomain(mock_zendesk_client, settings):
+    zendesk_email = '123@example.com'
+    zendesk_token = '123token'
+    settings.ZENDESK_CREDENTIALS = {
+        '123': {
+            'token': zendesk_token,
+            'email': zendesk_email,
+        }
+    }
+
+    helpers.create_zendesk_ticket(
+        subject='subject123',
+        full_name='jim example',
+        email_address='test@example.com',
+        payload={'field': 'value'},
+        service_name='some-service',
+        subdomain='123',
+    )
+
+    assert mock_zendesk_client.call_count == 1
+    assert mock_zendesk_client.call_args == mock.call(
+        email=zendesk_email,
+        token=zendesk_token,
+        subdomain='123',
+    )
+
+
+@mock.patch('submission.helpers.ZendeskClient')
+def test_create_zendesk_ticket_unsupported_subdomain(
+    mock_zendesk_client, settings
+):
+    settings.ZENDESK_CREDENTIALS = {}
+
+    with pytest.raises(NotImplementedError):
+        helpers.create_zendesk_ticket(
+            subject='subject123',
+            full_name='jim example',
+            email_address='test@example.com',
+            payload={'field': 'value'},
+            service_name='some-service',
+            subdomain='1',
+        )
 
 
 @mock.patch('submission.helpers.NotificationsAPIClient')

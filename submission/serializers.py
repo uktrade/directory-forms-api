@@ -2,6 +2,8 @@ import logging
 
 from rest_framework import serializers
 
+from django.conf import settings
+
 from submission import constants, models, tasks
 
 
@@ -21,6 +23,10 @@ class ZendeskActionSerializer(serializers.Serializer):
     full_name = serializers.CharField()
     email_address = serializers.EmailField()
     payload = serializers.DictField()
+    subdomain = serializers.ChoiceField(
+        choices=list(settings.ZENDESK_CREDENTIALS.keys()),
+        default=settings.ZENDESK_SUBDOMAIN_DEFAULT,
+    )
 
     def __init__(self, context, *args, **kwargs):
         client = context['request'].user

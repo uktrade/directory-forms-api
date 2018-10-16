@@ -53,7 +53,10 @@ DOCKER_SET_DEBUG_ENV_VARS := \
 	export DIRECTORY_FORMS_API_ZENDESK_SUBDOMAIN=debug; \
 	export DIRECTORY_FORMS_API_ZENDESK_TOKEN=debug; \
 	export DIRECTORY_FORMS_API_ZENDESK_EMAIL=debug; \
-	export DIRECTORY_FORMS_API_GOV_NOTIFY_API_KEY=debug
+	export DIRECTORY_FORMS_API_GOV_NOTIFY_API_KEY=debug; \
+	export DIRECTORY_FORMS_API_ZENDESK_SUBDOMAIN_EUEXIT=debug; \
+	export DIRECTORY_FORMS_API_ZENDESK_TOKEN_EUEXIT=debug; \
+	export DIRECTORY_FORMS_API_ZENDESK_EMAIL_EUEXIT=debug
 
 
 docker_test_env_files:
@@ -111,11 +114,7 @@ DEBUG_SET_ENV_VARS := \
 	export SESSION_COOKIE_SECURE=false; \
 	export SESSION_COOKIE_DOMAIN=.trade.great; \
 	export DEFAULT_FROM_EMAIL=debug@example.com; \
-	export REDIS_URL=redis://127.0.0.1:6379; \
-	export ZENDESK_SUBDOMAIN=debug; \
-	export ZENDESK_TOKEN=debug; \
-	export ZENDESK_EMAIL=debug
-
+	export REDIS_URL=redis://127.0.0.1:6379
 
 
 debug_celery_worker:

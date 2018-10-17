@@ -38,13 +38,19 @@ class ZendeskClient:
 
 
 def create_zendesk_ticket(
-    subject, full_name, email_address, payload, service_name
+    subject, full_name, email_address, payload, service_name, subdomain
 ):
+    try:
+        credentials = settings.ZENDESK_CREDENTIALS[subdomain]
+    except KeyError:
+        raise NotImplementedError(f'subdomain {subdomain} not supported')
+
     client = ZendeskClient(
-        email=settings.ZENDESK_EMAIL,
-        token=settings.ZENDESK_TOKEN,
-        subdomain=settings.ZENDESK_SUBDOMAIN
+        email=credentials['email'],
+        token=credentials['token'],
+        subdomain=subdomain
     )
+
     zendesk_user = client.get_or_create_user(
         full_name=full_name, email_address=email_address
     )

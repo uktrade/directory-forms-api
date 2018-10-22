@@ -43,7 +43,8 @@ def test_zendesk_client_create_user(mock_user):
     client = helpers.ZendeskClient(
         email='test@example.com',
         token='token123',
-        subdomain='subdomain123'
+        subdomain='subdomain123',
+        custom_field_id=123,
     )
     with mock.patch.object(client.client.users, 'create_or_update') as stub:
         client.get_or_create_user(
@@ -64,7 +65,8 @@ def test_zendesk_client_create_ticket(
     client = helpers.ZendeskClient(
         email='test@example.com',
         token='token123',
-        subdomain='subdomain123'
+        subdomain='subdomain123',
+        custom_field_id=123,
     )
 
     user = mock.Mock()
@@ -84,7 +86,7 @@ def test_zendesk_client_create_ticket(
                 requester_id=user.id,
                 custom_fields=[
                     mock_custom_field(
-                        id=settings.ZENDESK_SERVICE_NAME_CUSTOM_FIELD_ID,
+                        id=123,
                         value='some-service',
                     )
                 ]
@@ -100,6 +102,7 @@ def test_create_zendesk_ticket(mock_zendesk_client, settings):
         settings.ZENDESK_SUBDOMAIN_DEFAULT: {
             'token': zendesk_token,
             'email': zendesk_email,
+            'custom_field_id': '1234',
         }
     }
 
@@ -117,6 +120,7 @@ def test_create_zendesk_ticket(mock_zendesk_client, settings):
         email=zendesk_email,
         token=zendesk_token,
         subdomain=settings.ZENDESK_SUBDOMAIN_DEFAULT,
+        custom_field_id='1234',
     )
     client = mock_zendesk_client()
 
@@ -142,6 +146,7 @@ def test_create_zendesk_ticket_subdomain(mock_zendesk_client, settings):
         '123': {
             'token': zendesk_token,
             'email': zendesk_email,
+            'custom_field_id': '1234',
         }
     }
 
@@ -159,6 +164,7 @@ def test_create_zendesk_ticket_subdomain(mock_zendesk_client, settings):
         email=zendesk_email,
         token=zendesk_token,
         subdomain='123',
+        custom_field_id='1234',
     )
 
 

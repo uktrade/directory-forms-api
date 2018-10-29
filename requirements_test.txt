@@ -43,13 +43,13 @@ mohawk==0.3.4             # via sigauth
 monotonic==1.5            # via notifications-python-client
 notifications-python-client==5.1.0
 psycopg2==2.6.1
-py==1.5.2                 # via pytest, pytest-catchlog
+py==1.5.2                 # via pytest, pytest-capturelog
 pycodestyle==2.0.0        # via flake8
 pycparser==2.18           # via cffi
 pyflakes==1.2.3           # via flake8
 pyjwt==1.6.4              # via notifications-python-client
 pyopenssl==17.5.0         # via requests
-pytest-catchlog==1.2.2
+pytest-capturelog==0.7
 pytest-cov==2.3.1
 pytest-django==3.1.0
 pytest-sugar==0.8.0

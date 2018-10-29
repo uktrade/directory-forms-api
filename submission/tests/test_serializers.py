@@ -267,7 +267,7 @@ def test_zendesk_action_serializer_reject_incompatible_user_data(
         assert serializer.errors['non_field_errors'] == (
             [serializer_class.MESSAGE_INCOMPLETE_CLIENT_CONFIGURATION]
         )
-        log = caplog.records[0]
+        log = caplog.records()[0]
         assert log.levelname == 'ERROR'
         assert log.msg == serializer.MESSAGE_INCOMPLETE_CLIENT_CONFIGURATION
         assert log.client == request.user.identifier

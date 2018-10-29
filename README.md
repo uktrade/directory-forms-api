@@ -4,7 +4,7 @@
 [![circle-ci-image]][circle-ci]
 [![codecov-image]][codecov]
 
-** Export Directory forms API service **
+**Export Directory forms API service**
 
 ---
 

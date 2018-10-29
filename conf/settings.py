@@ -269,18 +269,18 @@ SIGAUTH_URL_NAMES_WHITELIST = [
 ]
 
 # Zendesk
-ZENDESK_SERVICE_NAME_CUSTOM_FIELD_ID = '31281329'
-
 ZENDESK_SUBDOMAIN_DEFAULT = env.str('ZENDESK_SUBDOMAIN')
 ZENDESK_SUBDOMAIN_EUEXIT = env.str('ZENDESK_SUBDOMAIN_EUEXIT')
 ZENDESK_CREDENTIALS = {
     ZENDESK_SUBDOMAIN_DEFAULT: {
         'token': env.str('ZENDESK_TOKEN'),
         'email': env.str('ZENDESK_EMAIL'),
+        'custom_field_id': env.str('ZENDESK_CUSTOM_FIELD_ID')
     },
     ZENDESK_SUBDOMAIN_EUEXIT: {
         'token': env.str('ZENDESK_TOKEN_EUEXIT'),
         'email': env.str('ZENDESK_EMAIL_EUEXIT'),
+        'custom_field_id': env.str('ZENDESK_CUSTOM_FIELD_ID_EUEXIT')
     },
 }
 

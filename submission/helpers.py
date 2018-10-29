@@ -8,10 +8,11 @@ from django.core.mail import EmailMultiAlternatives
 
 class ZendeskClient:
 
-    def __init__(self, email, token, subdomain):
+    def __init__(self, email, token, subdomain, custom_field_id):
         self.client = Zenpy(
             timeout=5, email=email, token=token, subdomain=subdomain
         )
+        self.custom_field_id = custom_field_id
 
     def get_or_create_user(self, full_name, email_address):
         zendesk_user = ZendeskUser(name=full_name, email=email_address)
@@ -29,7 +30,7 @@ class ZendeskClient:
             requester_id=zendesk_user.id,
             custom_fields=[
                 CustomField(
-                    id=settings.ZENDESK_SERVICE_NAME_CUSTOM_FIELD_ID,
+                    id=self.custom_field_id,
                     value=service_name
                 )
             ]
@@ -48,7 +49,8 @@ def create_zendesk_ticket(
     client = ZendeskClient(
         email=credentials['email'],
         token=credentials['token'],
-        subdomain=subdomain
+        subdomain=subdomain,
+        custom_field_id=credentials['custom_field_id'],
     )
 
     zendesk_user = client.get_or_create_user(

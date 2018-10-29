@@ -76,12 +76,15 @@ def send_email(subject, reply_to, recipients, text_body, html_body=None):
     message.send()
 
 
-def send_gov_notify(template_id, email_address, personalisation):
+def send_gov_notify(
+    template_id, email_address, personalisation, email_reply_to_id
+):
     client = NotificationsAPIClient(
-        settings.GOV_NOTIFY_API_KEY
+        settings.GOV_NOTIFY_API_KEY,
     )
     client.send_email_notification(
         email_address=email_address,
         template_id=template_id,
         personalisation=personalisation,
+        email_reply_to_id=email_reply_to_id,
     )

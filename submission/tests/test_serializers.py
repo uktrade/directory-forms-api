@@ -291,6 +291,32 @@ def test_gov_notify_action_serializer_from_submission(
 
 
 @pytest.mark.django_db
+def test_gov_notify_action_serializer_from_submission_reply_email(
+    gov_notify_action_payload, authenticated_request
+):
+
+    data = {**gov_notify_action_payload}
+    data['meta']['email_reply_to_id'] = '123'
+    serializer = serializers.SubmissionModelSerializer(data=data)
+
+    assert serializer.is_valid()
+    gov_notify_submission = serializer.save()
+
+    serializer = serializers.GovNotifySerializer.from_submission(
+        gov_notify_submission, context={'request': authenticated_request}
+    )
+    assert serializer.is_valid()
+    assert serializer.validated_data == {
+        'template_id': gov_notify_submission.meta['template_id'],
+        'email_address': gov_notify_submission.meta['email_address'],
+        'personalisation': {
+            'title': gov_notify_submission.data['title'],
+        },
+        'email_reply_to_id': '123',
+    }
+
+
+@pytest.mark.django_db
 @mock.patch('submission.helpers.send_gov_notify')
 def test_gov_notify_action_serializer_send(
     mock_send_gov_notify, gov_notify_submission

@@ -193,6 +193,7 @@ def test_send_gov_notify(mock_notify_client, settings):
         email_address='test@example.com',
         template_id='123-456-789',
         personalisation={'title': 'Mr'},
+        email_reply_to_id='123',
     )
     assert mock_notify_client.call_count == 1
     assert mock_notify_client.call_args == mock.call('123456')
@@ -202,4 +203,5 @@ def test_send_gov_notify(mock_notify_client, settings):
         email_address='test@example.com',
         template_id='123-456-789',
         personalisation={'title': 'Mr'},
+        email_reply_to_id='123',
     )

@@ -83,6 +83,7 @@ class GovNotifySerializer(serializers.Serializer):
     template_id = serializers.CharField()
     email_address = serializers.EmailField()
     personalisation = serializers.DictField()
+    email_reply_to_id = serializers.CharField(required=False)
 
     @classmethod
     def from_submission(cls, submission, context):

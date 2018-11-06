@@ -1,3 +1,5 @@
+import requests
+
 from notifications_python_client import NotificationsAPIClient
 from zenpy import Zenpy
 from zenpy.lib.api_objects import CustomField, Ticket, User as ZendeskUser
@@ -87,4 +89,12 @@ def send_gov_notify(
         template_id=template_id,
         personalisation=personalisation,
         email_reply_to_id=email_reply_to_id,
+    )
+
+
+def send_pardot(pardot_url, payload):
+    return requests.post(
+        pardot_url,
+        payload,
+        allow_redirects=False,
     )

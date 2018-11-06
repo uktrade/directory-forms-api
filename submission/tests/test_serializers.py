@@ -54,6 +54,19 @@ def gov_notify_action_payload():
 
 
 @pytest.fixture
+def pardot_action_payload():
+    return {
+        'data': {
+            'title': 'hello',
+        },
+        'meta': {
+            'action_name': constants.ACTION_NAME_PARDOT,
+            'pardot_url': 'http://www.example.com/some/submission/path/',
+        }
+    }
+
+
+@pytest.fixture
 def email_submission(email_action_payload):
     serializer = serializers.SubmissionModelSerializer(
         data=email_action_payload
@@ -79,6 +92,15 @@ def gov_notify_submission(gov_notify_action_payload):
         data=gov_notify_action_payload
     )
 
+    assert serializer.is_valid()
+    return serializer.save()
+
+
+@pytest.fixture
+def pardot_submission(pardot_action_payload):
+    serializer = serializers.SubmissionModelSerializer(
+        data=pardot_action_payload
+    )
     assert serializer.is_valid()
     return serializer.save()
 
@@ -333,4 +355,23 @@ def test_gov_notify_action_serializer_send(
         template_id=gov_notify_submission.meta['template_id'],
         email_address=gov_notify_submission.meta['email_address'],
         personalisation=gov_notify_submission.data,
+    )
+
+
+@pytest.mark.django_db
+@mock.patch('submission.helpers.send_pardot')
+def test_pardot_action_serializer_send(
+    send_pardot, pardot_submission
+):
+    serializer = serializers.PardotSerializer.from_submission(
+        pardot_submission, context={'request': authenticated_request}
+    )
+
+    assert serializer.is_valid()
+    serializer.send()
+
+    assert send_pardot.call_count == 1
+    assert send_pardot.call_args == mock.call(
+        pardot_url=pardot_submission.meta['pardot_url'],
+        payload=pardot_submission.data,
     )

@@ -205,3 +205,18 @@ def test_send_gov_notify(mock_notify_client, settings):
         personalisation={'title': 'Mr'},
         email_reply_to_id='123',
     )
+
+
+@mock.patch('requests.post')
+def test_send_pardor(mock_post):
+    helpers.send_pardot(
+        pardot_url='http://www.example.com/some/submission/path/',
+        payload={'field': 'value'},
+    )
+
+    assert mock_post.call_count == 1
+    assert mock_post.call_args == mock.call(
+        'http://www.example.com/some/submission/path/',
+        {'field': 'value'},
+        allow_redirects=False,
+    )

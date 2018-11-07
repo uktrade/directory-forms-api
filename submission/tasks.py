@@ -16,3 +16,8 @@ def send_email(*args, **kwargs):
 @app.task
 def send_gov_notify(*args, **kwargs):
     helpers.send_gov_notify(*args, **kwargs)
+
+
+@app.task
+def send_pardot(*args, **kwargs):
+    helpers.send_pardot(*args, **kwargs)

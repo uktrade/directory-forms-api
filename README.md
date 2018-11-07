@@ -78,8 +78,8 @@ Requires locally running PostgreSQL (e.g. [Postgres.app](http://postgresapp.com/
 ## SSO
 To make sso work locally add the following to your machine's `/etc/hosts`:
 
-| IP Adress | URL                      |
-| --------  | ------------------------ |
+| IP Adress | URL                  |
+| --------  | -------------------- |
 | 127.0.0.1 | buyer.trade.great    |
 | 127.0.0.1 | supplier.trade.great |
 | 127.0.0.1 | sso.trade.great      |

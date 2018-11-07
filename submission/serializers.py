@@ -36,10 +36,7 @@ class ZendeskActionSerializer(serializers.Serializer):
 
     @classmethod
     def from_submission(cls, submission, context):
-        data = {
-            **submission.meta,
-            'payload': submission.data,
-        }
+        data = {**submission.meta, 'payload': submission.data}
         return cls(data=data, context=context)
 
     def validate(self, data):
@@ -94,12 +91,27 @@ class GovNotifySerializer(serializers.Serializer):
         return tasks.send_gov_notify(**self.validated_data)
 
 
+class PardotSerializer(serializers.Serializer):
+
+    pardot_url = serializers.URLField()
+    payload = serializers.DictField()
+
+    @classmethod
+    def from_submission(cls, submission, context):
+        data = {**submission.meta, 'payload': submission.data}
+        return cls(data=data, context=context)
+
+    def send(self):
+        return tasks.send_pardot(**self.validated_data)
+
+
 class SubmissionModelSerializer(serializers.ModelSerializer):
 
     serializer_map = {
         constants.ACTION_NAME_EMAIL: EmailActionSerializer,
         constants.ACTION_NAME_ZENDESK: ZendeskActionSerializer,
         constants.ACTION_NAME_GOV_NOTIFY: GovNotifySerializer,
+        constants.ACTION_NAME_PARDOT: PardotSerializer,
     }
 
     class Meta:

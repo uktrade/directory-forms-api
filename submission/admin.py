@@ -28,9 +28,9 @@ class ActionFilter(SimpleListFilter):
 @admin.register(models.Submission)
 class SubmissionAdmin(admin.ModelAdmin):
     search_fields = ('data', 'meta',)
-    readonly_fields = ('created',)
-    list_display = ('action_name', 'created')
-    list_filter = (ActionFilter, 'created')
+    readonly_fields = ('created', 'is_sent')
+    list_display = ('action_name', 'created', 'is_sent')
+    list_filter = (ActionFilter, 'created', 'is_sent')
     actions = ['download_csv']
 
     csv_excluded_fields = []

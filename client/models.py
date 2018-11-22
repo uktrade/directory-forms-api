@@ -6,7 +6,6 @@ from django_cryptography.fields import encrypt
 from django.db import models
 from django.utils.crypto import get_random_string
 
-from client import constants
 import core.helpers
 
 
@@ -25,13 +24,6 @@ class Client(core.helpers.TimeStampedModel):
         help_text='Human friendly name to help identify the record.',
         max_length=150,
         unique=True,
-    )
-    zendesk_service_name = models.CharField(
-        help_text='Optional service to assign zendesk tickets to.',
-        max_length=100,
-        choices=[(item, item) for item in constants.ZENDESK_SERVICE_NAMES],
-        null=True,
-        blank=True,
     )
     is_active = models.BooleanField(default=True)
 

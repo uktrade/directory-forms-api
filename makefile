@@ -49,7 +49,7 @@ DOCKER_SET_DEBUG_ENV_VARS := \
 	export DIRECTORY_FORMS_API_SESSION_COOKIE_SECURE=false; \
 	export DIRECTORY_FORMS_API_SESSION_COOKIE_DOMAIN=.trade.great; \
 	export DIRECTORY_FORMS_API_DEFAULT_FROM_EMAIL=debug@example.com; \
-	export DIRECTORY_FORMS_API_REDIS_URL=redis://redis:6379; \
+	export DIRECTORY_FORMS_API_REDIS_CELERY_URL=redis://redis:6379; \
 	export DIRECTORY_FORMS_API_ZENDESK_SUBDOMAIN=debug; \
 	export DIRECTORY_FORMS_API_ZENDESK_TOKEN=debug; \
 	export DIRECTORY_FORMS_API_ZENDESK_EMAIL=debug; \
@@ -116,11 +116,11 @@ DEBUG_SET_ENV_VARS := \
 	export SESSION_COOKIE_SECURE=false; \
 	export SESSION_COOKIE_DOMAIN=.trade.great; \
 	export DEFAULT_FROM_EMAIL=debug@example.com; \
-	export REDIS_URL=redis://127.0.0.1:6379
+	export REDIS_CELERY_URL=redis://127.0.0.1:6379
 
 
 debug_celery_worker:
-	$(DEBUG_SET_ENV_VARS); celery -A api worker -l info
+	$(DEBUG_SET_ENV_VARS); celery -A conf worker -l info
 
 debug_webserver:
 	 $(DEBUG_SET_ENV_VARS); $(DJANGO_WEBSERVER)

@@ -301,7 +301,7 @@ DEFAULT_FROM_EMAIL = env.str('DEFAULT_FROM_EMAIL')
 # Celery
 # separate to REDIS_CACHE_URL as needs to start with 'redis' and SSL conf
 # is in conf/celery.py
-CELERY_BROKER_URL = env.str('REDIS_URL', '')
+CELERY_BROKER_URL = env.str('REDIS_CELERY_URL', '')
 CELERY_RESULT_BACKEND = CELERY_BROKER_URL
 CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_TASK_SERIALIZER = 'json'

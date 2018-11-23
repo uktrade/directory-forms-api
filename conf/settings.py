@@ -46,6 +46,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE_CLASSES = [
     'django.middleware.security.SecurityMiddleware',
+    'admin_ip_restrictor.middleware.AdminIPRestrictorMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -312,3 +313,11 @@ FEATURE_REDIS_USE_SSL = env.bool('FEATURE_REDIS_USE_SSL', False)
 
 # Gov UK Notify
 GOV_NOTIFY_API_KEY = env.str('GOV_NOTIFY_API_KEY')
+
+# ip-restrictor
+RESTRICT_ADMIN = env.bool('IP_RESTRICTOR_RESTRICT_IPS', False)
+ALLOWED_ADMIN_IPS = env.list('IP_RESTRICTOR_ALLOWED_ADMIN_IPS', default=[])
+ALLOWED_ADMIN_IP_RANGES = env.list(
+    'IP_RESTRICTOR_ALLOWED_ADMIN_IP_RANGES', default=[]
+)
+RESTRICTED_APP_NAMES = ['admin', '']

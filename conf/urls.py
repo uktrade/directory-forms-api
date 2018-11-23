@@ -28,19 +28,27 @@ healthcheck_urls = [
     ),
 ]
 
+api_urls = [
+    url(
+        r'^submission/$',
+        submission.views.SubmissionCreateAPIView.as_view(),
+        name='submission'
+    ),
+]
 
 urlpatterns = [
     url(
         r'^api/healthcheck/',
-        include(healthcheck_urls, namespace='healthcheck')
+        include(
+            healthcheck_urls, namespace='healthcheck', app_name='healthcheck'
+        )
+    ),
+    url(
+        r'^api/',
+        include(api_urls, namespace='api', app_name='api')
     ),
     url(
         r'^admin/',
         include(admin.site.urls)
-    ),
-    url(
-        r'^api/submission/$',
-        submission.views.SubmissionCreateAPIView.as_view(),
-        name='submission'
     ),
 ]

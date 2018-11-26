@@ -1,8 +1,28 @@
 from rest_framework.generics import CreateAPIView
 
-from submission import serializers
+from submission import constants, serializers, tasks
 
 from client.authentication import ClientSenderIdAuthentication
+
+
+action_map = {
+    constants.ACTION_NAME_EMAIL: (
+        tasks.send_email,
+        serializers.EmailActionSerializer,
+    ),
+    constants.ACTION_NAME_ZENDESK: (
+        tasks.create_zendesk_ticket,
+        serializers.ZendeskActionSerializer,
+    ),
+    constants.ACTION_NAME_GOV_NOTIFY: (
+        tasks.send_gov_notify,
+        serializers.GovNotifySerializer,
+    ),
+    constants.ACTION_NAME_PARDOT: (
+        tasks.send_pardot,
+        serializers.PardotSerializer,
+    ),
+}
 
 
 class SubmissionCreateAPIView(CreateAPIView):
@@ -11,9 +31,8 @@ class SubmissionCreateAPIView(CreateAPIView):
 
     def perform_create(self, serializer):
         super().perform_create(serializer)
-        # `SubmissionModelSerializer` contains a generic JSON document.
-        # `action_serializer` unpacks the generic JSON document to
-        # a serializer specific to the action being performed
-        action_serializer = serializer.action_serializer
-        action_serializer.is_valid(raise_exception=True)
-        action_serializer.send()
+        instance = serializer.instance
+        task, kwargs_builder_class = action_map[instance.action_name]
+        kwargs_builder = kwargs_builder_class.from_submission(instance)
+        kwargs_builder.is_valid(raise_exception=True)
+        task.delay(**kwargs_builder.validated_data, submission_id=instance.pk)

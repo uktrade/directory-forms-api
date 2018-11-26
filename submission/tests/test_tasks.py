@@ -11,7 +11,7 @@ def test_task_send_email(mock_send_email):
         'recipients': ['to@example.com'],
         'text_body': 'Hello',
     }
-    tasks.send_email(**kwargs)
+    tasks.send_email(submission_id=1, **kwargs)
 
     assert mock_send_email.call_count == 1
     assert mock_send_email.call_args == mock.call(**kwargs)
@@ -26,7 +26,7 @@ def test_create_zendesk_ticket(mock_create_zendesk_ticket):
         'payload': {'field': 'value'},
         'service_name': 'some-service',
     }
-    tasks.create_zendesk_ticket(**kwargs)
+    tasks.create_zendesk_ticket(submission_id=1, **kwargs)
 
     assert mock_create_zendesk_ticket.call_count == 1
     assert mock_create_zendesk_ticket.call_args == mock.call(**kwargs)
@@ -40,7 +40,7 @@ def test_task_send_gov_notify(mock_send_gov_notify):
         'recipients': ['to@example.com'],
         'text_body': 'Hello',
     }
-    tasks.send_gov_notify(**kwargs)
+    tasks.send_gov_notify(submission_id=1, **kwargs)
 
     assert mock_send_gov_notify.call_count == 1
     assert mock_send_gov_notify.call_args == mock.call(**kwargs)
@@ -52,7 +52,7 @@ def test_task_send_pardot(mock_send_pardot):
         'pardot_url': 'http://www.example.com/some/submission/path/',
         'payload': {'field': 'value'},
     }
-    tasks.send_pardot(**kwargs)
+    tasks.send_pardot(submission_id=1, **kwargs)
 
     assert mock_send_pardot.call_count == 1
     assert mock_send_pardot.call_args == mock.call(**kwargs)

@@ -265,8 +265,8 @@ ALLOWED_ADMIN_IP_RANGES = env.list('ALLOWED_ADMIN_IP_RANGES', default=[])
 
 # directory-signature-auth
 SIGAUTH_URL_NAMES_WHITELIST = [
-    'health-check-database',
-    'health-check-ping',
+    'database',  # health check
+    'ping',  # health check
 ]
 
 # Zendesk
@@ -302,7 +302,7 @@ DEFAULT_FROM_EMAIL = env.str('DEFAULT_FROM_EMAIL')
 # Celery
 # separate to REDIS_CACHE_URL as needs to start with 'redis' and SSL conf
 # is in conf/celery.py
-CELERY_BROKER_URL = env.str('REDIS_URL', '')
+CELERY_BROKER_URL = env.str('REDIS_CELERY_URL', '')
 CELERY_RESULT_BACKEND = CELERY_BROKER_URL
 CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_TASK_SERIALIZER = 'json'
@@ -310,6 +310,7 @@ CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TIMEZONE = 'UTC'
 CELERY_BROKER_POOL_LIMIT = None
 FEATURE_REDIS_USE_SSL = env.bool('FEATURE_REDIS_USE_SSL', False)
+CELERY_ALWAYS_EAGER = env.bool('CELERY_ALWAYS_EAGER', False)
 
 # Gov UK Notify
 GOV_NOTIFY_API_KEY = env.str('GOV_NOTIFY_API_KEY')

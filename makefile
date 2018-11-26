@@ -116,7 +116,8 @@ DEBUG_SET_ENV_VARS := \
 	export SESSION_COOKIE_SECURE=false; \
 	export SESSION_COOKIE_DOMAIN=.trade.great; \
 	export DEFAULT_FROM_EMAIL=debug@example.com; \
-	export REDIS_CELERY_URL=redis://127.0.0.1:6379
+	export REDIS_CELERY_URL=redis://127.0.0.1:6379; \
+	export CELERY_ALWAYS_EAGER=true
 
 
 debug_celery_worker:

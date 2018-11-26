@@ -49,7 +49,7 @@ def test_generic_form_submission_submit(api_client):
 @mock.patch('submission.tasks.send_email.delay')
 def test_email_action(mock_delay, api_client, email_action_payload):
     response = api_client.post(
-        reverse('submission'),
+        reverse('api:submission'),
         data=email_action_payload,
         format='json'
     )
@@ -72,7 +72,7 @@ def test_zendesk_action(
     mock_delay, api_client, zendesk_action_payload, settings
 ):
     response = api_client.post(
-        reverse('submission'),
+        reverse('api:submission'),
         data=zendesk_action_payload,
         format='json'
     )
@@ -94,7 +94,7 @@ def test_zendesk_action(
 @mock.patch('submission.tasks.send_gov_notify.delay')
 def test_gov_notify_action(mock_delay, api_client, gov_notify_action_payload):
     response = api_client.post(
-        reverse('submission'),
+        reverse('api:submission'),
         data=gov_notify_action_payload,
         format='json'
     )
@@ -113,7 +113,7 @@ def test_gov_notify_action(mock_delay, api_client, gov_notify_action_payload):
 @mock.patch('submission.tasks.send_pardot.delay')
 def test_pardot_action(mock_delay, api_client, pardot_action_payload):
     response = api_client.post(
-        reverse('submission'),
+        reverse('api:submission'),
         data=pardot_action_payload,
         format='json'
     )

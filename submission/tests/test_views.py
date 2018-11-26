@@ -15,7 +15,8 @@ def api_client(settings):
 
 
 @pytest.mark.django_db
-def test_generic_form_submission_submit(api_client):
+@mock.patch('submission.tasks.send_email.delay')
+def test_generic_form_submission_submit(mock_delay, api_client):
     assert models.Submission.objects.count() == 0
 
     payload = {

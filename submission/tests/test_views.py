@@ -28,7 +28,7 @@ def test_generic_form_submission_submit(settings):
         }
     }
     response = client.post(
-        reverse('submission'),
+        reverse('api:submission'),
         data=payload,
         format='json'
     )

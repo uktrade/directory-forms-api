@@ -79,7 +79,6 @@ docker_debug: docker_remove_all
 	$(DOCKER_COMPOSE_CREATE_ENVS) && \
 	docker-compose pull && \
 	docker-compose build && \
-	docker-compose run -d --no-deps celery_beat_scheduler && \
 	docker-compose run -d --no-deps celery_worker && \
 	docker-compose run --service-ports webserver make django_webserver
 

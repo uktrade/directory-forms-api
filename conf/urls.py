@@ -5,6 +5,7 @@ from django.contrib import admin
 
 import healthcheck.views
 import submission.views
+import testapi.views
 
 
 admin.autodiscover()
@@ -36,6 +37,14 @@ api_urls = [
     ),
 ]
 
+testapi_urls = [
+    url(
+        r'^submission-by-email/(?P<email_address>.*)/$',
+        testapi.views.SubmissionTestAPIView.as_view(),
+        name='submission_by_email',
+    ),
+]
+
 urlpatterns = [
     url(
         r'^api/healthcheck/',
@@ -50,5 +59,9 @@ urlpatterns = [
     url(
         r'^admin/',
         include(admin.site.urls)
+    ),
+    url(
+        r'^testapi/',
+        include(testapi_urls, namespace='testapi', app_name='testapi')
     ),
 ]

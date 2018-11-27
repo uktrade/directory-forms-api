@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'directory_healthcheck',
     'health_check',
     'health_check.db',
+    'testapi.apps.TestApiConfig',
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -325,3 +326,5 @@ REMOTE_IP_ADDRESS_RETRIEVER = env.str(
     'IP_RESTRICTOR_REMOTE_IP_ADDRESS_RETRIEVER',
     IP_RETRIEVER_NAME_GOV_UK
 )
+
+FEATURE_TEST_API_ENABLED = env.bool('FEATURE_TEST_API_ENABLED', False)

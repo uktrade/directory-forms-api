@@ -1,5 +1,3 @@
-build: docker_test
-
 clean:
 	-find . -type f -name "*.pyc" -delete
 	-find . -type d -name "__pycache__" -delete
@@ -27,82 +25,6 @@ DJANGO_WEBSERVER := \
 django_webserver:
 	$(DJANGO_WEBSERVER)
 
-DOCKER_COMPOSE_REMOVE_AND_PULL := docker-compose -f docker-compose.yml -f docker-compose-test.yml rm -f && docker-compose -f docker-compose.yml -f docker-compose-test.yml pull
-DOCKER_COMPOSE_CREATE_ENVS := python docker/env_writer.py docker/env.json docker/env-postgres.json
-DOCKER_COMPOSE_CREATE_TEST_ENVS := python docker/env_writer.py docker/env.test.json docker/env-postgres.test.json
-
-docker_run:
-	$(DOCKER_COMPOSE_CREATE_ENVS) && \
-	$(DOCKER_COMPOSE_REMOVE_AND_PULL) && \
-	docker-compose up --build
-
-DOCKER_SET_DEBUG_ENV_VARS := \
-	export DIRECTORY_FORMS_API_PORT=8011; \
-	export directory_forms_api_debug=true; \
-	export DIRECTORY_FORMS_API_SECRET_KEY=debug; \
-	export DIRECTORY_FORMS_API_POSTGRES_USER=debug; \
-	export DIRECTORY_FORMS_API_POSTGRES_PASSWORD=debug; \
-	export DIRECTORY_FORMS_API_POSTGRES_DB=directory_forms_api_debug; \
-	export DIRECTORY_FORMS_API_DATABASE_URL=postgres://debug:debug@postgres:5432/directory_forms_api_debug; \
-	export DIRECTORY_FORMS_API_HEALTH_CHECK_TOKEN=debug; \
-	export DIRECTORY_FORMS_API_CSRF_COOKIE_SECURE=false; \
-	export DIRECTORY_FORMS_API_SESSION_COOKIE_SECURE=false; \
-	export DIRECTORY_FORMS_API_SESSION_COOKIE_DOMAIN=.trade.great; \
-	export DIRECTORY_FORMS_API_DEFAULT_FROM_EMAIL=debug@example.com; \
-	export DIRECTORY_FORMS_API_REDIS_CELERY_URL=redis://redis:6379; \
-	export DIRECTORY_FORMS_API_ZENDESK_SUBDOMAIN=debug; \
-	export DIRECTORY_FORMS_API_ZENDESK_TOKEN=debug; \
-	export DIRECTORY_FORMS_API_ZENDESK_EMAIL=debug; \
-	export DIRECTORY_FORMS_API_GOV_NOTIFY_API_KEY=debug; \
-	export DIRECTORY_FORMS_API_ZENDESK_SUBDOMAIN_EUEXIT=debug; \
-	export DIRECTORY_FORMS_API_ZENDESK_TOKEN_EUEXIT=debug; \
-	export DIRECTORY_FORMS_API_ZENDESK_EMAIL_EUEXIT=debug; \
-	export DIRECTORY_FORMS_API_ZENDESK_CUSTOM_FIELD_ID=debug; \
-	export DIRECTORY_FORMS_API_ZENDESK_CUSTOM_FIELD_ID_EUEXIT=debug
-
-
-docker_test_env_files:
-	$(DOCKER_SET_DEBUG_ENV_VARS) && \
-	$(DOCKER_COMPOSE_CREATE_TEST_ENVS)
-
-DOCKER_REMOVE_ALL := \
-	docker ps -a | \
-	grep -e directoryapi_ | \
-	awk '{print $$1 }' | \
-	xargs -I {} docker rm -f {}
-
-docker_remove_all:
-	$(DOCKER_REMOVE_ALL)
-
-docker_debug: docker_remove_all
-	$(DOCKER_SET_DEBUG_ENV_VARS) && \
-	$(DOCKER_COMPOSE_CREATE_ENVS) && \
-	docker-compose pull && \
-	docker-compose build && \
-	docker-compose run -d --no-deps celery_beat_scheduler && \
-	docker-compose run -d --no-deps celery_worker && \
-	docker-compose run --service-ports webserver make django_webserver
-
-debug_test_last_failed:
-	make debug_test pytest_args='--last-failed'
-
-docker_webserver_bash:
-	docker exec -it directoryapi_webserver_1 sh
-
-docker_psql:
-	docker-compose run postgres psql -h postgres -U debug
-
-docker_test: docker_remove_all
-	$(DOCKER_SET_DEBUG_ENV_VARS) && \
-	$(DOCKER_COMPOSE_CREATE_ENVS) && \
-	$(DOCKER_COMPOSE_CREATE_TEST_ENVS) && \
-	$(DOCKER_COMPOSE_REMOVE_AND_PULL) && \
-	docker-compose -f docker-compose-test.yml build && \
-	docker-compose -f docker-compose-test.yml run sut
-
-docker_build:
-	docker build -t ukti/directory-forms-api:latest .
-
 DEBUG_SET_ENV_VARS := \
 	export SECRET_KEY=debug; \
 	export PORT=8011; \
@@ -120,6 +42,21 @@ DEBUG_SET_ENV_VARS := \
 	export CELERY_ALWAYS_EAGER=true
 
 
+TEST_SET_ENV_VARS := \
+	export ZENDESK_EMAIL=debug@example.com; \
+	export ZENDESK_SUBDOMAIN=example; \
+	export ZENDESK_TOKEN=some-token; \
+	export ZENDESK_CUSTOM_FIELD_ID=123455; \
+	export GOV_NOTIFY_API_KEY=7891011; \
+	export ZENDESK_SUBDOMAIN_EUEXIT=example-euexit; \
+	export ZENDESK_TOKEN_EUEXIT=some-token-euexit; \
+	export ZENDESK_EMAIL_EUEXIT=debug@example.com; \
+	export ZENDESK_CUSTOM_FIELD_ID_EUEXIT=94393; \
+	export EMAIL_HOST=debug; \
+	export EMAIL_HOST_PASSWORD=debug; \
+	export EMAIL_HOST_USER=debug@example.com; \
+	export EMAIL_USE_TLS=true
+
 debug_celery_worker:
 	$(DEBUG_SET_ENV_VARS); celery -A conf worker -l info
 
@@ -136,10 +73,10 @@ debug_db:
 	$(DEBUG_SET_ENV_VARS) && $(DEBUG_CREATE_DB)
 
 debug_pytest:
-	$(DEBUG_SET_ENV_VARS) && $(DJANGO_MIGRATE) && $(COLLECT_STATIC) && $(PYTEST)
+	$(DEBUG_SET_ENV_VARS) && $(TEST_SET_ENV_VARS) && $(DJANGO_MIGRATE) && $(COLLECT_STATIC) && $(PYTEST)
 
 debug_test:
-	$(DEBUG_SET_ENV_VARS) && $(DJANGO_MIGRATE) && $(COLLECT_STATIC) && $(FLAKE8) && $(PYTEST)
+	$(DEBUG_SET_ENV_VARS) && $(TEST_SET_ENV_VARS) && $(DJANGO_MIGRATE) && $(COLLECT_STATIC) && $(FLAKE8) && $(PYTEST)
 
 debug_manage:
 	$(DEBUG_SET_ENV_VARS) && ./manage.py $(cmd)
@@ -152,13 +89,6 @@ migrations:
 
 debug: test_requirements debug_db debug_test
 
-
-heroku_deploy_dev:
-	./docker/install_heroku_cli.sh
-	docker login --username=$$HEROKU_EMAIL --password=$$HEROKU_TOKEN registry.heroku.com
-	~/bin/heroku-cli/bin/heroku container:push --recursive --app directory-forms-api-dev
-	~/bin/heroku-cli/bin/heroku container:release web celery_worker --app directory-forms-api-dev
-
 compile_requirements:
 	pip-compile requirements.in
 	pip-compile requirements_test.in
@@ -167,4 +97,4 @@ upgrade_requirements:
 	pip-compile --upgrade requirements.in
 	pip-compile --upgrade requirements_test.in
 
-.PHONY: build docker_run_test clean test_requirements docker_run docker_debug docker_webserver_bash docker_psql docker_test debug_webserver debug_db debug_test debug heroku_deploy_dev smoke_tests compile_all_requirements
+.PHONY: build clean test_requirements debug_webserver debug_db debug_test debug heroku_deploy_dev smoke_tests compile_all_requirements

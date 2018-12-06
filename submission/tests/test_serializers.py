@@ -43,14 +43,46 @@ def pardot_submission(pardot_action_payload):
 
 
 def test_form_submission_serializer():
-    data = {
+    input_data = {
         'data': {'title': 'hello'},
-        'meta': {'action_name': 'email', 'recipients': ['foo@bar.com']}
+        'meta': {
+            'action_name': 'email',
+            'recipients': ['foo@bar.com'],
+            'form_url': '/the/form/',
+        }
     }
-    serializer = serializers.SubmissionModelSerializer(data=data)
+    serializer = serializers.SubmissionModelSerializer(data=input_data)
 
     assert serializer.is_valid()
-    assert serializer.validated_data == data
+    assert serializer.validated_data == {
+        'data': {'title': 'hello'},
+        'meta': {
+            'action_name': 'email',
+            'recipients': ['foo@bar.com']
+        },
+        'form_url': '/the/form/',
+    }
+
+
+def test_form_submission_serializer_no_form_url():
+    input_data = {
+        'data': {'title': 'hello'},
+        'meta': {
+            'action_name': 'email',
+            'recipients': ['foo@bar.com']
+        }
+    }
+    serializer = serializers.SubmissionModelSerializer(data=input_data)
+
+    assert serializer.is_valid()
+    assert serializer.validated_data == {
+        'data': {'title': 'hello'},
+        'meta': {
+            'action_name': 'email',
+            'recipients': ['foo@bar.com']
+        },
+        'form_url': '',
+    }
 
 
 @pytest.mark.django_db

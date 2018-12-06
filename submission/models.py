@@ -5,9 +5,14 @@ import core.helpers
 
 
 class Submission(core.helpers.TimeStampedModel):
+
+    class Meta:
+        ordering = ['-created']
+
     data = JSONField()
     meta = JSONField()
     is_sent = models.BooleanField(default=False)
+    form_url = models.TextField(blank=True, null=True)
 
     @property
     def action_name(self):

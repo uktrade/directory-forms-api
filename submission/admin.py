@@ -15,7 +15,9 @@ class ActionFilter(SimpleListFilter):
     def lookups(self, request, model_admin):
         return (
             (constants.ACTION_NAME_ZENDESK, 'Create Zendesk ticket'),
-            (constants.ACTION_NAME_EMAIL, 'Send Email'),
+            (constants.ACTION_NAME_PARDOT, 'Submit to Pardot'),
+            (constants.ACTION_NAME_EMAIL, 'Send via Email'),
+            (constants.ACTION_NAME_GOV_NOTIFY, 'Send via Gov Notify'),
         )
 
     def queryset(self, request, queryset):
@@ -28,9 +30,9 @@ class ActionFilter(SimpleListFilter):
 @admin.register(models.Submission)
 class SubmissionAdmin(admin.ModelAdmin):
     search_fields = ('data', 'meta',)
-    readonly_fields = ('created', 'is_sent')
-    list_display = ('action_name', 'created', 'is_sent')
-    list_filter = (ActionFilter, 'created', 'is_sent')
+    readonly_fields = ('created', 'is_sent', 'form_url')
+    list_display = ('action_name', 'form_url', 'created', 'is_sent')
+    list_filter = (ActionFilter, 'form_url', 'created', 'is_sent')
     actions = ['download_csv']
 
     csv_excluded_fields = []

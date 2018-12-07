@@ -50,7 +50,7 @@ monotonic==1.5            # via notifications-python-client
 more-itertools==4.3.0     # via pytest
 notifications-python-client==5.1.0
 pluggy==0.8.0             # via pytest
-psycopg2==2.7.0
+psycopg2==2.7.6.1
 py==1.5.2                 # via pytest, pytest-capturelog
 pycodestyle==2.4.0        # via flake8
 pycparser==2.18           # via cffi

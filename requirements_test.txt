@@ -6,6 +6,8 @@
 #
 amqp==2.3.2               # via kombu
 asn1crypto==0.24.0        # via cryptography
+atomicwrites==1.2.1       # via pytest
+attrs==18.2.0             # via pytest
 beautifulsoup4==4.6.3     # via directory-components
 billiard==3.5.0.4         # via celery
 cachetools==2.1.0         # via zenpy
@@ -17,7 +19,8 @@ codecov==2.0.9
 contextlib2==0.5.5        # via raven
 coverage==4.5.1           # via codecov, pytest-cov
 cryptography==2.3
-directory-components==2.33.0
+directory-components==3.5.0
+directory-constants==11.1.0  # via directory-components
 directory-healthcheck==0.6.0
 dj-database-url==0.4.1
 django-admin-ip-restrictor==1.0.0  # via directory-components
@@ -35,21 +38,23 @@ docopt==0.6.2             # via notifications-python-client
 export-elements==0.23.0   # via directory-components
 factory-boy==2.8.1
 faker==0.8.11             # via factory-boy
-flake8==3.0.4
+flake8==3.6.0
 freezegun==0.3.8
 future==0.16.0            # via notifications-python-client
 gunicorn==19.5.0
 idna==2.6                 # via cryptography, requests
 kombu==4.2.1              # via celery
-mccabe==0.5.3             # via flake8
-mohawk==0.3.4             # via sigauth
+mccabe==0.6.1             # via flake8
+mohawk==0.3.4             # via directory-components, sigauth
 monotonic==1.5            # via notifications-python-client
+more-itertools==4.3.0     # via pytest
 notifications-python-client==5.1.0
+pluggy==0.8.0             # via pytest
 psycopg2==2.6.1
 py==1.5.2                 # via pytest, pytest-capturelog
-pycodestyle==2.0.0        # via flake8
+pycodestyle==2.4.0        # via flake8
 pycparser==2.18           # via cffi
-pyflakes==1.2.3           # via flake8
+pyflakes==2.0.0           # via flake8
 pyjwt==1.6.4              # via notifications-python-client
 pyopenssl==17.5.0         # via requests
 pytest-capturelog==0.7
@@ -61,10 +66,10 @@ python-dateutil==2.6.1    # via faker, freezegun, zenpy
 pytz==2017.2              # via celery, directory-healthcheck, django
 raven==5.19.0
 redis==2.10.6             # via celery
-requests[security]==2.18.4
+requests[security]==2.20.0
 requests_mock==1.1.0
 sigauth==4.0.1
-six==1.11.0               # via cryptography, django-extensions, faker, freezegun, mohawk, pyopenssl, python-dateutil, requests-mock
+six==1.11.0               # via cryptography, django-extensions, faker, freezegun, mohawk, more-itertools, pyopenssl, pytest, python-dateutil, requests-mock
 termcolor==1.1.0          # via pytest-sugar
 text-unidecode==1.2       # via faker
 urllib3==1.22             # via requests

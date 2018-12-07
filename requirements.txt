@@ -39,7 +39,7 @@ kombu==4.2.1              # via celery
 mohawk==0.3.4             # via directory-components, sigauth
 monotonic==1.5            # via notifications-python-client
 notifications-python-client==5.1.0
-psycopg2==2.6.1
+psycopg2==2.7.0
 pycparser==2.18           # via cffi
 pyjwt==1.6.4              # via notifications-python-client
 pyopenssl==17.5.0         # via requests

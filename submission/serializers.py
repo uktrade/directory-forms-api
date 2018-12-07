@@ -70,4 +70,9 @@ class SubmissionModelSerializer(serializers.ModelSerializer):
         fields = (
             'data',
             'meta',
+            'form_url',
         )
+
+    def to_internal_value(self, data):
+        data['form_url'] = data['meta'].pop('form_url', '')
+        return data

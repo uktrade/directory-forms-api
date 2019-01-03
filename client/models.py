@@ -28,4 +28,4 @@ class Client(core.helpers.TimeStampedModel):
     is_active = models.BooleanField(default=True)
 
     def __str__(self):
-        return str(self.identifier)
+        return str(self.name)

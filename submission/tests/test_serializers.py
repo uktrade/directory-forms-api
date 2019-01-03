@@ -1,12 +1,22 @@
 import pytest
 
+from client.tests.factories import ClientFactory
 from submission import serializers
 
 
 @pytest.fixture
-def email_submission(email_action_payload):
+def user():
+    return ClientFactory()
+
+
+@pytest.fixture
+def email_submission(email_action_payload, rf, user):
+    request = rf.get('/')
+    request.user = user
+
     serializer = serializers.SubmissionModelSerializer(
-        data=email_action_payload
+        data=email_action_payload,
+        context={'request': request}
     )
 
     assert serializer.is_valid()
@@ -14,9 +24,13 @@ def email_submission(email_action_payload):
 
 
 @pytest.fixture
-def zendesk_submission(zendesk_action_payload):
+def zendesk_submission(zendesk_action_payload, rf, user):
+    request = rf.get('/')
+    request.user = user
     serializer = serializers.SubmissionModelSerializer(
-        data=zendesk_action_payload
+        data=zendesk_action_payload,
+        context={'request': request}
+
     )
 
     assert serializer.is_valid()
@@ -24,9 +38,13 @@ def zendesk_submission(zendesk_action_payload):
 
 
 @pytest.fixture
-def gov_notify_submission(gov_notify_action_payload):
+def gov_notify_submission(gov_notify_action_payload, rf, user):
+    request = rf.get('/')
+    request.user = user
+
     serializer = serializers.SubmissionModelSerializer(
-        data=gov_notify_action_payload
+        data=gov_notify_action_payload,
+        context={'request': request}
     )
 
     assert serializer.is_valid()
@@ -34,15 +52,23 @@ def gov_notify_submission(gov_notify_action_payload):
 
 
 @pytest.fixture
-def pardot_submission(pardot_action_payload):
+def pardot_submission(pardot_action_payload, rf, user):
+    request = rf.get('/')
+    request.user = user
+
     serializer = serializers.SubmissionModelSerializer(
-        data=pardot_action_payload
+        data=pardot_action_payload,
+        context={'request': request}
     )
     assert serializer.is_valid()
     return serializer.save()
 
 
-def test_form_submission_serializer():
+@pytest.mark.django_db
+def test_form_submission_serializer(user, rf):
+    request = rf.get('/')
+    request.user = user
+
     input_data = {
         'data': {'title': 'hello'},
         'meta': {
@@ -51,7 +77,10 @@ def test_form_submission_serializer():
             'form_url': '/the/form/',
         }
     }
-    serializer = serializers.SubmissionModelSerializer(data=input_data)
+    serializer = serializers.SubmissionModelSerializer(
+        data=input_data,
+        context={'request': request}
+    )
 
     assert serializer.is_valid()
     assert serializer.validated_data == {
@@ -61,10 +90,15 @@ def test_form_submission_serializer():
             'recipients': ['foo@bar.com']
         },
         'form_url': '/the/form/',
+        'client': user,
     }
 
 
-def test_form_submission_serializer_no_form_url():
+@pytest.mark.django_db
+def test_form_submission_serializer_no_form_url(rf, user):
+    request = rf.get('/')
+    request.user = user
+
     input_data = {
         'data': {'title': 'hello'},
         'meta': {
@@ -72,7 +106,9 @@ def test_form_submission_serializer_no_form_url():
             'recipients': ['foo@bar.com']
         }
     }
-    serializer = serializers.SubmissionModelSerializer(data=input_data)
+    serializer = serializers.SubmissionModelSerializer(
+        data=input_data, context={'request': request}
+    )
 
     assert serializer.is_valid()
     assert serializer.validated_data == {
@@ -82,6 +118,7 @@ def test_form_submission_serializer_no_form_url():
             'recipients': ['foo@bar.com']
         },
         'form_url': '',
+        'client': user,
     }
 
 
@@ -119,9 +156,15 @@ def test_zendesk_action_serializer_from_submission(
 
 
 @pytest.mark.django_db
-def test_gov_notify_action_serializer_from_submission(gov_notify_submission):
+def test_gov_notify_action_serializer_from_submission(
+    gov_notify_submission, rf, user
+):
+    request = rf.get('/')
+    request.user = user
+
     serializer = serializers.GovNotifySerializer.from_submission(
-        gov_notify_submission
+        gov_notify_submission,
+        context={'request': request}
     )
     assert serializer.is_valid()
     assert serializer.validated_data == {
@@ -135,12 +178,16 @@ def test_gov_notify_action_serializer_from_submission(gov_notify_submission):
 
 @pytest.mark.django_db
 def test_gov_notify_action_serializer_from_submission_reply_email(
-    gov_notify_action_payload
+    gov_notify_action_payload, rf, user
 ):
+    request = rf.get('/')
+    request.user = user
 
     data = {**gov_notify_action_payload}
     data['meta']['email_reply_to_id'] = '123'
-    serializer = serializers.SubmissionModelSerializer(data=data)
+    serializer = serializers.SubmissionModelSerializer(
+        data=data, context={'request': request}
+    )
 
     assert serializer.is_valid()
     gov_notify_submission = serializer.save()

@@ -13,6 +13,12 @@ class Submission(core.helpers.TimeStampedModel):
     meta = JSONField()
     is_sent = models.BooleanField(default=False)
     form_url = models.TextField(blank=True, null=True)
+    client = models.ForeignKey(
+        'client.Client',
+        related_name='submissions',
+        blank=True,
+        null=True,
+    )
 
     @property
     def action_name(self):

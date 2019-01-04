@@ -30,9 +30,11 @@ class ActionFilter(SimpleListFilter):
 @admin.register(models.Submission)
 class SubmissionAdmin(admin.ModelAdmin):
     search_fields = ('data', 'meta',)
-    readonly_fields = ('created', 'is_sent', 'form_url')
-    list_display = ('action_name', 'form_url', 'created', 'is_sent')
-    list_filter = (ActionFilter, 'form_url', 'created', 'is_sent')
+    readonly_fields = ('client', 'created', 'is_sent', 'form_url')
+    list_display = (
+        'get_pretty_client', 'form_url', 'action_name', 'created', 'is_sent'
+    )
+    list_filter = ('client', ActionFilter, 'form_url', 'created', 'is_sent')
     actions = ['download_csv']
 
     csv_excluded_fields = []
@@ -63,8 +65,12 @@ class SubmissionAdmin(admin.ModelAdmin):
     def get_pretty_meta(self, obj):
         return pprint.pformat(obj.meta)
 
+    def get_pretty_client(self, obj):
+        return obj.client
+
     download_csv.short_description = (
         "Download CSV report for selected form submissions"
     )
     get_pretty_data.short_description = 'Data'
     get_pretty_meta.short_description = 'Meta'
+    get_pretty_client.short_description = 'Service'

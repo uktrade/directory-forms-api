@@ -22,9 +22,9 @@ class ZendeskActionSerializer(serializers.Serializer):
     )
 
     @classmethod
-    def from_submission(cls, submission):
+    def from_submission(cls, submission, *args, **kwargs):
         data = {**submission.meta, 'payload': submission.data}
-        return cls(data=data)
+        return cls(data=data, *args, **kwargs)
 
 
 class EmailActionSerializer(serializers.Serializer):
@@ -35,9 +35,9 @@ class EmailActionSerializer(serializers.Serializer):
     text_body = serializers.CharField(required=False)
 
     @classmethod
-    def from_submission(cls, submission):
+    def from_submission(cls, submission, *args, **kwargs):
         data = {**submission.meta, **submission.data}
-        return cls(data=data)
+        return cls(data=data, *args, **kwargs)
 
 
 class GovNotifySerializer(serializers.Serializer):
@@ -47,9 +47,9 @@ class GovNotifySerializer(serializers.Serializer):
     email_reply_to_id = serializers.CharField(required=False)
 
     @classmethod
-    def from_submission(cls, submission):
+    def from_submission(cls, submission, *args, **kwargs):
         data = {**submission.meta, 'personalisation': submission.data}
-        return cls(data=data)
+        return cls(data=data, *args, **kwargs)
 
 
 class PardotSerializer(serializers.Serializer):
@@ -58,9 +58,9 @@ class PardotSerializer(serializers.Serializer):
     payload = serializers.DictField()
 
     @classmethod
-    def from_submission(cls, submission):
+    def from_submission(cls, submission, *args, **kwargs):
         data = {**submission.meta, 'payload': submission.data}
-        return cls(data=data)
+        return cls(data=data, *args, **kwargs)
 
 
 class SubmissionModelSerializer(serializers.ModelSerializer):
@@ -75,4 +75,5 @@ class SubmissionModelSerializer(serializers.ModelSerializer):
 
     def to_internal_value(self, data):
         data['form_url'] = data['meta'].pop('form_url', '')
+        data['client'] = self.context['request'].user
         return data

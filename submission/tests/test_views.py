@@ -5,13 +5,21 @@ from rest_framework.test import APIClient
 
 from django.urls import reverse
 
+from client.tests.factories import ClientFactory
 from submission import models
 
 
 @pytest.fixture
-def api_client(settings):
+def user():
+    return ClientFactory()
+
+
+@pytest.fixture
+def api_client(settings, user):
     settings.SIGAUTH_URL_NAMES_WHITELIST = ['submission']
-    return APIClient()
+    client = APIClient()
+    client.force_authenticate(user=user)
+    return client
 
 
 @pytest.mark.django_db

@@ -4,7 +4,7 @@ import dj_database_url
 
 import environ
 
-from core.constants import IP_RETRIEVER_NAME_GOV_UK
+from directory_components.constants import IP_RETRIEVER_NAME_GOV_UK
 
 env = environ.Env()
 env.read_env()
@@ -52,7 +52,6 @@ MIDDLEWARE_CLASSES = [
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'core.middleware.AdminIPRestrictorMiddleware',
     'client.middleware.SignatureCheckMiddleware',
 ]
 

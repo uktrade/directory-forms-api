@@ -32,7 +32,12 @@ class SubmissionAdmin(admin.ModelAdmin):
     search_fields = ('data', 'meta',)
     readonly_fields = ('client', 'created', 'is_sent', 'form_url')
     list_display = (
-        'get_pretty_client', 'form_url', 'action_name', 'created', 'is_sent'
+        'get_pretty_client',
+        'form_url',
+        'get_pretty_funnel',
+        'action_name',
+        'created',
+        'is_sent',
     )
     list_filter = ('client', ActionFilter, 'form_url', 'created', 'is_sent')
     actions = ['download_csv']
@@ -68,9 +73,13 @@ class SubmissionAdmin(admin.ModelAdmin):
     def get_pretty_client(self, obj):
         return obj.client
 
+    def get_pretty_funnel(self, obj):
+        return ' > '.join(obj.funnel)
+
     download_csv.short_description = (
         "Download CSV report for selected form submissions"
     )
     get_pretty_data.short_description = 'Data'
     get_pretty_meta.short_description = 'Meta'
     get_pretty_client.short_description = 'Service'
+    get_pretty_funnel.short_description = 'Funnel'

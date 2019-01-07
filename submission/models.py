@@ -23,3 +23,7 @@ class Submission(core.helpers.TimeStampedModel):
     @property
     def action_name(self):
         return self.meta.get('action_name', 'unknown action')
+
+    @property
+    def funnel(self):
+        return self.meta.get('funnel_steps', [])

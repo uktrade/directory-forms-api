@@ -5,6 +5,8 @@ import dj_database_url
 import environ
 
 from directory_components.constants import IP_RETRIEVER_NAME_GOV_UK
+import directory_healthcheck.backends
+import health_check.backends
 
 env = environ.Env()
 env.read_env()
@@ -40,8 +42,6 @@ INSTALLED_APPS = [
     'submission.apps.SubmissionConfig',
     'client.apps.ClientConfig',
     'directory_healthcheck',
-    'health_check',
-    'health_check.db',
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -255,7 +255,12 @@ REMOTE_IP_ADDRESS_RETRIEVER = env.str(
 )
 
 # health check
-HEALTH_CHECK_TOKEN = env.str('HEALTH_CHECK_TOKEN')
+DIRECTORY_HEALTHCHECK_TOKEN = env.str('HEALTH_CHECK_TOKEN')
+DIRECTORY_HEALTHCHECK_BACKENDS = [
+    health_check.db.backends.DatabaseBackend,
+    health_check.cache.backends.CacheBackend,
+    directory_healthcheck.backends.SentryBackend,
+]
 
 # Admin restrictor
 RESTRICT_ADMIN = env.bool('RESTRICT_ADMIN', False)

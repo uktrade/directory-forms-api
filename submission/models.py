@@ -19,6 +19,12 @@ class Submission(core.helpers.TimeStampedModel):
         blank=True,
         null=True,
     )
+    sender = models.ForeignKey(
+        'submission.Sender',
+        related_name='submissions',
+        blank=True,
+        null=True,
+    )
 
     @property
     def action_name(self):
@@ -27,3 +33,10 @@ class Submission(core.helpers.TimeStampedModel):
     @property
     def funnel(self):
         return self.meta.get('funnel_steps', [])
+
+
+class Sender(core.helpers.TimeStampedModel):
+
+    email_address = models.EmailField()
+    is_blacklisted = models.BooleanField()
+    is_whitelisted = models.BooleanField()

@@ -6,7 +6,8 @@ import environ
 
 from directory_components.constants import IP_RETRIEVER_NAME_GOV_UK
 import directory_healthcheck.backends
-import health_check.backends
+import health_check.cache.backends
+
 
 env = environ.Env()
 env.read_env()
@@ -37,11 +38,12 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.postgres',
     'rest_framework',
+    'health_check.db',
+    'directory_healthcheck',
     'raven.contrib.django.raven_compat',
     'core.apps.CoreConfig',
     'submission.apps.SubmissionConfig',
     'client.apps.ClientConfig',
-    'directory_healthcheck',
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -257,9 +259,10 @@ REMOTE_IP_ADDRESS_RETRIEVER = env.str(
 # health check
 DIRECTORY_HEALTHCHECK_TOKEN = env.str('HEALTH_CHECK_TOKEN')
 DIRECTORY_HEALTHCHECK_BACKENDS = [
-    health_check.db.backends.DatabaseBackend,
     health_check.cache.backends.CacheBackend,
     directory_healthcheck.backends.SentryBackend,
+    # health_check.db.backends.DatabaseBackend is also registered in
+    # INSTALLED_APPS's `health_check.db`
 ]
 
 # Admin restrictor

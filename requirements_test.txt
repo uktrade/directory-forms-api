@@ -28,7 +28,7 @@ django-appconf==1.0.2     # via django-cryptography
 django-cryptography==0.3.0
 django-environ==0.4.5
 django-filter==1.0.4
-django-health-check==3.0.0  # via directory-healthcheck
+django-health-check==3.8.0  # via directory-healthcheck
 django-ipware==2.0.1      # via django-admin-ip-restrictor
 django-pglocks==1.0.2
 django==1.11.15
@@ -63,7 +63,7 @@ pytest-django==3.1.0
 pytest-sugar==0.8.0
 pytest==3.8.0
 python-dateutil==2.6.1    # via faker, freezegun, zenpy
-pytz==2017.2              # via celery, directory-healthcheck, django
+pytz==2017.2              # via celery, django
 raven==5.19.0
 redis==2.10.6             # via celery
 requests[security]==2.20.0

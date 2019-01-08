@@ -3,6 +3,8 @@ from django.db import models
 
 import core.helpers
 
+# Create sender model
+#Sender.is_blacklisted checked before send
 
 class Submission(core.helpers.TimeStampedModel):
 
@@ -27,3 +29,9 @@ class Submission(core.helpers.TimeStampedModel):
     @property
     def funnel(self):
         return self.meta.get('funnel_steps', [])
+
+class Sender(core.helpers.TimeStampedModel):
+    
+    email_address = models.EmailField()
+    is_blacklisted = models.BooleanField()
+    is_whitelisted = models.BooleanField()

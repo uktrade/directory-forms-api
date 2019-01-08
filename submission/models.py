@@ -3,8 +3,6 @@ from django.db import models
 
 import core.helpers
 
-# Create sender model
-#Sender.is_blacklisted checked before send
 
 class Submission(core.helpers.TimeStampedModel):
 
@@ -17,6 +15,12 @@ class Submission(core.helpers.TimeStampedModel):
     form_url = models.TextField(blank=True, null=True)
     client = models.ForeignKey(
         'client.Client',
+        related_name='submissions',
+        blank=True,
+        null=True,
+    )
+    sender = models.ForeignKey(
+        'submission.Sender',
         related_name='submissions',
         blank=True,
         null=True,

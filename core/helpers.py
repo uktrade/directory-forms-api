@@ -8,6 +8,23 @@ from django.http import HttpResponse
 from django.utils.translation import ugettext_lazy as _
 
 
+class DownloadCSVMixin:
+    actions = ['download_csv']
+
+    csv_excluded_fields = []
+
+    def download_csv(self, request, queryset):
+        return generate_csv_response(
+            queryset=queryset,
+            filename=self.csv_filename,
+            excluded_fields=self.csv_excluded_fields
+        )
+
+    download_csv.short_description = (
+        "Download CSV report for selected records"
+    )
+
+
 def generate_csv_response(queryset, filename, excluded_fields):
     response = HttpResponse(content_type='text/csv')
     response['Content-Disposition'] = (

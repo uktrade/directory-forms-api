@@ -207,13 +207,6 @@ def test_send_gov_notify(mock_notify_client, settings):
     )
 
 
-@mock.patch('submission.helpers.NotificationsAPIClient')
-def test_get_email_address(settings):
-    settings.GOV_NOTIFY_API_KEY = '123456'
-
-    assert helpers.get_email_address() == 'test@testsubmission.com'
-
-
 @mock.patch('requests.post')
 def test_send_pardor(mock_post):
     helpers.send_pardot(

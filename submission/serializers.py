@@ -75,11 +75,14 @@ class SubmissionModelSerializer(serializers.ModelSerializer):
         extra_kwargs = {'sender': {'required': True}}
 
     def create(self, validated_data):
-        sender_email_address = helpers.get_email_address()
-        sender, _ = models.Sender.objects.get_or_create(
-            email_address=sender_email_address
+        sender_email_address = helpers.get_sender_email_address(
+            validated_data['meta']
             )
-        validated_data['sender_id'] = sender.id
+        if sender_email_address:
+            sender, _ = models.Sender.objects.get_or_create(
+                email_address=sender_email_address
+                )
+            validated_data['sender_id'] = sender.id
         return super().create(validated_data)
 
     def to_internal_value(self, data):

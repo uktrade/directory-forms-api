@@ -43,4 +43,3 @@ class Sender(core.helpers.TimeStampedModel):
 
     def __str__(self):
         return self.email_address
-

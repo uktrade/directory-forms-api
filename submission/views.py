@@ -33,7 +33,7 @@ class SubmissionCreateAPIView(CreateAPIView):
         super().perform_create(serializer)
         instance = serializer.instance
 
-        if instance.sender.is_whitelisted or not instance.sender.is_blacklisted :
+        if instance.sender.is_whitelisted or not instance.sender.is_blacklisted:
             task, kwargs_builder_class = action_map[instance.action_name]
             kwargs_builder = kwargs_builder_class.from_submission(instance)
             kwargs_builder.is_valid(raise_exception=True)

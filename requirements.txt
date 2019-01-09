@@ -17,14 +17,14 @@ contextlib2==0.5.5        # via raven
 cryptography==2.3
 directory-components==3.5.0
 directory-constants==11.1.0  # via directory-components
-directory-healthcheck==0.6.0
+directory-healthcheck==1.0.0
 dj-database-url==0.4.1
 django-admin-ip-restrictor==1.0.0  # via directory-components
 django-appconf==1.0.2     # via django-cryptography
 django-cryptography==0.3.0
 django-environ==0.4.5
 django-filter==1.0.4
-django-health-check==3.0.0  # via directory-healthcheck
+django-health-check==3.8.0  # via directory-healthcheck
 django-ipware==2.0.1      # via django-admin-ip-restrictor
 django-pglocks==1.0.2
 django==1.11.15
@@ -44,7 +44,7 @@ pycparser==2.18           # via cffi
 pyjwt==1.6.4              # via notifications-python-client
 pyopenssl==17.5.0         # via requests
 python-dateutil==2.7.3    # via zenpy
-pytz==2017.2              # via celery, directory-healthcheck, django
+pytz==2017.2              # via celery, django
 raven==5.19.0
 redis==2.10.6             # via celery
 requests[security]==2.20.0

@@ -12,7 +12,7 @@ raven==5.19.0
 requests[security]==2.20.0
 waitress==1.1.0
 sigauth==4.0.1
-directory-healthcheck==0.6.0
+directory-healthcheck==1.0.0
 django-cryptography==0.3.0
 zenpy==1.1.10
 celery[redis]

@@ -3,7 +3,6 @@ import directory_healthcheck.views
 from django.conf.urls import url, include
 from django.contrib import admin
 
-import healthcheck.views
 import submission.views
 
 
@@ -12,19 +11,14 @@ admin.autodiscover()
 
 healthcheck_urls = [
     url(
-        r'^database/$',
-        healthcheck.views.DatabaseAPIView.as_view(),
-        name='database'
+        r'^$',
+        directory_healthcheck.views.HealthcheckView.as_view(),
+        name='healthcheck'
     ),
     url(
         r'^ping/$',
         directory_healthcheck.views.PingView.as_view(),
         name='ping'
-    ),
-    url(
-        r'^sentry/$',
-        directory_healthcheck.views.SentryHealthcheckView.as_view(),
-        name='sentry'
     ),
 ]
 

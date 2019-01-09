@@ -3,6 +3,7 @@ import pprint
 
 from django.contrib import admin
 from django.contrib.admin import SimpleListFilter
+from django.db.models import Count
 
 import core.helpers
 from submission import constants, models
@@ -28,7 +29,7 @@ class ActionFilter(SimpleListFilter):
 
 
 @admin.register(models.Submission)
-class SubmissionAdmin(admin.ModelAdmin):
+class SubmissionAdmin(core.helpers.DownloadCSVMixin, admin.ModelAdmin):
     search_fields = ('data', 'meta',)
     readonly_fields = ('client', 'created', 'is_sent', 'form_url')
     list_display = (
@@ -38,20 +39,20 @@ class SubmissionAdmin(admin.ModelAdmin):
         'action_name',
         'created',
         'is_sent',
+        'sender'
     )
-    list_filter = ('client', ActionFilter, 'form_url', 'created', 'is_sent')
-    actions = ['download_csv']
+    list_filter = (
+        'client',
+        ActionFilter,
+        'form_url',
+        'created',
+        'is_sent',
+        'sender',
+    )
 
-    csv_excluded_fields = []
-    csv_filename = 'form-submissions_{}.csv'.format(
-                datetime.datetime.now().strftime("%Y%m%d%H%M%S"))
-
-    def download_csv(self, request, queryset):
-        return core.helpers.generate_csv_response(
-            queryset=queryset,
-            filename=self.csv_filename,
-            excluded_fields=self.csv_excluded_fields
-        )
+    csv_filename = 'form-submissions_{timestamp}.csv'.format(
+        timestamp=datetime.datetime.now().strftime("%Y%m%d%H%M%S")
+    )
 
     def get_readonly_fields(self, request, obj=None):
         if obj:
@@ -76,10 +77,44 @@ class SubmissionAdmin(admin.ModelAdmin):
     def get_pretty_funnel(self, obj):
         return ' > '.join(obj.funnel)
 
-    download_csv.short_description = (
-        "Download CSV report for selected form submissions"
-    )
     get_pretty_data.short_description = 'Data'
     get_pretty_meta.short_description = 'Meta'
     get_pretty_client.short_description = 'Service'
     get_pretty_funnel.short_description = 'Funnel'
+
+
+@admin.register(models.Sender)
+class SenderAdmin(core.helpers.DownloadCSVMixin, admin.ModelAdmin):
+    search_fields = ('email_address',)
+    readonly_fields = ('created',)
+    list_display = (
+        'email_address',
+        'is_whitelisted',
+        'is_blacklisted',
+        'get_submission_count',
+    )
+    list_filter = (
+        'is_whitelisted',
+        'is_blacklisted',
+    )
+
+    csv_filename = 'senders-{timestamp}.csv'.format(
+        timestamp=datetime.datetime.now().strftime("%Y%m%d%H%M%S")
+    )
+
+    def get_queryset(self, request):
+        queryset = super().get_queryset(request)
+        queryset = queryset.annotate(submissions_count=Count('submissions'))
+        return queryset
+
+    def get_readonly_fields(self, request, obj=None):
+        if obj:
+            readonly_fields = self.readonly_fields
+            return ('email_address',) + readonly_fields
+        return self.readonly_fields
+
+    def get_submission_count(self, obj):
+        return obj.submissions_count
+
+    get_submission_count.short_description = 'Submissions'
+    get_submission_count.admin_order_field = 'submissions_count'

@@ -38,5 +38,8 @@ class Submission(core.helpers.TimeStampedModel):
 class Sender(core.helpers.TimeStampedModel):
 
     email_address = models.EmailField()
-    is_blacklisted = models.BooleanField()
-    is_whitelisted = models.BooleanField()
+    is_blacklisted = models.BooleanField(default=False)
+    is_whitelisted = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.email_address

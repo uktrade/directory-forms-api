@@ -85,6 +85,7 @@ def test_generic_form_submission_submit_new_sender(mock_delay, api_client):
     instance = models.Submission.objects.last()
 
     assert instance.sender.email_address == email_address
+    assert instance.is_sent is True
     assert instance.data == payload['data']
     assert instance.meta == payload['meta']
 

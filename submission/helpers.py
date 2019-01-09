@@ -7,6 +7,8 @@ from zenpy.lib.api_objects import CustomField, Ticket, User as ZendeskUser
 from django.conf import settings
 from django.core.mail import EmailMultiAlternatives
 
+from submission import constants
+
 
 class ZendeskClient:
 
@@ -98,3 +100,13 @@ def send_pardot(pardot_url, payload):
         payload,
         allow_redirects=False,
     )
+
+
+def get_sender_email_address(submission_meta):
+    action_name = submission_meta['action_name']
+    if action_name == constants.ACTION_NAME_ZENDESK:
+        return submission_meta['email_address']
+    elif action_name == constants.ACTION_NAME_EMAIL:
+        return submission_meta['reply_to'][0]
+    elif action_name == constants.ACTION_NAME_GOV_NOTIFY:
+        return submission_meta['email_address']

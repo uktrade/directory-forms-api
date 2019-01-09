@@ -220,3 +220,23 @@ def test_send_pardor(mock_post):
         {'field': 'value'},
         allow_redirects=False,
     )
+
+
+def test_get_sender_email_address_email_action(email_action_payload):
+    email = helpers.get_sender_email_address(email_action_payload['meta'])
+    assert email == 'email-user@example.com'
+
+
+def test_get_sender_email_address_zendesk_action(zendesk_action_payload):
+    email = helpers.get_sender_email_address(zendesk_action_payload['meta'])
+    assert email == 'zendesk-user@example.com'
+
+
+def test_get_sender_email_address_notify_action(gov_notify_action_payload):
+    email = helpers.get_sender_email_address(gov_notify_action_payload['meta'])
+    assert email == 'notify-user@example.com'
+
+
+def test_get_sender_email_address_pardot_action(pardot_action_payload):
+    email = helpers.get_sender_email_address(pardot_action_payload['meta'])
+    assert email is None

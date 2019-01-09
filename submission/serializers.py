@@ -4,7 +4,8 @@ from rest_framework import serializers
 
 from django.conf import settings
 
-from submission import models
+from submission import helpers, models 
+
 
 
 logger = logging.getLogger(__name__)
@@ -71,7 +72,16 @@ class SubmissionModelSerializer(serializers.ModelSerializer):
             'data',
             'meta',
             'form_url',
+            'sender',
         )
+     
+        extra_kwargs = {'sender': {'required': True}}
+
+    def create(self, validated_data):
+        sender_email_address = helpers.get_email_address()
+        sender, _ = models.Sender.objects.get_or_create( email_address= sender_email_address)
+        validated_data['sender_id'] = sender.id
+        return super().create(validated_data)
 
     def to_internal_value(self, data):
         data['form_url'] = data['meta'].pop('form_url', '')

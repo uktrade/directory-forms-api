@@ -68,6 +68,10 @@ def create_zendesk_ticket(
     )
 
 
+def get_email_address():
+    return 'test@testsubmission.com'
+
+
 def send_email(subject, reply_to, recipients, text_body, html_body=None):
     message = EmailMultiAlternatives(
         subject=subject,

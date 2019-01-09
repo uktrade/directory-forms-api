@@ -75,6 +75,7 @@ def test_form_submission_serializer(user, rf):
             'action_name': 'email',
             'recipients': ['foo@bar.com'],
             'form_url': '/the/form/',
+            'reply_to': 'test@testsubmission.com'
         }
     }
     serializer = serializers.SubmissionModelSerializer(
@@ -87,7 +88,8 @@ def test_form_submission_serializer(user, rf):
         'data': {'title': 'hello'},
         'meta': {
             'action_name': 'email',
-            'recipients': ['foo@bar.com']
+            'recipients': ['foo@bar.com'],
+            'reply_to': 'test@testsubmission.com'
         },
         'form_url': '/the/form/',
         'client': user,

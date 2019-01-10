@@ -168,7 +168,7 @@ def test_generic_form_submission_submit_whitelisted(mock_send, api_client):
 
 @pytest.mark.django_db
 @mock.patch('submission.helpers.send_email')
-def test_generic_form_submission_submit_blacklisted_whitelisted(mock_delay, api_client):
+def test_form_submission_blacklisted_whitelisted(mock_delay, api_client):
     assert models.Submission.objects.count() == 0
 
     sender = factories.SenderFactory(

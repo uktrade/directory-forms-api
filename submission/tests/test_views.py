@@ -6,6 +6,7 @@ from rest_framework.test import APIClient
 from django.urls import reverse
 
 from client.tests.factories import ClientFactory
+from submission.tests import factories
 from submission import models
 
 
@@ -50,6 +51,156 @@ def test_generic_form_submission_submit(mock_delay, api_client):
 
     instance = models.Submission.objects.last()
 
+    assert instance.data == payload['data']
+    assert instance.meta == payload['meta']
+
+
+@pytest.mark.django_db
+@mock.patch('submission.helpers.send_email')
+def test_generic_form_submission_submit_new_sender(mock_delay, api_client):
+    assert models.Submission.objects.count() == 0
+
+    email_address = 'test@testsubmission.com'
+    payload = {
+        'data': {
+            'text_body': 'hello there',
+            'html_body': '<a>Hello there</a>',
+        },
+        'meta': {
+            'action_name': 'email',
+            'recipients': ['foo@bar.com'],
+            'subject': 'Hello',
+            'reply_to': [email_address],
+        }
+    }
+    response = api_client.post(
+        reverse('api:submission'),
+        data=payload,
+        format='json'
+    )
+
+    assert response.status_code == 201
+    assert models.Submission.objects.count() == 1
+
+    instance = models.Submission.objects.last()
+
+    assert instance.sender.email_address == email_address
+    assert instance.is_sent is True
+    assert instance.data == payload['data']
+    assert instance.meta == payload['meta']
+
+
+@pytest.mark.django_db
+@mock.patch('submission.tasks.send_email.delay')
+def test_generic_form_submission_submit_blacklisted(mock_delay, api_client):
+    assert models.Submission.objects.count() == 0
+
+    sender = factories.SenderFactory(
+        email_address='test@testsubmission.com',
+        is_blacklisted=True
+    )
+
+    payload = {
+        'data': {
+            'text_body': 'hello there',
+            'html_body': '<a>Hello there</a>',
+        },
+        'meta': {
+            'action_name': 'email',
+            'recipients': ['foo@bar.com'],
+            'subject': 'Hello',
+            'reply_to': [sender.email_address],
+        }
+    }
+    response = api_client.post(
+        reverse('api:submission'),
+        data=payload,
+        format='json'
+    )
+
+    assert response.status_code == 201
+    assert models.Submission.objects.count() == 1
+
+    instance = models.Submission.objects.last()
+
+    assert instance.is_sent is False
+    assert instance.data == payload['data']
+    assert instance.meta == payload['meta']
+
+
+@pytest.mark.django_db
+@mock.patch('submission.helpers.send_email')
+def test_generic_form_submission_submit_whitelisted(mock_send, api_client):
+    assert models.Submission.objects.count() == 0
+
+    sender = factories.SenderFactory(
+        email_address='test@testsubmission.com',
+        is_whitelisted=True
+    )
+
+    payload = {
+        'data': {
+            'text_body': 'hello there',
+            'html_body': '<a>Hello there</a>',
+        },
+        'meta': {
+            'action_name': 'email',
+            'recipients': ['foo@bar.com'],
+            'subject': 'Hello',
+            'reply_to': [sender.email_address],
+        }
+    }
+    response = api_client.post(
+        reverse('api:submission'),
+        data=payload,
+        format='json'
+    )
+
+    assert response.status_code == 201
+    assert models.Submission.objects.count() == 1
+
+    instance = models.Submission.objects.last()
+
+    assert instance.is_sent is True
+    assert instance.data == payload['data']
+    assert instance.meta == payload['meta']
+
+
+@pytest.mark.django_db
+@mock.patch('submission.helpers.send_email')
+def test_form_submission_blacklisted_whitelisted(mock_delay, api_client):
+    assert models.Submission.objects.count() == 0
+
+    sender = factories.SenderFactory(
+        email_address='test@testsubmission.com',
+        is_blacklisted=True,
+        is_whitelisted=True
+    )
+
+    payload = {
+        'data': {
+            'text_body': 'hello there',
+            'html_body': '<a>Hello there</a>',
+        },
+        'meta': {
+            'action_name': 'email',
+            'recipients': ['foo@bar.com'],
+            'subject': 'Hello',
+            'reply_to': [sender.email_address],
+        }
+    }
+    response = api_client.post(
+        reverse('api:submission'),
+        data=payload,
+        format='json'
+    )
+
+    assert response.status_code == 201
+    assert models.Submission.objects.count() == 1
+
+    instance = models.Submission.objects.last()
+
+    assert instance.is_sent is True
     assert instance.data == payload['data']
     assert instance.meta == payload['meta']
 

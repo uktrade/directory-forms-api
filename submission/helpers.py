@@ -110,3 +110,5 @@ def get_sender_email_address(submission_meta):
         return submission_meta['reply_to'][0]
     elif action_name == constants.ACTION_NAME_GOV_NOTIFY:
         return submission_meta['email_address']
+    elif action_name == constants.ACTION_NAME_PARDOT:
+        return None

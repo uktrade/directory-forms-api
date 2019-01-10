@@ -14,6 +14,7 @@ def submission():
             'recipients': ['foo@bar.com'],
             'form_url': '/the/form/',
             'funnel_steps': ['one', 'two', 'three'],
+            'reply_to': 'test@testsubmission.com',
         },
         client=ClientFactory.build(),
     )

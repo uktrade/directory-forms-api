@@ -32,7 +32,12 @@ class SubmissionCreateAPIView(CreateAPIView):
     def perform_create(self, serializer):
         super().perform_create(serializer)
         instance = serializer.instance
-        task, kwargs_builder_class = action_map[instance.action_name]
-        kwargs_builder = kwargs_builder_class.from_submission(instance)
-        kwargs_builder.is_valid(raise_exception=True)
-        task.delay(**kwargs_builder.validated_data, submission_id=instance.pk)
+
+        if instance.sender is None or instance.sender.is_enabled:
+            task, kwargs_builder_class = action_map[instance.action_name]
+            kwargs_builder = kwargs_builder_class.from_submission(instance)
+            kwargs_builder.is_valid(raise_exception=True)
+            task.delay(
+                **kwargs_builder.validated_data,
+                submission_id=instance.pk
+            )

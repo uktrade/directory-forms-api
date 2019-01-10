@@ -43,3 +43,7 @@ class Sender(core.helpers.TimeStampedModel):
 
     def __str__(self):
         return self.email_address
+
+    @property
+    def is_enabled(self):
+        return self.is_whitelisted or not self.is_blacklisted

@@ -77,11 +77,11 @@ class SubmissionModelSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         sender_email_address = helpers.get_sender_email_address(
             validated_data['meta']
-            )
+        )
         if sender_email_address:
             sender, _ = models.Sender.objects.get_or_create(
                 email_address=sender_email_address
-                )
+            )
             validated_data['sender_id'] = sender.id
         return super().create(validated_data)
 

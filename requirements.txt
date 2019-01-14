@@ -50,7 +50,7 @@ redis==2.10.6             # via celery
 requests[security]==2.20.0
 sigauth==4.0.1
 six==1.11.0               # via cryptography, django-extensions, mohawk, pyopenssl, python-dateutil
-urllib3==1.22             # via requests
+urllib3==1.24.1
 vine==1.1.4               # via amqp
 waitress==1.1.0
 whitenoise==3.2.2

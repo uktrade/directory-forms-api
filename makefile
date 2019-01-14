@@ -57,6 +57,7 @@ TEST_SET_ENV_VARS := \
 	export EMAIL_HOST_USER=debug@example.com; \
 	export EMAIL_USE_TLS=true
 
+
 debug_celery_worker:
 	$(DEBUG_SET_ENV_VARS); celery -A conf worker -l info
 

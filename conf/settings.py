@@ -5,8 +5,6 @@ import dj_database_url
 import environ
 
 from directory_components.constants import IP_RETRIEVER_NAME_GOV_UK
-import directory_healthcheck.backends
-import health_check.cache.backends
 
 
 env = environ.Env()
@@ -39,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.postgres',
     'rest_framework',
     'health_check.db',
+    'health_check.cache',
     'directory_healthcheck',
     'raven.contrib.django.raven_compat',
     'core.apps.CoreConfig',
@@ -259,10 +258,9 @@ REMOTE_IP_ADDRESS_RETRIEVER = env.str(
 # health check
 DIRECTORY_HEALTHCHECK_TOKEN = env.str('HEALTH_CHECK_TOKEN')
 DIRECTORY_HEALTHCHECK_BACKENDS = [
-    health_check.cache.backends.CacheBackend,
-    directory_healthcheck.backends.SentryBackend,
-    # health_check.db.backends.DatabaseBackend is also registered in
-    # INSTALLED_APPS's `health_check.db`
+    # health_check.db.backends.DatabaseBackend and
+    # health_check.cache.backends.CacheBackend are also registered in
+    # INSTALLED_APPS's health_check.db and health_check.cache
 ]
 
 # Admin restrictor

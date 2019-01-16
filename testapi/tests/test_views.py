@@ -14,7 +14,10 @@ def user():
 
 @pytest.fixture
 def api_client(settings, user):
-    settings.SIGAUTH_URL_NAMES_WHITELIST = ['submissions-by-email']
+    settings.SIGAUTH_URL_NAMES_WHITELIST = [
+        'submissions-by-email',
+        'submission'
+    ]
     settings.FEATURE_TEST_API_ENABLED = True
     client = APIClient()
     client.force_authenticate(user=user)

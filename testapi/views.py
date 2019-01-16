@@ -8,15 +8,15 @@ from submission.models import Submission
 
 
 class SubmissionsTestAPIView(RetrieveAPIView):
+    queryset = Submission.objects.all()
+    authentication_classes = [ClientSenderIdAuthentication]
+    http_method_names = 'get'
 
     def dispatch(self, *args, **kwargs):
         if not settings.FEATURE_TEST_API_ENABLED:
             raise Http404
         return super().dispatch(*args, **kwargs)
 
-    queryset = Submission.objects.all()
-    permission_classes = []
-    http_method_names = 'get'
     @staticmethod
     def data_and_meta(submission: Submission):
         return {

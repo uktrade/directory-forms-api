@@ -90,3 +90,12 @@ def test_return_404_if_testapi_is_disabled(api_client_disabled_testapi):
         format='json'
     )
     assert response.status_code == 404
+
+
+def test_return_401_when_unauthenticated():
+    client = APIClient()
+    response = client.get(
+        reverse('testapi:submissions-by-email',
+                kwargs={'email_address': 'foo@bar.com'})
+    )
+    assert response.status_code == 401

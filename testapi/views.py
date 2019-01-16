@@ -14,7 +14,7 @@ class TestAPIView(GenericAPIView):
         return super().dispatch(*args, **kwargs)
 
 
-class SubmissionTestAPIView(TestAPIView):
+class SubmissionsTestAPIView(TestAPIView):
     queryset = Submission.objects.all()
     permission_classes = []
     http_method_names = 'get'

@@ -23,7 +23,9 @@ class SubmissionsTestAPIView(TestAPIView):
     def data_and_meta(submission: Submission):
         return {
             'data': dict(submission.data),
-            'meta': dict(submission.meta)
+            'meta': dict(submission.meta),
+            'is_sent': submission.is_sent,
+            'form_url': submission.form_url,
         }
 
     def get_submissions(self, email_address):

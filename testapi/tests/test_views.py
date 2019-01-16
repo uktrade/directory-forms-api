@@ -12,20 +12,29 @@ def user():
     return ClientFactory()
 
 
-@pytest.fixture
-def api_client(settings, user):
+def api_client(settings, user, test_api_flag):
     settings.SIGAUTH_URL_NAMES_WHITELIST = [
         'submissions-by-email',
         'submission'
     ]
-    settings.FEATURE_TEST_API_ENABLED = True
+    settings.FEATURE_TEST_API_ENABLED = test_api_flag
     client = APIClient()
     client.force_authenticate(user=user)
     return client
 
 
+@pytest.fixture
+def api_client_enabled_test_api(settings, user):
+    return api_client(settings, user, test_api_flag=True)
+
+
+@pytest.fixture
+def api_client_disabled_testapi(settings, user):
+    return api_client(settings, user, test_api_flag=False)
+
+
 @pytest.mark.django_db
-def test_find_submissions_by_email(api_client):
+def test_find_submissions_by_email(api_client_enabled_test_api):
     assert models.Submission.objects.count() == 0
 
     payload = {
@@ -40,7 +49,7 @@ def test_find_submissions_by_email(api_client):
             'reply_to': ['reply@example.com'],
         }
     }
-    response = api_client.post(
+    response = api_client_enabled_test_api.post(
         reverse('api:submission'),
         data=payload,
         format='json'
@@ -49,7 +58,7 @@ def test_find_submissions_by_email(api_client):
     assert response.status_code == 201
     assert models.Submission.objects.count() == 1
 
-    response = api_client.get(
+    response = api_client_enabled_test_api.get(
         reverse('testapi:submissions-by-email',
                 kwargs={'email_address': 'foo@bar.com'}),
         format='json'
@@ -60,10 +69,10 @@ def test_find_submissions_by_email(api_client):
 
 
 @pytest.mark.django_db
-def test_return_404_if_no_submissions_are_found(api_client):
+def test_return_404_if_no_submissions_are_found(api_client_enabled_test_api):
     assert models.Submission.objects.count() == 0
 
-    response = api_client.get(
+    response = api_client_enabled_test_api.get(
         reverse('testapi:submissions-by-email',
                 kwargs={'email_address': 'foo@bar.com'}),
         format='json'

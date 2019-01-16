@@ -78,3 +78,15 @@ def test_return_404_if_no_submissions_are_found(api_client_enabled_test_api):
         format='json'
     )
     assert response.status_code == 404
+
+
+@pytest.mark.django_db
+def test_return_404_if_testapi_is_disabled(api_client_disabled_testapi):
+    assert models.Submission.objects.count() == 0
+
+    response = api_client_disabled_testapi.get(
+        reverse('testapi:submissions-by-email',
+                kwargs={'email_address': 'foo@bar.com'}),
+        format='json'
+    )
+    assert response.status_code == 404

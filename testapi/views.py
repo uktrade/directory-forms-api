@@ -1,24 +1,22 @@
 from django.http import Http404
 from django.conf import settings
-from rest_framework.generics import GenericAPIView
+from rest_framework.generics import RetrieveAPIView
 from rest_framework.response import Response
 
+from client.authentication import ClientSenderIdAuthentication
 from submission.models import Submission
 
 
-class TestAPIView(GenericAPIView):
+class SubmissionsTestAPIView(RetrieveAPIView):
 
     def dispatch(self, *args, **kwargs):
         if not settings.FEATURE_TEST_API_ENABLED:
             raise Http404
         return super().dispatch(*args, **kwargs)
 
-
-class SubmissionsTestAPIView(TestAPIView):
     queryset = Submission.objects.all()
     permission_classes = []
     http_method_names = 'get'
-
     @staticmethod
     def data_and_meta(submission: Submission):
         return {

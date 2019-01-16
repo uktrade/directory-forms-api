@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'core.apps.CoreConfig',
     'submission.apps.SubmissionConfig',
     'client.apps.ClientConfig',
+    'testapi.apps.TestApiConfig',
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -346,3 +347,6 @@ RESTRICTED_APP_NAMES = env.list(
 if env.bool('IP_RESTRICTOR_RESTRICT_UI', False):
     # restrict all pages that are not in apps API, healthcheck, admin, etc
     RESTRICTED_APP_NAMES.append('')
+
+# Test API
+FEATURE_TEST_API_ENABLED = env.bool('FEATURE_TEST_API_ENABLED', False)

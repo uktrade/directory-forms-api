@@ -55,3 +55,17 @@ def test_find_submissions_by_email(api_client):
         format='json'
     )
     assert response.status_code == 200
+    assert response.json()[0]['meta']['recipients'][0] == 'foo@bar.com'
+    assert response.json()[0]['is_sent'] is True
+
+
+@pytest.mark.django_db
+def test_return_404_if_no_submissions_are_found(api_client):
+    assert models.Submission.objects.count() == 0
+
+    response = api_client.get(
+        reverse('testapi:submissions-by-email',
+                kwargs={'email_address': 'foo@bar.com'}),
+        format='json'
+    )
+    assert response.status_code == 404

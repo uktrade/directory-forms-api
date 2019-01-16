@@ -35,7 +35,7 @@ testapi_urls = [
     url(
         r'^submission-by-email/(?P<email_address>.*)/$',
         testapi.views.SubmissionTestAPIView.as_view(),
-        name='submission_by_email',
+        name='submission-by-email',
     ),
 ]
 

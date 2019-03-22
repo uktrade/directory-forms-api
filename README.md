@@ -6,6 +6,8 @@
 
 **Export Directory forms API service**
 
+A service with a read-only API for submitting schemaless JSON documents that represent a form submission, and then perform an action such as creating zendesk tickets, sending emails, etc.
+
 ---
 
 ### See also:
@@ -17,8 +19,9 @@ For more information on installation please check the [Developers Onboarding Che
 
 ## Requirements
 
-[Docker >= 1.10](https://docs.docker.com/engine/installation/)  
-[Docker Compose >= 1.8](https://docs.docker.com/compose/install/)
+[Python 3.6](https://www.python.org/downloads/release/python-366/)
+[Redis](https://redis.io/)
+[Postgres](https://www.postgresql.org/)
 
 ## Local installation
 
@@ -43,27 +46,9 @@ Set the following values in your `conf/.env` file to use third-party services:
 `EMAIL_PORT`
 `EMAIL_USE_TLS`
 
-## Running with Docker
-Requires all host environment variables to be set.
+## Development
 
-    $ make docker_run
-
-### Run debug webserver in Docker
-Provides defaults for all env vars but ``AWS_ACCESS_KEY_ID`` and ``AWS_SECRET_ACCESS_KEY``
-
-    $ make docker_debug
-
-### Run tests in Docker
-
-    $ make docker_test
-
-### Host environment variables for docker-compose
-``.env`` files will be automatically created (with ``env_writer.py`` based on ``env.json`` and ``env-postgres.json``) by ``make docker_test``, based on host environment variables with ``DIRECTORY_FORMS_API_`` prefix.
-
-## Debugging
-
-### Setup debug environment
-Requires locally running PostgreSQL (e.g. [Postgres.app](http://postgresapp.com/) for the Mac)
+### Setup development environment
 
     $ make debug
 

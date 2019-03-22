@@ -31,7 +31,7 @@ django-filter==1.0.4
 django-health-check==3.8.0  # via directory-healthcheck
 django-ipware==2.0.1      # via django-admin-ip-restrictor
 django-pglocks==1.0.2
-django==1.11.18
+django==1.11.20
 django_extensions==1.6.7
 djangorestframework==3.4.7
 docopt==0.6.2             # via notifications-python-client
@@ -51,13 +51,12 @@ more-itertools==4.3.0     # via pytest
 notifications-python-client==5.1.0
 pluggy==0.8.0             # via pytest
 psycopg2==2.7.6.1
-py==1.5.2                 # via pytest, pytest-capturelog
+py==1.5.2                 # via pytest
 pycodestyle==2.4.0        # via flake8
 pycparser==2.18           # via cffi
 pyflakes==2.0.0           # via flake8
 pyjwt==1.6.4              # via notifications-python-client
 pyopenssl==17.5.0         # via requests
-pytest-capturelog==0.7
 pytest-cov==2.3.1
 pytest-django==3.1.0
 pytest-sugar==0.8.0

@@ -27,7 +27,7 @@ django-filter==1.0.4
 django-health-check==3.8.0  # via directory-healthcheck
 django-ipware==2.0.1      # via django-admin-ip-restrictor
 django-pglocks==1.0.2
-django==1.11.18
+django==1.11.20
 django_extensions==1.6.7
 djangorestframework==3.4.7
 docopt==0.6.2             # via notifications-python-client

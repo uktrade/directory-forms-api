@@ -6,7 +6,7 @@
 
 **Export Directory forms API service**
 
-A service with a read-only API for submitting schemaless JSON documents that represent a form submission, and then perform an action such as creating zendesk tickets, sending emails, etc.
+A service with a write-only API for submitting schemaless JSON documents that represent a form submission, and then perform an action such as creating zendesk tickets, sending emails, etc.
 
 ---
 

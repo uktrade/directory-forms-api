@@ -71,7 +71,7 @@ sigauth==4.0.1
 six==1.11.0               # via cryptography, django-extensions, faker, freezegun, mohawk, more-itertools, pyopenssl, pytest, python-dateutil, requests-mock
 termcolor==1.1.0          # via pytest-sugar
 text-unidecode==1.2       # via faker
-urllib3==1.24.1
+urllib3==1.24.2
 vine==1.1.4               # via amqp
 waitress==1.1.0
 whitenoise==3.2.2

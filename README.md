@@ -3,6 +3,8 @@
 [![code-climate-image]][code-climate]
 [![circle-ci-image]][circle-ci]
 [![codecov-image]][codecov]
+[![gitflow-image]][gitflow]
+[![calver-image]][calver]
 
 **Export Directory forms API service**
 
@@ -20,33 +22,42 @@ For more information on installation please check the [Developers Onboarding Che
 ## Requirements
 
 [Python 3.6](https://www.python.org/downloads/release/python-366/)
+
 [Redis](https://redis.io/)
+
 [Postgres](https://www.postgresql.org/)
 
-## Local installation
+## Development
 
     $ git clone https://github.com/uktrade/directory-forms-api
     $ cd directory-forms-api
-    $ make
+    $ virtualenv .venv -p python3.6
+    $ source .venv/bin/activate
+    $ pip install -r requirements_test.txt
 
-## Integrations
-Set the following values in your `conf/.env` file to use third-party services:
+### Configuration
 
-### Zendesk
+Secrets such as API keys and environment specific configurations are placed in `conf/.env` - a file that is not added to version control. You will need to create that file locally in order for the project to run.
 
-`ZENDESK_EMAIL`
-`ZENDESK_SUBDOMAIN`
-`ZENDESK_TOKEN`
+Here is an example `conf/.env` with placeholder values to get you going:
 
-### Email
+```
+EMAIL_HOST=debug
+EMAIL_HOST_PASSWORD=debug
+EMAIL_HOST_USER=debug
+EMAIL_USE_TLS=debug
+ZENDESK_EMAIL=debug
+ZENDESK_SUBDOMAIN=debug
+ZENDESK_TOKEN=debug
+ZENDESK_CUSTOM_FIELD_ID=debug
+GOV_NOTIFY_API_KEY=debug
+ZENDESK_SUBDOMAIN_EUEXIT=debug
+ZENDESK_TOKEN_EUEXIT=debug
+ZENDESK_EMAIL_EUEXIT=debug
+ZENDESK_CUSTOM_FIELD_ID_EUEXIT=debug
+```
 
-`EMAIL_HOST`
-`EMAIL_HOST_PASSWORD`
-`EMAIL_HOST_USER`
-`EMAIL_PORT`
-`EMAIL_USE_TLS`
-
-## Development
+## Running
 
 ### Setup development environment
 
@@ -60,26 +71,6 @@ Set the following values in your `conf/.env` file to use third-party services:
 
     $ make debug_test
 
-## SSO
-To make sso work locally add the following to your machine's `/etc/hosts`:
-
-| IP Adress | URL                  |
-| --------  | -------------------- |
-| 127.0.0.1 | buyer.trade.great    |
-| 127.0.0.1 | supplier.trade.great |
-| 127.0.0.1 | sso.trade.great      |
-| 127.0.0.1 | api.trade.great      |
-| 127.0.0.1 | profile.trade.great  |
-| 127.0.0.1 | exred.trade.great    |
-
-Then log into `directory-sso` via `sso.trade.great:8004`
-
-Note in production, the `directory-sso` session cookie is shared with all subdomains that are on the same parent domain as `directory-sso`. However in development we cannot share cookies between subdomains using `localhost` - that would be like trying to set a cookie for `.com`, which is not supported by any RFC.
-
-Therefore to make cookie sharing work in development we need the apps to be running on subdomains. Some stipulations:
- - `directory-ui-supplier` and `directory-sso` must both be running on sibling subdomains (with same parent domain)
- - `directory-sso` must be told to target cookies at the parent domain.
-
 
 
 [code-climate-image]: https://codeclimate.com/github/uktrade/directory-forms-api/badges/issue_count.svg
@@ -90,3 +81,9 @@ Therefore to make cookie sharing work in development we need the apps to be runn
 
 [codecov-image]: https://codecov.io/gh/uktrade/directory-forms-api/branch/master/graph/badge.svg
 [codecov]: https://codecov.io/gh/uktrade/directory-forms-api
+
+[gitflow-image]: https://img.shields.io/badge/Branching%20strategy-gitflow-5FBB1C.svg
+[gitflow]: https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow
+
+[calver-image]: https://img.shields.io/badge/Versioning%20strategy-CalVer-5FBB1C.svg
+[calver]: https://calver.org

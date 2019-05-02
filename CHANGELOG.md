@@ -1,6 +1,6 @@
 # Changelog
 
-## [2019.05.01](https://github.com/uktrade/directory-forms-api/releases/tag/2019.05.02)
+## [2019.05.02](https://github.com/uktrade/directory-forms-api/releases/tag/2019.05.02)
 [Full Changelog](https://github.com/uktrade/directory-forms-api/compare/2019.01.28_1...2019.05.02)
 
 ### Fixed bugs:

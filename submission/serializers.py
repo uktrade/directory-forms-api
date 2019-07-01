@@ -22,7 +22,13 @@ class ZendeskActionSerializer(serializers.Serializer):
 
     @classmethod
     def from_submission(cls, submission, *args, **kwargs):
-        data = {**submission.meta, 'payload': submission.data}
+        data = {
+            **submission.meta,
+            'payload': {
+                **submission.data,
+                'form_url': submission.form_url,
+            }
+        }
         return cls(data=data, *args, **kwargs)
 
 

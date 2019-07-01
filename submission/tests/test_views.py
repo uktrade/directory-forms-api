@@ -236,6 +236,10 @@ def test_zendesk_action(
         data=zendesk_action_payload,
         format='json'
     )
+    expected_payload = {
+        **zendesk_action_payload['data'],
+        'form_url': zendesk_action_payload['meta']['form_url'],
+    }
 
     assert response.status_code == 201
     assert mock_delay.call_count == 1
@@ -243,7 +247,7 @@ def test_zendesk_action(
         subject=zendesk_action_payload['meta']['subject'],
         full_name=zendesk_action_payload['meta']['full_name'],
         email_address=zendesk_action_payload['meta']['email_address'],
-        payload=zendesk_action_payload['data'],
+        payload=expected_payload,
         service_name=zendesk_action_payload['meta']['service_name'],
         subdomain=settings.ZENDESK_SUBDOMAIN_DEFAULT,
         submission_id=models.Submission.objects.last().pk,

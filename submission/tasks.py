@@ -1,11 +1,16 @@
 import celery
+from requests.exceptions import RequestException
 
 from conf.celery import app
 
-from submission import helpers, models
+from submission import constants, helpers, models, serializers
 
 
 class Task(celery.Task):
+
+    retry_kwargs = {'max_retries': 5}
+    exponential_backoff = 2
+    retry_jitter = False
 
     def __call__(self, submission_id, *args, **kwargs):
         self.submission_id = submission_id
@@ -17,7 +22,7 @@ class Task(celery.Task):
         submission.save()
 
 
-@app.task(base=Task)
+@app.task(base=Task, autoretry_for=(RequestException,))
 def create_zendesk_ticket(*args, **kwargs):
     helpers.create_zendesk_ticket(*args, **kwargs)
 
@@ -35,3 +40,34 @@ def send_gov_notify(*args, **kwargs):
 @app.task(base=Task)
 def send_pardot(*args, **kwargs):
     helpers.send_pardot(*args, **kwargs)
+
+
+action_map = {
+    constants.ACTION_NAME_EMAIL: (
+        send_email,
+        serializers.EmailActionSerializer,
+    ),
+    constants.ACTION_NAME_ZENDESK: (
+        create_zendesk_ticket,
+        serializers.ZendeskActionSerializer,
+    ),
+    constants.ACTION_NAME_GOV_NOTIFY: (
+        send_gov_notify,
+        serializers.GovNotifySerializer,
+    ),
+    constants.ACTION_NAME_PARDOT: (
+        send_pardot,
+        serializers.PardotSerializer,
+    ),
+}
+
+
+def execute_for_submission(submission):
+    if submission.sender is None or submission.sender.is_enabled:
+        task, kwargs_builder_class = action_map[submission.action_name]
+        kwargs_builder = kwargs_builder_class.from_submission(submission)
+        kwargs_builder.is_valid(raise_exception=True)
+        task.delay(
+            **kwargs_builder.validated_data,
+            submission_id=submission.pk
+        )

@@ -154,6 +154,7 @@ def test_zendesk_action_serializer_from_submission(
         'payload': {
             **zendesk_submission.data,
             'form_url': zendesk_submission.form_url,
+            'service_name': zendesk_submission.meta['service_name'],
         },
         'subdomain': settings.ZENDESK_SUBDOMAIN_DEFAULT,
         'service_name': zendesk_submission.meta['service_name'],

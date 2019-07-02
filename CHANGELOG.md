@@ -5,6 +5,7 @@
 ### Implemented enhancements
 
 - TT-1591 - Expose form_url to zendesk
+- TT-1160 - Add auto retry to celery tasks
 
 ### Fixed bugs:
 

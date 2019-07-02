@@ -27,6 +27,7 @@ class ZendeskActionSerializer(serializers.Serializer):
             'payload': {
                 **submission.data,
                 'form_url': submission.form_url,
+                'service_name': submission.meta['service_name'],
             }
         }
         return cls(data=data, *args, **kwargs)

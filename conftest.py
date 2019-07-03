@@ -36,6 +36,7 @@ def zendesk_action_payload():
             'email_address': 'zendesk-user@example.com',
             'service_name': 'Market Access',
             'form_url': '/some/form/',
+            'ingress_url': 'https://www.example.com',
         },
     }
 

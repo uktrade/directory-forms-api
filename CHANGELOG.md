@@ -4,9 +4,8 @@
 
 ### Implemented enhancements
 
-- TT-1591 - Expose form_url to zendesk
+- TT-1591 - Expose ingress url to zendesk
 - TT-1160 - Add auto retry to celery tasks
-- TT-1591 - Expose form_url and service name to zendesk
 - No ticket - replace directory components IP whitelister
 
 ### Fixed bugs:

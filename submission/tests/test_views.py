@@ -238,8 +238,7 @@ def test_zendesk_action(
     )
     expected_payload = {
         **zendesk_action_payload['data'],
-        'form_url': zendesk_action_payload['meta']['form_url'],
-        'service_name': zendesk_action_payload['meta']['service_name'],
+        'ingress_url': zendesk_action_payload['meta']['ingress_url'],
     }
 
     assert response.status_code == 201

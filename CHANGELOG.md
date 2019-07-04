@@ -10,8 +10,8 @@
 
 ### Fixed bugs:
 
-- Upgrade vulnerable django version
-- Upgrade vulnerable django rest framework version
+-  No ticket - Upgrade vulnerable django version to django 1.11.22
+-  No ticket - Upgrade vulnerable django rest framework version
 
 ## [2019.05.02](https://github.com/uktrade/directory-forms-api/releases/tag/2019.05.02)
 [Full Changelog](https://github.com/uktrade/directory-forms-api/compare/2019.01.28_1...2019.05.02)

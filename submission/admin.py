@@ -1,12 +1,14 @@
 import datetime
 import pprint
 
-from django.contrib import admin
+from django.contrib import admin, messages
 from django.contrib.admin import SimpleListFilter
 from django.db.models import Count
+from django.shortcuts import redirect
+from django.urls import reverse
 
 import core.helpers
-from submission import constants, models
+from submission import constants, models, tasks
 
 
 class ActionFilter(SimpleListFilter):
@@ -50,6 +52,8 @@ class SubmissionAdmin(core.helpers.DownloadCSVMixin, admin.ModelAdmin):
         'sender',
     )
 
+    actions = core.helpers.DownloadCSVMixin.actions + ['retry']
+
     csv_filename = 'form-submissions_{timestamp}.csv'.format(
         timestamp=datetime.datetime.now().strftime("%Y%m%d%H%M%S")
     )
@@ -77,6 +81,17 @@ class SubmissionAdmin(core.helpers.DownloadCSVMixin, admin.ModelAdmin):
     def get_pretty_funnel(self, obj):
         return ' > '.join(obj.funnel)
 
+    def retry(self, request, queryset):
+        """Resend action that previously failed."""
+        for item in queryset:
+            if item.is_sent:
+                messages.info(request, f'{item.pk} already sent. Skipped.')
+            else:
+                tasks.execute_for_submission(item)
+                messages.success(request, f'{item.pk} send triggered.')
+        return redirect(reverse('admin:submission_submission_changelist'))
+
+    retry.short_description = "Retry sending this action."
     get_pretty_data.short_description = 'Data'
     get_pretty_meta.short_description = 'Meta'
     get_pretty_client.short_description = 'Service'

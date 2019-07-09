@@ -1,6 +1,19 @@
 # Changelog
 
-## [2019.05.01](https://github.com/uktrade/directory-forms-api/releases/tag/2019.05.02)
+## Pre release
+
+### Implemented enhancements
+
+- TT-1591 - Expose ingress url to zendesk
+- TT-1160 - Add auto retry to celery tasks
+- No ticket - replace directory components IP whitelister
+
+### Fixed bugs:
+
+-  No ticket - Upgrade vulnerable django version to django 1.11.22
+-  No ticket - Upgrade vulnerable django rest framework version
+
+## [2019.05.02](https://github.com/uktrade/directory-forms-api/releases/tag/2019.05.02)
 [Full Changelog](https://github.com/uktrade/directory-forms-api/compare/2019.01.28_1...2019.05.02)
 
 ### Fixed bugs:

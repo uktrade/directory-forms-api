@@ -19,7 +19,7 @@ directory-components==3.5.0
 directory-constants==11.1.0  # via directory-components
 directory-healthcheck==1.0.1
 dj-database-url==0.4.1
-django-admin-ip-restrictor==1.0.0  # via directory-components
+django-admin-ip-restrictor==1.0.0
 django-appconf==1.0.2     # via django-cryptography
 django-cryptography==0.3.0
 django-environ==0.4.5
@@ -27,9 +27,9 @@ django-filter==1.0.4
 django-health-check==3.8.0  # via directory-healthcheck
 django-ipware==2.0.1      # via django-admin-ip-restrictor
 django-pglocks==1.0.2
-django==1.11.20
+django==1.11.22
 django_extensions==1.6.7
-djangorestframework==3.4.7
+djangorestframework==3.9.1
 docopt==0.6.2             # via notifications-python-client
 export-elements==0.23.0   # via directory-components
 future==0.16.0            # via notifications-python-client

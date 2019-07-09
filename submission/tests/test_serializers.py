@@ -137,37 +137,6 @@ def test_form_submission_serializer_no_form_url(rf, user):
         'client': user,
     }
 
-@pytest.mark.django_db
-def test_form_submission_serializer(user, rf):
-    request = rf.get('/')
-    request.user = user
-
-    input_data = {
-        'data': {'title': 'hello'},
-        'meta': {
-            'action_name': 'email',
-            'recipients': ['foo@bar.com'],
-            'form_url': '/the/form/',
-            'reply_to': 'test@testsubmission.com'
-        }
-    }
-    serializer = serializers.SubmissionModelSerializer(
-        data=input_data,
-        context={'request': request}
-    )
-
-    assert serializer.is_valid()
-    assert serializer.validated_data == {
-        'data': {'title': 'hello'},
-        'meta': {
-            'action_name': 'email',
-            'recipients': ['foo@bar.com'],
-            'reply_to': 'test@testsubmission.com'
-        },
-        'form_url': '/the/form/',
-        'client': user,
-    }
-
 
 @pytest.mark.django_db
 def test_form_submission_serializer_old_gov_notify_email(user, rf):
@@ -290,8 +259,6 @@ def test_gov_notify_email_action_serializer_from_submission_reply_email(
         },
         'email_reply_to_id': '123',
     }
-
-
 
 
 @pytest.mark.django_db

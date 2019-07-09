@@ -255,8 +255,32 @@ def test_zendesk_action(
 
 
 @pytest.mark.django_db
-@mock.patch('submission.tasks.send_gov_notify.delay')
-def test_gov_notify_action(mock_delay, api_client, gov_notify_action_payload):
+@mock.patch('submission.tasks.send_gov_notify_email.delay')
+def test_gov_notify_email_action(
+        mock_delay, api_client, gov_notify_email_action_payload
+):
+    response = api_client.post(
+        reverse('api:submission'),
+        data=gov_notify_email_action_payload,
+        format='json'
+    )
+
+    assert response.status_code == 201, response.json()
+    assert mock_delay.call_count == 1
+    assert mock_delay.call_args == mock.call(
+        template_id=gov_notify_email_action_payload['meta']['template_id'],
+        email_address=gov_notify_email_action_payload['meta']['email_address'],
+        personalisation=gov_notify_email_action_payload['data'],
+        submission_id=models.Submission.objects.last().pk,
+    )
+
+
+@pytest.mark.django_db
+@mock.patch('submission.tasks.send_gov_notify_email.delay')
+def test_gov_notify_action_old_constant(
+        mock_delay, api_client, gov_notify_action_payload
+):
+    # This can be remove when all clients are using the new gov-notify-action
     response = api_client.post(
         reverse('api:submission'),
         data=gov_notify_action_payload,
@@ -269,6 +293,26 @@ def test_gov_notify_action(mock_delay, api_client, gov_notify_action_payload):
         template_id=gov_notify_action_payload['meta']['template_id'],
         email_address=gov_notify_action_payload['meta']['email_address'],
         personalisation=gov_notify_action_payload['data'],
+        submission_id=models.Submission.objects.last().pk,
+    )
+
+
+@pytest.mark.django_db
+@mock.patch('submission.tasks.send_gov_notify_letter.delay')
+def test_gov_notify_letter_action(
+        mock_delay, api_client, gov_notify_letter_action_payload
+):
+    response = api_client.post(
+        reverse('api:submission'),
+        data=gov_notify_letter_action_payload,
+        format='json'
+    )
+
+    assert response.status_code == 201, response.json()
+    assert mock_delay.call_count == 1
+    assert mock_delay.call_args == mock.call(
+        template_id=gov_notify_letter_action_payload['meta']['template_id'],
+        personalisation=gov_notify_letter_action_payload['data'],
         submission_id=models.Submission.objects.last().pk,
     )
 

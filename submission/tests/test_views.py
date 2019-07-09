@@ -278,21 +278,21 @@ def test_gov_notify_email_action(
 @pytest.mark.django_db
 @mock.patch('submission.tasks.send_gov_notify_email.delay')
 def test_gov_notify_action_old_constant(
-        mock_delay, api_client, gov_notify_action_payload
+        mock_delay, api_client, gov_notify_action_payload_old
 ):
     # This can be remove when all clients are using the new gov-notify-action
     response = api_client.post(
         reverse('api:submission'),
-        data=gov_notify_action_payload,
+        data=gov_notify_action_payload_old,
         format='json'
     )
 
     assert response.status_code == 201, response.json()
     assert mock_delay.call_count == 1
     assert mock_delay.call_args == mock.call(
-        template_id=gov_notify_action_payload['meta']['template_id'],
-        email_address=gov_notify_action_payload['meta']['email_address'],
-        personalisation=gov_notify_action_payload['data'],
+        template_id=gov_notify_action_payload_old['meta']['template_id'],
+        email_address=gov_notify_action_payload_old['meta']['email_address'],
+        personalisation=gov_notify_action_payload_old['data'],
         submission_id=models.Submission.objects.last().pk,
     )
 

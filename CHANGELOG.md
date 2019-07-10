@@ -10,6 +10,7 @@
 - TT-1591 - Expose ingress url to zendesk
 - TT-1160 - Add auto retry to celery tasks
 - No ticket - replace directory components IP whitelister
+- TT-1604 - Send Letter Gov Notify
 
 ### Fixed bugs:
 

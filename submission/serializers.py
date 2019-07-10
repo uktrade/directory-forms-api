@@ -4,7 +4,7 @@ from rest_framework import serializers
 
 from django.conf import settings
 
-from submission import helpers, models
+from submission import helpers, models, constants
 
 logger = logging.getLogger(__name__)
 
@@ -45,11 +45,21 @@ class EmailActionSerializer(serializers.Serializer):
         return cls(data=data, *args, **kwargs)
 
 
-class GovNotifySerializer(serializers.Serializer):
+class GovNotifyEmailSerializer(serializers.Serializer):
     template_id = serializers.CharField()
     email_address = serializers.EmailField()
     personalisation = serializers.DictField()
     email_reply_to_id = serializers.CharField(required=False)
+
+    @classmethod
+    def from_submission(cls, submission, *args, **kwargs):
+        data = {**submission.meta, 'personalisation': submission.data}
+        return cls(data=data, *args, **kwargs)
+
+
+class GovNotifyLetterSerializer(serializers.Serializer):
+    template_id = serializers.CharField()
+    personalisation = serializers.DictField()
 
     @classmethod
     def from_submission(cls, submission, *args, **kwargs):
@@ -94,4 +104,10 @@ class SubmissionModelSerializer(serializers.ModelSerializer):
     def to_internal_value(self, data):
         data['form_url'] = data['meta'].pop('form_url', '')
         data['client'] = self.context['request'].user
+        # This is required for legacy to support old gov-notify action
+        # Can be removed when all client are using the new action constant
+        if data['meta']['action_name'] == 'gov-notify':
+            data['meta']['action_name'] = (
+                constants.ACTION_NAME_GOV_NOTIFY_EMAIL
+            )
         return data

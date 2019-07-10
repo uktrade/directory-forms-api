@@ -33,8 +33,13 @@ def send_email(*args, **kwargs):
 
 
 @app.task(base=Task)
-def send_gov_notify(*args, **kwargs):
-    helpers.send_gov_notify(*args, **kwargs)
+def send_gov_notify_email(*args, **kwargs):
+    helpers.send_gov_notify_email(*args, **kwargs)
+
+
+@app.task(base=Task)
+def send_gov_notify_letter(*args, **kwargs):
+    helpers.send_gov_notify_letter(*args, **kwargs)
 
 
 @app.task(base=Task)
@@ -51,9 +56,13 @@ action_map = {
         create_zendesk_ticket,
         serializers.ZendeskActionSerializer,
     ),
-    constants.ACTION_NAME_GOV_NOTIFY: (
-        send_gov_notify,
-        serializers.GovNotifySerializer,
+    constants.ACTION_NAME_GOV_NOTIFY_EMAIL: (
+        send_gov_notify_email,
+        serializers.GovNotifyEmailSerializer,
+    ),
+    constants.ACTION_NAME_GOV_NOTIFY_LETTER: (
+        send_gov_notify_letter,
+        serializers.GovNotifyLetterSerializer,
     ),
     constants.ACTION_NAME_PARDOT: (
         send_pardot,

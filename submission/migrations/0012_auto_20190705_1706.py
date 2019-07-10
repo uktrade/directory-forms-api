@@ -7,20 +7,11 @@ from django.db import migrations
 
 def change_gov_notify_action(apps, schema_editor):
     Submission = apps.get_model('submission', 'Submission')
-    for submission in Submission.objects.all():
-        try:
-            gov_notify_action = get_gov_notify_action(submission.meta)
-        except (KeyError, IndexError):
-            gov_notify_action = None
-        if gov_notify_action:
-            submission.meta['action_name'] = 'gov-notify-email'
-            submission.save()
-
-
-def get_gov_notify_action(submission_meta):
-    action_name = submission_meta['action_name']
-    if action_name == 'gov-notify':
-        return submission_meta['action_name']
+    for submission in Submission.objects.filter(
+            meta__action_name='gov-notify'
+    ):
+        submission.meta['action_name'] = 'gov-notify-email'
+        submission.save()
 
 
 class Migration(migrations.Migration):

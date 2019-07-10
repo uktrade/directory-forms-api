@@ -21,6 +21,10 @@ class ActionFilter(SimpleListFilter):
             (constants.ACTION_NAME_PARDOT, 'Submit to Pardot'),
             (constants.ACTION_NAME_EMAIL, 'Send via Email'),
             (constants.ACTION_NAME_GOV_NOTIFY_EMAIL, 'Send via Gov Notify'),
+            (
+                constants.ACTION_NAME_GOV_NOTIFY_LETTER,
+                'Send letter via Gov Notify'
+            ),
         )
 
     def queryset(self, request, queryset):

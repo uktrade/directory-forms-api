@@ -83,8 +83,8 @@ def send_email(subject, reply_to, recipients, text_body, html_body=None):
 def send_gov_notify_email(
     template_id, email_address, personalisation, email_reply_to_id=None
 ):
-    client = NotificationsAPIClient(
-        settings.GOV_NOTIFY_API_KEY,
+    client=NotificationsAPIClient(
+       settings.GOV_NOTIFY_API_KEY,
     )
     client.send_email_notification(
         email_address=email_address,
@@ -95,9 +95,8 @@ def send_gov_notify_email(
 
 
 def send_gov_notify_letter(template_id, personalisation):
-
-    client = NotificationsAPIClient(
-        settings.GOV_NOTIFY_API_KEY,
+    client=NotificationsAPIClient(
+       settings.GOV_NOTIFY_API_KEY,
     )
     client.send_letter_notification(
         template_id=template_id,

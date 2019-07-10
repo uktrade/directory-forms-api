@@ -41,6 +41,8 @@ def zendesk_action_payload():
     }
 
 
+# This payload is to support backward compatibility with gov-notify action
+# which is replaced by gov-notify-email eventually this can be removed.
 @pytest.fixture
 def gov_notify_action_payload_old():
     return {

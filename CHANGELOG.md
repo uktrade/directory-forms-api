@@ -2,6 +2,9 @@
 
 ## Pre release
 
+## [2019.07.09](https://github.com/uktrade/directory-forms-api/releases/tag/2019.07.09)
+[Full Changelog](https://github.com/uktrade/directory-forms-api/compare/2019.05.02...2019.07.09)
+
 ### Implemented enhancements
 
 - TT-1591 - Expose ingress url to zendesk

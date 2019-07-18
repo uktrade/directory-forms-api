@@ -95,9 +95,12 @@ def send_gov_notify_email(
 
 
 def send_gov_notify_letter(template_id, personalisation):
-    client = NotificationsAPIClient(
-        settings.GOV_NOTIFY_API_KEY,
-    )
+    if settings.GOV_NOTIFY_LETTER_TEST_MODE:
+        gov_notify_api_key = settings.GOV_NOTIFY_API_TEST_KEY
+    else:
+        gov_notify_api_key = settings.GOV_NOTIFY_API_KEY
+
+    client = NotificationsAPIClient(gov_notify_api_key)
     client.send_letter_notification(
         template_id=template_id,
         personalisation=personalisation,

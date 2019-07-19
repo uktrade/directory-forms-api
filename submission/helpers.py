@@ -95,14 +95,11 @@ def send_gov_notify_email(
 
 
 def send_gov_notify_letter(template_id, personalisation):
-    # When in test mode letters are available to check in pdf format via
-    # govnotify. In Live mode letters are physically sent and charged.
-    if settings.GOV_NOTIFY_LETTER_TEST_MODE:
-        gov_notify_api_key = settings.GOV_NOTIFY_API_TEST_KEY
-    else:
-        gov_notify_api_key = settings.GOV_NOTIFY_API_KEY
-
-    client = NotificationsAPIClient(gov_notify_api_key)
+    # Use of separate key so we can use test keys for dev environments.
+    # Test keys allow previewing in PDF and not send the letter
+    client = NotificationsAPIClient(
+        settings.GOV_NOTIFY_LETTER_API_KEY,
+    )
     client.send_letter_notification(
         template_id=template_id,
         personalisation=personalisation,

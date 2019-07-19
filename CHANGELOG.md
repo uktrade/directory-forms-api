@@ -8,7 +8,7 @@
 - TT-1160 - Add auto retry to celery tasks
 - No ticket - replace directory components IP whitelister
 - TT-1604 - Send Letter Gov Notify
-- TT-1670 Allow-Govnotify send letters test mode
+- TT-1670 Allow-Govnotify send letters test mode set env GOV_NOTIFY_LETTER_API_KEY to test key to allow PDF viewing in Dev. In Prod set to live key
 
 ## [2019.07.09](https://github.com/uktrade/directory-forms-api/releases/tag/2019.07.09)
 [Full Changelog](https://github.com/uktrade/directory-forms-api/compare/2019.05.02...2019.07.09)

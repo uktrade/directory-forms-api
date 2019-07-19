@@ -209,8 +209,7 @@ def test_send_gov_notify_email(mock_notify_client, settings):
 
 @mock.patch('submission.helpers.NotificationsAPIClient')
 def test_send_gov_notify_letter(mock_notify_client, settings):
-    settings.GOV_NOTIFY_API_KEY = '123456'
-    settings.GOV_NOTIFY_LETTER_TEST_MODE = False
+    settings.GOV_NOTIFY_LETTER_API_KEY = 'letterkey123'
 
     helpers.send_gov_notify_letter(
         template_id='123-456-789-2222',
@@ -223,7 +222,7 @@ def test_send_gov_notify_letter(mock_notify_client, settings):
     )
 
     assert mock_notify_client.call_count == 1
-    assert mock_notify_client.call_args == mock.call('123456')
+    assert mock_notify_client.call_args == mock.call('letterkey123')
 
     assert mock_notify_client().send_letter_notification.call_count == 1
     assert mock_notify_client().send_letter_notification.call_args == (
@@ -237,22 +236,6 @@ def test_send_gov_notify_letter(mock_notify_client, settings):
                 },
             )
     )
-
-
-@mock.patch('submission.helpers.NotificationsAPIClient')
-def test_send_gov_notify_letter_test_api_key(mock_notify_client, settings):
-    settings.GOV_NOTIFY_API_KEY = 'Live123456'
-    settings.GOV_NOTIFY_API_TEST_KEY = 'Test123456'
-    settings.GOV_NOTIFY_LETTER_TEST_MODE = True
-
-    helpers.send_gov_notify_letter(
-        template_id='123-456-789-2222',
-        personalisation={'LetterTest': True},
-    )
-
-    assert mock_notify_client.call_count == 1
-    assert mock_notify_client.call_args == mock.call('Test123456')
-    assert mock_notify_client().send_letter_notification.call_count == 1
 
 
 @mock.patch('requests.post')

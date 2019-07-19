@@ -95,8 +95,10 @@ def send_gov_notify_email(
 
 
 def send_gov_notify_letter(template_id, personalisation):
+    # Use of separate key so we can use test keys for dev environments.
+    # Test keys allow previewing in PDF and not send the letter
     client = NotificationsAPIClient(
-        settings.GOV_NOTIFY_API_KEY,
+        settings.GOV_NOTIFY_LETTER_API_KEY,
     )
     client.send_letter_notification(
         template_id=template_id,

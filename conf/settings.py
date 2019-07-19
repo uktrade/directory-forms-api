@@ -328,9 +328,10 @@ CELERY_BROKER_POOL_LIMIT = None
 FEATURE_REDIS_USE_SSL = env.bool('FEATURE_REDIS_USE_SSL', False)
 CELERY_TASK_ALWAYS_EAGER = env.bool('CELERY_ALWAYS_EAGER', False)
 
-
 # Gov UK Notify
 GOV_NOTIFY_API_KEY = env.str('GOV_NOTIFY_API_KEY')
+# Separate key to allow PDF viewing. In prod this can be live key
+GOV_NOTIFY_LETTER_API_KEY = env.str('GOV_NOTIFY_LETTER_API_KEY')
 
 # ip-restrictor
 RESTRICT_ADMIN = env.bool('IP_RESTRICTOR_RESTRICT_IPS', False)

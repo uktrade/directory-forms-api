@@ -48,6 +48,7 @@ TEST_SET_ENV_VARS := \
 	export ZENDESK_TOKEN=some-token; \
 	export ZENDESK_CUSTOM_FIELD_ID=123455; \
 	export GOV_NOTIFY_API_KEY=7891011; \
+	export GOV_NOTIFY_LETTER_API_KEY=1101987; \
 	export ZENDESK_SUBDOMAIN_EUEXIT=example-euexit; \
 	export ZENDESK_TOKEN_EUEXIT=some-token-euexit; \
 	export ZENDESK_EMAIL_EUEXIT=debug@example.com; \

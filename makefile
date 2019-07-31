@@ -56,8 +56,10 @@ TEST_SET_ENV_VARS := \
 	export EMAIL_HOST=debug; \
 	export EMAIL_HOST_PASSWORD=debug; \
 	export EMAIL_HOST_USER=debug@example.com; \
-	export EMAIL_USE_TLS=true
-
+	export EMAIL_USE_TLS=true; \
+	export STAFF_SSO_AUTHBROKER_URL=true; \
+	export AUTHBROKER_CLIENT_ID=debug; \
+	export AUTHBROKER_CLIENT_SECRET=debug
 
 debug_celery_worker:
 	$(DEBUG_SET_ENV_VARS); celery -A conf worker -l info

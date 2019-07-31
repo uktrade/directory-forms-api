@@ -59,9 +59,8 @@ urlpatterns = [
     ),
     url(
         r'^testapi/',
-        include(testapi_urls, namespace='testapi', app_name='testapi'
+        include(testapi_urls, namespace='testapi', app_name='testapi')
     ),
-)
 ]
 
 if settings.ENFORCE_STAFF_SSO_ON:

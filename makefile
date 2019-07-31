@@ -43,7 +43,7 @@ DEBUG_SET_ENV_VARS := \
 	export CELERY_ALWAYS_EAGER=true; \
 	export AUTHBROKER_CLIENT_ID=debug; \
     export AUTHBROKER_CLIENT_SECRET=debug; \
-    export AUTHBROKER_URL=https://test.com
+    export STAFF_SSO_AUTHBROKER_URL=https://test.com
 
 TEST_SET_ENV_VARS := \
 	export ZENDESK_EMAIL=debug@example.com; \

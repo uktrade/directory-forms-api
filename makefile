@@ -38,9 +38,12 @@ DEBUG_SET_ENV_VARS := \
 	export SESSION_COOKIE_SECURE=false; \
 	export SESSION_COOKIE_DOMAIN=.trade.great; \
 	export DEFAULT_FROM_EMAIL=debug@example.com; \
-	export FEATURE_ENFORCE_STAFF_SSO_ENABLED=false; \
+	export FEATURE_ENFORCE_STAFF_SSO_ENABLED=true; \
 	export REDIS_CELERY_URL=redis://127.0.0.1:6379; \
-	export CELERY_ALWAYS_EAGER=true
+	export CELERY_ALWAYS_EAGER=true; \
+	export AUTHBROKER_CLIENT_ID=debug; \
+    export AUTHBROKER_CLIENT_SECRET=debug; \
+    export AUTHBROKER_URL=https://test.com
 
 TEST_SET_ENV_VARS := \
 	export ZENDESK_EMAIL=debug@example.com; \

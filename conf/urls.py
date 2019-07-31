@@ -59,9 +59,9 @@ urlpatterns = [
     ),
     url(
         r'^testapi/',
-        include(testapi_urls, namespace='testapi', app_name='testapi')
+        include(testapi_urls, namespace='testapi', app_name='testapi'
     ),
-
+)
 ]
 
 if settings.ENFORCE_STAFF_SSO_ON:
@@ -72,6 +72,6 @@ if settings.ENFORCE_STAFF_SSO_ON:
         ),
         url(
             '^auth/',
-            include('authbroker_client.urls', namespace='authbroker', app_name='authbroker_client')
+            include('authbroker_client.urls', namespace='authbroker', app_name='authbroker_client',)
         ),
     ] + urlpatterns

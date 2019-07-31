@@ -2,6 +2,7 @@ import directory_healthcheck.views
 
 from django.conf.urls import url, include
 from django.contrib import admin
+from django.views.generic import RedirectView
 
 import submission.views
 import testapi.views
@@ -47,6 +48,15 @@ urlpatterns = [
         )
     ),
     url(
+        r'^admin/login/$',
+        RedirectView.as_view(url='/auth/login/', query_string=True, )
+    ),
+    url(
+        '^auth/',
+        include('authbroker_client.urls', namespace='authbroker', app_name='authbroker_client')
+    ),
+
+    url(
         r'^api/',
         include(api_urls, namespace='api', app_name='api')
     ),
@@ -58,4 +68,5 @@ urlpatterns = [
         r'^testapi/',
         include(testapi_urls, namespace='testapi', app_name='testapi')
     ),
+
 ]

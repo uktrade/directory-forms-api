@@ -27,6 +27,7 @@ django-filter==1.0.4
 django-health-check==3.8.0  # via directory-healthcheck
 django-ipware==2.0.1      # via django-admin-ip-restrictor
 django-pglocks==1.0.2
+django-staff-sso-client==0.3.1
 django==1.11.22
 django_extensions==1.6.7
 djangorestframework==3.9.1
@@ -39,6 +40,7 @@ kombu==4.2.1              # via celery
 mohawk==0.3.4             # via directory-components, sigauth
 monotonic==1.5            # via notifications-python-client
 notifications-python-client==5.1.0
+oauthlib==3.0.2           # via requests-oauthlib
 psycopg2==2.7.6.1
 pycparser==2.18           # via cffi
 pyjwt==1.6.4              # via notifications-python-client
@@ -47,6 +49,7 @@ python-dateutil==2.7.3    # via zenpy
 pytz==2017.2              # via celery, django
 raven==5.19.0
 redis==2.10.6             # via celery
+requests-oauthlib==1.2.0  # via django-staff-sso-client
 requests[security]==2.20.0
 sigauth==4.0.1
 six==1.11.0               # via cryptography, django-extensions, mohawk, pyopenssl, python-dateutil

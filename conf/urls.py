@@ -3,6 +3,7 @@ import directory_healthcheck.views
 from django.conf.urls import url, include
 from django.contrib import admin
 from django.views.generic import RedirectView
+from django.conf import settings
 
 import submission.views
 import testapi.views
@@ -47,14 +48,6 @@ urlpatterns = [
             healthcheck_urls, namespace='healthcheck', app_name='healthcheck'
         )
     ),
-    url(
-        r'^admin/login/$',
-        RedirectView.as_view(url='/auth/login/', query_string=True, )
-    ),
-    url(
-        '^auth/',
-        include('authbroker_client.urls', namespace='authbroker', app_name='authbroker_client')
-    ),
 
     url(
         r'^api/',
@@ -70,3 +63,15 @@ urlpatterns = [
     ),
 
 ]
+
+if settings.ENFORCE_STAFF_SSO_ON:
+    urlpatterns = [
+        url(
+            r'^admin/login/$',
+            RedirectView.as_view(url='/auth/login/', query_string=True, )
+        ),
+        url(
+            '^auth/',
+            include('authbroker_client.urls', namespace='authbroker', app_name='authbroker_client')
+        ),
+    ] + urlpatterns

@@ -41,9 +41,9 @@ DEBUG_SET_ENV_VARS := \
 	export FEATURE_ENFORCE_STAFF_SSO_ENABLED=false; \
 	export REDIS_CELERY_URL=redis://127.0.0.1:6379; \
 	export CELERY_ALWAYS_EAGER=true; \
-    export AUTHBROKER_CLIENT_ID=debug; \
-    export AUTHBROKER_CLIENT_SECRET=debug; \
-    export STAFF_SSO_AUTHBROKER_URL=https://test.com
+    	export AUTHBROKER_CLIENT_ID=debug; \
+    	export AUTHBROKER_CLIENT_SECRET=debug; \
+    	export STAFF_SSO_AUTHBROKER_URL=https://test.com
 
 TEST_SET_ENV_VARS := \
 	export ZENDESK_EMAIL=debug@example.com; \

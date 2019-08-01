@@ -1,6 +1,7 @@
 import directory_healthcheck.views
 
 from django.conf.urls import url, include
+from django.urls import reverse_lazy
 from django.contrib import admin
 from django.views.generic import RedirectView
 from django.conf import settings
@@ -63,14 +64,18 @@ urlpatterns = [
     ),
 ]
 
-if settings.ENFORCE_STAFF_SSO_ON:
+authbroker_urls = [
+    url(
+        r'^admin/login/$',
+        RedirectView.as_view(url=reverse_lazy('authbroker:login'), query_string=True, )
+    ),
+    url('^auth/', include('authbroker_client.urls')),
+]
+
+if settings.FEATURE_ENFORCE_STAFF_SSO_ENABLED:
     urlpatterns = [
         url(
-            r'^admin/login/$',
-            RedirectView.as_view(url='/auth/login/', query_string=True, )
-        ),
-        url(
-            '^auth/',
-            include('authbroker_client.urls', namespace='authbroker', app_name='authbroker_client',)
+            '^',
+            include(authbroker_urls, namespace='authbroker', app_name='authbroker_client',)
         ),
     ] + urlpatterns

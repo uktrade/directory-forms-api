@@ -4,6 +4,7 @@ import sigauth.helpers
 from django.urls import reverse
 
 from client.tests import factories
+from core.tests.test_views import reload_urlconf
 
 
 SIGNATURE_CHECK_REQUIRED_MIDDLEWARE_CLASSES = [
@@ -154,6 +155,8 @@ def test_signature_check_middleware_admin_login(admin_client, settings):
 
 def test_signature_check_middleware_authbroker_login(admin_client, settings):
     settings.MIDDLEWARE_CLASSES = SIGNATURE_CHECK_REQUIRED_MIDDLEWARE_CLASSES
-    response = admin_client.get(reverse('authbroker_client:login'))
+    settings.FEATURE_ENFORCE_STAFF_SSO_ENABLED = True
+    reload_urlconf()
+    response = admin_client.get(reverse('authbroker:login'))
 
     assert response.status_code == 302

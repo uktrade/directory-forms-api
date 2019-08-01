@@ -144,8 +144,8 @@ for static_dir in STATICFILES_DIRS:
 
 
 # SSO config
-ENFORCE_STAFF_SSO_ON = env.bool('FEATURE_ENFORCE_STAFF_SSO_ENABLED', True)
-if ENFORCE_STAFF_SSO_ON:
+FEATURE_ENFORCE_STAFF_SSO_ENABLED = env.bool('FEATURE_ENFORCE_STAFF_SSO_ENABLED', False)
+if FEATURE_ENFORCE_STAFF_SSO_ENABLED:
     AUTHENTICATION_BACKENDS = [
         'django.contrib.auth.backends.ModelBackend',
         'authbroker_client.backends.AuthbrokerBackend'
@@ -154,10 +154,10 @@ if ENFORCE_STAFF_SSO_ON:
     LOGIN_URL = reverse_lazy('authbroker_client:login')
     LOGIN_REDIRECT_URL = reverse_lazy('admin:index')
 
-    # authbroker config
-    AUTHBROKER_URL = env.str('STAFF_SSO_AUTHBROKER_URL')
-    AUTHBROKER_CLIENT_ID = env.str('AUTHBROKER_CLIENT_ID')
-    AUTHBROKER_CLIENT_SECRET = env.str('AUTHBROKER_CLIENT_SECRET')
+# authbroker config
+AUTHBROKER_URL = env.str('STAFF_SSO_AUTHBROKER_URL')
+AUTHBROKER_CLIENT_ID = env.str('AUTHBROKER_CLIENT_ID')
+AUTHBROKER_CLIENT_SECRET = env.str('AUTHBROKER_CLIENT_SECRET')
 
 
 # SECURITY WARNING: keep the secret key used in production secret!

@@ -14,7 +14,7 @@ class SignatureCheckMiddleware(
 
     def should_check(self, request):
         if request.resolver_match.namespace in [
-            'admin', 'healthcheck', 'authbroker'
+            'admin', 'healthcheck', 'authbroker_client'
         ] or request.path_info.startswith('/admin/login'):
             return False
         return super().should_check(request)

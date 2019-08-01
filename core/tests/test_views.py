@@ -32,4 +32,3 @@ def test_force_staff_sso(client):
 
     settings.FEATURE_ENFORCE_STAFF_SSO_ENABLED = False
     reload_urlconf()
-

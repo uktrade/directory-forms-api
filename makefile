@@ -6,7 +6,7 @@ test_requirements:
 	pip install -r requirements_test.txt
 
 DJANGO_MIGRATE := python manage.py distributed_migrate --noinput
-FLAKE8 := flake8 . --exclude=migrations,.venv
+FLAKE8 := flake8 . --exclude=migrations,.venv --max-line-length=120
 PYTEST := pytest . --cov=. --capture=no --cov-config=.coveragerc $(pytest_args)
 COLLECT_STATIC := python manage.py collectstatic --noinput
 CODECOV := \
@@ -38,9 +38,12 @@ DEBUG_SET_ENV_VARS := \
 	export SESSION_COOKIE_SECURE=false; \
 	export SESSION_COOKIE_DOMAIN=.trade.great; \
 	export DEFAULT_FROM_EMAIL=debug@example.com; \
+	export FEATURE_ENFORCE_STAFF_SSO_ENABLED=true; \
 	export REDIS_CELERY_URL=redis://127.0.0.1:6379; \
-	export CELERY_ALWAYS_EAGER=true
-
+	export CELERY_ALWAYS_EAGER=true; \
+    	export AUTHBROKER_CLIENT_ID=debug; \
+    	export AUTHBROKER_CLIENT_SECRET=debug; \
+    	export STAFF_SSO_AUTHBROKER_URL=https://test.com
 
 TEST_SET_ENV_VARS := \
 	export ZENDESK_EMAIL=debug@example.com; \
@@ -48,6 +51,7 @@ TEST_SET_ENV_VARS := \
 	export ZENDESK_TOKEN=some-token; \
 	export ZENDESK_CUSTOM_FIELD_ID=123455; \
 	export GOV_NOTIFY_API_KEY=7891011; \
+	export GOV_NOTIFY_LETTER_API_KEY=1101987; \
 	export ZENDESK_SUBDOMAIN_EUEXIT=example-euexit; \
 	export ZENDESK_TOKEN_EUEXIT=some-token-euexit; \
 	export ZENDESK_EMAIL_EUEXIT=debug@example.com; \
@@ -56,7 +60,6 @@ TEST_SET_ENV_VARS := \
 	export EMAIL_HOST_PASSWORD=debug; \
 	export EMAIL_HOST_USER=debug@example.com; \
 	export EMAIL_USE_TLS=true
-
 
 debug_celery_worker:
 	$(DEBUG_SET_ENV_VARS); celery -A conf worker -l info

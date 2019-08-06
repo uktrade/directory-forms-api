@@ -1,7 +1,10 @@
 import directory_healthcheck.views
 
 from django.conf.urls import url, include
+from django.urls import reverse_lazy
 from django.contrib import admin
+from django.views.generic import RedirectView
+from django.conf import settings
 
 import submission.views
 import testapi.views
@@ -46,6 +49,7 @@ urlpatterns = [
             healthcheck_urls, namespace='healthcheck', app_name='healthcheck'
         )
     ),
+
     url(
         r'^api/',
         include(api_urls, namespace='api', app_name='api')
@@ -59,3 +63,14 @@ urlpatterns = [
         include(testapi_urls, namespace='testapi', app_name='testapi')
     ),
 ]
+
+authbroker_urls = [
+    url(
+        r'^admin/login/$',
+        RedirectView.as_view(url=reverse_lazy('authbroker_client:login'), query_string=True, )
+    ),
+    url('^auth/', include('authbroker_client.urls')),
+]
+
+if settings.FEATURE_ENFORCE_STAFF_SSO_ENABLED:
+    urlpatterns = [url('^', include(authbroker_urls))] + urlpatterns

@@ -9,6 +9,7 @@ whitenoise==3.2.2
 psycopg2==2.7.6.1
 gunicorn==19.5.0
 raven==5.19.0
+django-staff-sso-client==0.3.1
 requests[security]==2.20.0
 waitress==1.1.0
 sigauth==4.0.1

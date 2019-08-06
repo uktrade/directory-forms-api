@@ -5,6 +5,7 @@ import dj_database_url
 import environ
 
 from directory_components.constants import IP_RETRIEVER_NAME_GOV_UK
+from django.urls import reverse_lazy
 
 
 env = environ.Env()
@@ -44,10 +45,12 @@ INSTALLED_APPS = [
     'submission.apps.SubmissionConfig',
     'client.apps.ClientConfig',
     'testapi.apps.TestApiConfig',
+    'authbroker_client',
 ]
 
 MIDDLEWARE_CLASSES = [
     'django.middleware.security.SecurityMiddleware',
+    'core.middleware.AdminPermissionCheckMiddleware',
     'admin_ip_restrictor.middleware.AdminIPRestrictorMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -139,6 +142,24 @@ STATICFILES_DIRS = (
 for static_dir in STATICFILES_DIRS:
     if not os.path.exists(static_dir):
         os.makedirs(static_dir)
+
+
+# SSO config
+FEATURE_ENFORCE_STAFF_SSO_ENABLED = env.bool('FEATURE_ENFORCE_STAFF_SSO_ENABLED', False)
+if FEATURE_ENFORCE_STAFF_SSO_ENABLED:
+    AUTHENTICATION_BACKENDS = [
+        'django.contrib.auth.backends.ModelBackend',
+        'authbroker_client.backends.AuthbrokerBackend'
+    ]
+
+    LOGIN_URL = reverse_lazy('authbroker_client:login')
+    LOGIN_REDIRECT_URL = reverse_lazy('admin:index')
+
+# authbroker config
+AUTHBROKER_URL = env.str('STAFF_SSO_AUTHBROKER_URL')
+AUTHBROKER_CLIENT_ID = env.str('AUTHBROKER_CLIENT_ID')
+AUTHBROKER_CLIENT_SECRET = env.str('AUTHBROKER_CLIENT_SECRET')
+
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = env.str('SECRET_KEY')
@@ -328,9 +349,10 @@ CELERY_BROKER_POOL_LIMIT = None
 FEATURE_REDIS_USE_SSL = env.bool('FEATURE_REDIS_USE_SSL', False)
 CELERY_TASK_ALWAYS_EAGER = env.bool('CELERY_ALWAYS_EAGER', False)
 
-
 # Gov UK Notify
 GOV_NOTIFY_API_KEY = env.str('GOV_NOTIFY_API_KEY')
+# Separate key to allow PDF viewing. In prod this can be live key
+GOV_NOTIFY_LETTER_API_KEY = env.str('GOV_NOTIFY_LETTER_API_KEY')
 
 # ip-restrictor
 RESTRICT_ADMIN = env.bool('IP_RESTRICTOR_RESTRICT_IPS', False)

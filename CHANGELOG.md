@@ -7,6 +7,7 @@
 - TT-1670 Allow-Govnotify send letters test mode set env GOV_NOTIFY_LETTER_API_KEY to test key to allow PDF viewing in Dev. In Prod set to live key
 - TT-1692 - SSO integration   (setup ENVS STAFF_SSO_AUTHBROKER_URL/AUTHBROKER_CLIENT_ID/AUTHBROKER_CLIENT_SECRET, ENFORCE_STAFF_SSO_ON) 
 - TT-1692 - enhanced to give user grant staff status using grant_staff_status managment command
+- TT-1700 - Middleware admin status permission check
 
 ## [2019.07.09](https://github.com/uktrade/directory-forms-api/releases/tag/2019.07.09)
 [Full Changelog](https://github.com/uktrade/directory-forms-api/compare/2019.05.02...2019.07.09)

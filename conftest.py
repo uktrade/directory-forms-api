@@ -41,16 +41,48 @@ def zendesk_action_payload():
     }
 
 
+# This payload is to support backward compatibility with gov-notify action
+# which is replaced by gov-notify-email eventually this can be removed.
 @pytest.fixture
-def gov_notify_action_payload():
+def gov_notify_action_payload_old():
     return {
         'data': {
             'title': 'hello',
         },
         'meta': {
-            'action_name': constants.ACTION_NAME_GOV_NOTIFY,
+            'action_name': 'gov-notify',
             'template_id': '213123',
             'email_address': 'notify-user@example.com',
+        }
+    }
+
+
+@pytest.fixture
+def gov_notify_email_action_payload():
+    return {
+        'data': {
+            'title': 'hello',
+        },
+        'meta': {
+            'action_name': constants.ACTION_NAME_GOV_NOTIFY_EMAIL,
+            'template_id': '213123',
+            'email_address': 'notify-user@example.com',
+        }
+    }
+
+
+@pytest.fixture
+def gov_notify_letter_action_payload():
+    return {
+        'data': {
+            'address_line_1': 'The Occupier',
+            'address_line_2': '123 High Street',
+            'postcode': 'SW14 6BF',
+            'name': 'John Smith',
+        },
+        'meta': {
+            'action_name': constants.ACTION_NAME_GOV_NOTIFY_LETTER,
+            'template_id': '21312345',
         }
     }
 

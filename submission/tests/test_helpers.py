@@ -186,10 +186,10 @@ def test_create_zendesk_ticket_unsupported_subdomain(
 
 
 @mock.patch('submission.helpers.NotificationsAPIClient')
-def test_send_gov_notify(mock_notify_client, settings):
+def test_send_gov_notify_email(mock_notify_client, settings):
     settings.GOV_NOTIFY_API_KEY = '123456'
 
-    helpers.send_gov_notify(
+    helpers.send_gov_notify_email(
         email_address='test@example.com',
         template_id='123-456-789',
         personalisation={'title': 'Mr'},
@@ -204,6 +204,37 @@ def test_send_gov_notify(mock_notify_client, settings):
         template_id='123-456-789',
         personalisation={'title': 'Mr'},
         email_reply_to_id='123',
+    )
+
+
+@mock.patch('submission.helpers.NotificationsAPIClient')
+def test_send_gov_notify_letter(mock_notify_client, settings):
+    settings.GOV_NOTIFY_LETTER_API_KEY = 'letterkey123'
+
+    helpers.send_gov_notify_letter(
+        template_id='123-456-789-2222',
+        personalisation={
+            'address_line_1': 'The Occupier',
+            'address_line_2': '123 High Street',
+            'postcode': 'SW14 6BF',
+            'name': 'John Smith',
+        },
+    )
+
+    assert mock_notify_client.call_count == 1
+    assert mock_notify_client.call_args == mock.call('letterkey123')
+
+    assert mock_notify_client().send_letter_notification.call_count == 1
+    assert mock_notify_client().send_letter_notification.call_args == (
+            mock.call(
+                template_id='123-456-789-2222',
+                personalisation={
+                    'address_line_1': 'The Occupier',
+                    'address_line_2': '123 High Street',
+                    'postcode': 'SW14 6BF',
+                    'name': 'John Smith',
+                },
+            )
     )
 
 
@@ -232,8 +263,12 @@ def test_get_sender_email_address_zendesk_action(zendesk_action_payload):
     assert email == 'zendesk-user@example.com'
 
 
-def test_get_sender_email_address_notify_action(gov_notify_action_payload):
-    email = helpers.get_sender_email_address(gov_notify_action_payload['meta'])
+def test_get_sender_email_address_notify_action(
+        gov_notify_email_action_payload
+):
+    email = helpers.get_sender_email_address(
+        gov_notify_email_action_payload['meta']
+    )
     assert email == 'notify-user@example.com'
 
 

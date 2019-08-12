@@ -8,6 +8,7 @@
 - TT-1692 - SSO integration   (setup ENVS STAFF_SSO_AUTHBROKER_URL/AUTHBROKER_CLIENT_ID/AUTHBROKER_CLIENT_SECRET, ENFORCE_STAFF_SSO_ON) 
 - TT-1692 - enhanced to give user grant staff status using grant_staff_status managment command
 - TT-1700 - Middleware admin status permission check
+- TT-1735 - Forms & Directory-API SSO display message for 1st time users
 
 ## [2019.07.09](https://github.com/uktrade/directory-forms-api/releases/tag/2019.07.09)
 [Full Changelog](https://github.com/uktrade/directory-forms-api/compare/2019.05.02...2019.07.09)

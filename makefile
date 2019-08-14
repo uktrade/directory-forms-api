@@ -38,12 +38,12 @@ DEBUG_SET_ENV_VARS := \
 	export SESSION_COOKIE_SECURE=false; \
 	export SESSION_COOKIE_DOMAIN=.trade.great; \
 	export DEFAULT_FROM_EMAIL=debug@example.com; \
-	export FEATURE_ENFORCE_STAFF_SSO_ENABLED=true; \
+	export FEATURE_ENFORCE_STAFF_SSO_ENABLED=false; \
 	export REDIS_CELERY_URL=redis://127.0.0.1:6379; \
 	export CELERY_ALWAYS_EAGER=true; \
-    	export AUTHBROKER_CLIENT_ID=debug; \
-    	export AUTHBROKER_CLIENT_SECRET=debug; \
-    	export STAFF_SSO_AUTHBROKER_URL=https://test.com
+	export AUTHBROKER_CLIENT_ID=debug; \
+	export AUTHBROKER_CLIENT_SECRET=debug; \
+	export STAFF_SSO_AUTHBROKER_URL=https://test.com
 
 TEST_SET_ENV_VARS := \
 	export ZENDESK_EMAIL=debug@example.com; \
@@ -59,7 +59,9 @@ TEST_SET_ENV_VARS := \
 	export EMAIL_HOST=debug; \
 	export EMAIL_HOST_PASSWORD=debug; \
 	export EMAIL_HOST_USER=debug@example.com; \
-	export EMAIL_USE_TLS=true
+	export EMAIL_USE_TLS=true; \
+	export FEATURE_ENFORCE_STAFF_SSO_ENABLED=true
+
 
 debug_celery_worker:
 	$(DEBUG_SET_ENV_VARS); celery -A conf worker -l info

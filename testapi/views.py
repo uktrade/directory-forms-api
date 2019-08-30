@@ -32,7 +32,9 @@ class SubmissionsTestAPIView(RetrieveAPIView):
             if submission.meta['action_name'] == 'pardot':
                 if submission.data['email'] == email_address:
                     results.append(self.data_and_meta(submission))
-            if submission.meta['action_name'] in ['gov-notify', 'zendesk']:
+            if submission.meta['action_name'] in [
+                    'gov-notify-email', 'zendesk'
+                    ]:
                 if submission.meta['email_address'] == email_address:
                     results.append(self.data_and_meta(submission))
             if submission.meta['action_name'] == 'email':

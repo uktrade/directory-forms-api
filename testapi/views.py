@@ -5,6 +5,12 @@ from rest_framework.response import Response
 
 from client.authentication import ClientSenderIdAuthentication
 from submission.models import Submission
+from submission.constants import (
+    ACTION_NAME_EMAIL,
+    ACTION_NAME_GOV_NOTIFY_EMAIL,
+    ACTION_NAME_PARDOT,
+    ACTION_NAME_ZENDESK,
+)
 
 
 class SubmissionsTestAPIView(RetrieveAPIView):
@@ -29,15 +35,13 @@ class SubmissionsTestAPIView(RetrieveAPIView):
     def get_submissions(self, email_address):
         results = []
         for submission in self.queryset.all():
-            if submission.meta['action_name'] == 'pardot':
+            if submission.meta['action_name'] == ACTION_NAME_PARDOT:
                 if submission.data['email'] == email_address:
                     results.append(self.data_and_meta(submission))
-            if submission.meta['action_name'] in [
-                    'gov-notify-email', 'zendesk'
-                    ]:
+            if submission.meta['action_name'] in [ACTION_NAME_GOV_NOTIFY_EMAIL, ACTION_NAME_ZENDESK]:
                 if submission.meta['email_address'] == email_address:
                     results.append(self.data_and_meta(submission))
-            if submission.meta['action_name'] == 'email':
+            if submission.meta['action_name'] == ACTION_NAME_EMAIL:
                 if email_address in submission.meta['recipients']:
                     results.append(self.data_and_meta(submission))
         return results

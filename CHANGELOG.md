@@ -4,10 +4,11 @@
 
 ### Implemented enhancements
 - No ticket - Improve label of client model fields in django admin
+- No ticket - update gov-notify sumbission type in testapi
 
 ### Fixed bugs:
-- no ticket - Upgrade django to 1.11.23 to fix vulnerability
-- no ticker - turn off staff sso enforcement on local dev
+- No ticket - Upgrade django to 1.11.23 to fix vulnerability
+- No ticket - turn off staff sso enforcement on local dev
 
 ## [2019.08.12](https://github.com/uktrade/directory-forms-api/releases/tag/2019.08.12)
 [Full Changelog](https://github.com/uktrade/directory-forms-api/compare/2019.07.09...2019.08.12)

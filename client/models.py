@@ -11,12 +11,14 @@ import core.helpers
 
 class Client(core.helpers.TimeStampedModel):
     identifier = models.UUIDField(
+        verbose_name='Sender ID',
         max_length=150,
         unique=True,
         default=uuid.uuid4,
         primary_key=True,
     )
     access_key = encrypt(models.CharField(
+        verbose_name='API key',
         max_length=128,
         default=partial(get_random_string, length=64),
     ))

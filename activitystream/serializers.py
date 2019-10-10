@@ -1,5 +1,7 @@
 from rest_framework import serializers
 
+from client.models import Client
+
 
 class SubmissionSerializer(serializers.Serializer):
 
@@ -34,9 +36,8 @@ class SenderSerializer(serializers.Serializer):
         }
 
 
-class ClientSerializer(serializers.Serializer):
-    def to_representation(self, obj):
-        return {
-            'name': obj.name,
-            'is_active': obj.is_active,
-        }
+class ClientSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Client
+        fields = ['name', 'is_active']

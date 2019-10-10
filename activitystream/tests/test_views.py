@@ -182,12 +182,13 @@ def test_lists_sent_submissions_in_stream(api_client, erp_zendesk_payload, email
     items = response.json()['orderedItems']
 
     id_prefix = 'dit:directory:forms:api:Submission:'
+    id_prefix_sender = 'dit:directory:forms:api:Sender:'
     i = 0
     for submission in Submission.objects.all().order_by('id'):
         assert submission_attribute(items[i], 'form_url') == submission.form_url
         assert submission_attribute(items[i], 'id') == id_prefix + str(submission.id)
         assert submission_attribute(items[i], 'content') == submission.data
-        assert submission_attribute(items[i], 'sender')['id'] == submission.sender.id
+        assert submission_attribute(items[i], 'sender')['id'] == id_prefix_sender + str(submission.sender.id)
         assert submission_attribute(items[i], 'sender')['email_address'] == submission.sender.email_address
         assert submission_attribute(items[i], 'sender')['is_blacklisted'] == submission.sender.is_blacklisted
         assert submission_attribute(items[i], 'sender')['is_whitelisted'] == submission.sender.is_whitelisted

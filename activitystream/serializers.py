@@ -27,7 +27,7 @@ class SubmissionSerializer(serializers.Serializer):
 class SenderSerializer(serializers.Serializer):
     def to_representation(self, obj):
         return {
-            'id': obj.id,
+            'id': 'dit:directory:forms:api:Sender:' + str(obj.id),
             'email_address': obj.email_address,
             'is_blacklisted': obj.is_blacklisted,
             'is_whitelisted': obj.is_whitelisted,

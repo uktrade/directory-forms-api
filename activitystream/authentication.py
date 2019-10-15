@@ -34,7 +34,7 @@ class ActivityStreamAuthentication(BaseAuthentication):
         try:
             hawk_receiver = authorise(request)
         except HawkFail as e:
-            logger.warning('Failed authentication {e}'.format(e=e))
+            logger.warning(f'Failed authentication {e}')
             raise AuthenticationFailed(INCORRECT_CREDENTIALS_MESSAGE)
 
         return (None, hawk_receiver)

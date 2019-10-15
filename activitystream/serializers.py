@@ -7,10 +7,7 @@ class SubmissionSerializer(serializers.Serializer):
 
     def to_representation(self, obj):
         return {
-            'id': (
-                'dit:directory:forms:api:Submission:' + str(obj.id) +
-                ':Update'
-            ),
+            'id': f'dit:directory:forms:api:Submission:{obj.id}:Update',
             'type': 'Update',
             'created': obj.created.isoformat('T'),
             'object': {

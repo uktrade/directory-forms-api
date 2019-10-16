@@ -43,7 +43,9 @@ DEBUG_SET_ENV_VARS := \
 	export CELERY_ALWAYS_EAGER=true; \
 	export AUTHBROKER_CLIENT_ID=debug; \
 	export AUTHBROKER_CLIENT_SECRET=debug; \
-	export STAFF_SSO_AUTHBROKER_URL=https://test.com
+	export STAFF_SSO_AUTHBROKER_URL=https://test.com; \
+	export ACTIVITY_STREAM_ACCESS_KEY_ID=123-id-key; \
+	export ACTIVITY_STREAM_SECRET_ACCESS_KEY=123-secret-key
 
 TEST_SET_ENV_VARS := \
 	export ZENDESK_EMAIL=debug@example.com; \

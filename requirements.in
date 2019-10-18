@@ -22,3 +22,4 @@ notifications-python-client
 directory-components==3.5.0
 urllib3>=1.24.2,<2.0.0
 django-admin-ip-restrictor==1.0.0
+django-ratelimit==2.0

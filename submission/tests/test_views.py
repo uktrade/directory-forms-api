@@ -2,12 +2,12 @@ from unittest import mock
 
 import pytest
 from rest_framework.test import APIClient
-
 from django.urls import reverse
 
 from client.tests.factories import ClientFactory
 from submission.tests import factories
 from submission import models
+
 
 
 @pytest.fixture
@@ -148,6 +148,7 @@ def test_generic_form_submission_submit_whitelisted(mock_send, api_client):
             'recipients': ['foo@bar.com'],
             'subject': 'Hello',
             'reply_to': [sender.email_address],
+            'ip_address': ['192.168.999.1234'],
         }
     }
     response = api_client.post(
@@ -333,3 +334,17 @@ def test_pardot_action(mock_delay, api_client, pardot_action_payload):
         payload=pardot_action_payload['data'],
         submission_id=models.Submission.objects.last().pk,
     )
+
+
+@pytest.mark.django_db
+@mock.patch('submission.helpers.send_email')
+def test_email_action_rate_limit_exceeded(mock_email, api_client, email_action_payload):
+    for i in range(10):
+        response = api_client.post(
+            reverse('api:submission'),
+            data=email_action_payload,
+            format='json'
+        )
+        print(response.status_code)
+        print(response.json())
+        print(models.Submission.objects.all().count())

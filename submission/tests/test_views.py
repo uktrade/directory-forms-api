@@ -9,7 +9,6 @@ from submission.tests import factories
 from submission import models
 
 
-
 @pytest.fixture
 def user():
     return ClientFactory()

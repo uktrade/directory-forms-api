@@ -14,7 +14,7 @@ class SubmissionCreateAPIView(CreateAPIView):
     def perform_create(self, serializer):
         super().perform_create(serializer)
         rate_limited = is_ratelimited(self.request, group='submission', key='ip', rate='1/h')
-        if  rate_limited:
+        if not rate_limited:
             tasks.execute_for_submission(serializer.instance)
         else:
             if serializer.instance.sender:

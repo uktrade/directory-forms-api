@@ -375,4 +375,4 @@ def test_email_action_rate_limit_exceeded(mock_email, api_client, gov_notify_ema
     assert mock_email.call_count == 5
     black_listed_sender = models.Sender.objects.get(email_address='notify-user@example.com')
     assert black_listed_sender.is_blacklisted
-    assert black_listed_sender.blacklisted_reason == constants.BLACKLISTED_REASON_CHOICES[1][0]
+    assert black_listed_sender.blacklisted_reason == 'IP'

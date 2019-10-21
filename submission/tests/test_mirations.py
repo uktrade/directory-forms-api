@@ -66,6 +66,6 @@ def test_update_blacklist_reason(migration):
     assert post_sender_2.is_blacklisted is True
     assert post_sender_3.is_blacklisted is False
 
-    assert post_sender_1.blacklisted_reason == BLACKLISTED_REASON_CHOICES[0][0]
-    assert post_sender_2.blacklisted_reason == BLACKLISTED_REASON_CHOICES[0][0]
+    assert post_sender_1.blacklisted_reason == 'MA'
+    assert post_sender_2.blacklisted_reason == 'MA'
     assert post_sender_3.blacklisted_reason is None

@@ -9,7 +9,6 @@ from client.authentication import ClientSenderIdAuthentication
 from ratelimit.utils import is_ratelimited
 
 from django.http.response import HttpResponse
-from django.http import HttpResponseForbidden
 
 
 class Ratelimited(PermissionDenied):
@@ -48,10 +47,12 @@ class SubmissionCreateAPIView(SubmissionRateLimitMixin, CreateAPIView):
         tasks.execute_for_submission(serializer.instance)
 
     def dispatch(self, request, *args, **kwargs):
+        response = super().dispatch(request, *args, **kwargs)
         try:
-            return super().dispatch(request, *args, **kwargs)
+            response.render()
         except Exception as e:
             return self.exception_handler(e)
+        return response
 
     def exception_handler(self, exc):
         if isinstance(exc, Ratelimited):

@@ -3,4 +3,5 @@ ACTION_NAME_EMAIL = 'email'
 ACTION_NAME_GOV_NOTIFY_EMAIL = 'gov-notify-email'
 ACTION_NAME_GOV_NOTIFY_LETTER = 'gov-notify-letter'
 ACTION_NAME_PARDOT = 'pardot'
-BLACKLISTED_REASON_CHOICES = [('MA', 'Manual'), ('IP', 'IP Restricted')]
+IP_RESTRICTED = 'IP'
+BLACKLISTED_REASON_CHOICES = [('MA', 'Manual'), (IP_RESTRICTED, 'IP Restricted')]

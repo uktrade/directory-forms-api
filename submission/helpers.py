@@ -1,6 +1,7 @@
 import requests
 
 from notifications_python_client import NotificationsAPIClient
+import ratelimit.utils
 from zenpy import Zenpy
 from zenpy.lib.api_objects import CustomField, Ticket, User as ZendeskUser
 
@@ -129,6 +130,8 @@ def get_sender_email_address(submission_meta):
         return None
 
 
-def get_request_with_sender_ip(submission):
-    if submission.meta.get('sender_ip_address'):
-        return RequestFactory().get('/', REMOTE_ADDR=submission.meta['sender_ip_address'])
+def is_ratelimited(ip_address):
+    request = RequestFactory().get('/', REMOTE_ADDR=ip_address)
+    return ratelimit.utils.is_ratelimited(
+        request=request, group='submission', key='ip', rate=settings.RATELIMIT_RATE, increment=True
+    )

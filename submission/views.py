@@ -47,7 +47,13 @@ class SubmissionCreateAPIView(SubmissionRateLimitMixin, CreateAPIView):
         super().ratelimit_check(serializer)
         tasks.execute_for_submission(serializer.instance)
 
-    def handler403(request, exception=None):
-        if isinstance(exception, Ratelimited):
+    def dispatch(self, request, *args, **kwargs):
+        try:
+            return super().dispatch(request, *args, **kwargs)
+        except Exception as e:
+            return self.exception_handler(e)
+
+    def exception_handler(self, exc):
+        if isinstance(exc, Ratelimited):
             return HttpResponse('Request blocked by ratelimit', status=429)
-        return HttpResponseForbidden('Forbidden')
+        return super().handle_exception(exc)

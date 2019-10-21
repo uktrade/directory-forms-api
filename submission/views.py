@@ -4,7 +4,7 @@ from rest_framework.exceptions import PermissionDenied
 from django.conf import settings
 
 from submission import serializers, tasks, helpers
-from submission.constants import BLACKLISTED_REASON_CHOICES, RATE_LIMIT_ERROR
+from submission.constants import BLACKLISTED_REASON_CHOICES
 from client.authentication import ClientSenderIdAuthentication
 from ratelimit.utils import is_ratelimited
 

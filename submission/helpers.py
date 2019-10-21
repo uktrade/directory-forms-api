@@ -128,6 +128,7 @@ def get_sender_email_address(submission_meta):
     elif action_name == constants.ACTION_NAME_GOV_NOTIFY_LETTER:
         return None
 
+
 def get_request_with_sender_ip(submission):
     if submission.meta.get('sender_ip_address'):
         return RequestFactory().get('/', REMOTE_ADDR=submission.meta['sender_ip_address'])

@@ -360,7 +360,7 @@ def test_email_action_rate_limit_not_exceeded(mock_email, api_client, gov_notify
 @pytest.mark.django_db
 @mock.patch('submission.tasks.send_gov_notify_email.delay')
 def test_email_action_rate_limit_exceeded(mock_email, api_client, gov_notify_email_action_payload, settings):
-    settings.RATELIMIT_RATE = '5/m'
+    settings.RATELIMIT_RATE = '5/h'
     for i in range(25):
         response = api_client.post(
             reverse('api:submission'),

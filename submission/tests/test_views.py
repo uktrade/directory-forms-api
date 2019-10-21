@@ -371,7 +371,6 @@ def test_email_action_rate_limit_exceeded(mock_email, api_client, gov_notify_ema
             assert response.status_code == 201
         else:
             assert response.status_code == 403
-            assert response.json()['detail'] == constants.RATE_LIMIT_ERROR
 
     assert mock_email.call_count == 5
     black_listed_sender = models.Sender.objects.get(email_address='notify-user@example.com')

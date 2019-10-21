@@ -76,3 +76,4 @@ authbroker_urls = [
 
 if settings.FEATURE_ENFORCE_STAFF_SSO_ENABLED:
     urlpatterns = [url('^', include(authbroker_urls))] + urlpatterns
+

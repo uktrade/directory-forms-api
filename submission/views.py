@@ -8,6 +8,13 @@ from submission.constants import BLACKLISTED_REASON_CHOICES, RATE_LIMIT_ERROR
 from client.authentication import ClientSenderIdAuthentication
 from ratelimit.utils import is_ratelimited
 
+from django.http.response import HttpResponse
+from django.http import HttpResponseForbidden
+
+
+class Ratelimited(PermissionDenied):
+    pass
+
 
 class SubmissionRateLimitMixin:
 
@@ -17,11 +24,10 @@ class SubmissionRateLimitMixin:
         if hasattr(serializer, 'instance.sender') and serializer.instance.sender.is_blacklisted:
             return
 
-        request_sender_ip = helpers.get_request_with_sender_ip(serializer.instance)
-        if request_sender_ip:
-            print(settings.RATELIMIT_RATE)
+        request = helpers.get_request_with_sender_ip(serializer.instance)
+        if request:
             rate_limited = is_ratelimited(
-                request_sender_ip, group='submission', key='ip',
+                request, group='submission', key='ip',
                 rate=settings.RATELIMIT_RATE, increment=True
             )
 
@@ -29,7 +35,7 @@ class SubmissionRateLimitMixin:
             serializer.instance.sender.is_blacklisted = True
             serializer.instance.sender.blacklisted_reason = BLACKLISTED_REASON_CHOICES[1][0]
             serializer.instance.sender.save()
-            raise PermissionDenied(detail=RATE_LIMIT_ERROR)
+            raise Ratelimited()
 
 
 class SubmissionCreateAPIView(SubmissionRateLimitMixin, CreateAPIView):
@@ -40,3 +46,8 @@ class SubmissionCreateAPIView(SubmissionRateLimitMixin, CreateAPIView):
         super().perform_create(serializer)
         super().ratelimit_check(serializer)
         tasks.execute_for_submission(serializer.instance)
+
+    def handler403(request, exception=None):
+        if isinstance(exception, Ratelimited):
+            return HttpResponse('Request blocked by ratelimit', status=429)
+        return HttpResponseForbidden('Forbidden')

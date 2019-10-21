@@ -368,5 +368,3 @@ ACTIVITY_STREAM_SECRET_ACCESS_KEY = env.str('ACTIVITY_STREAM_SECRET_ACCESS_KEY')
 # Set RATELIMIT_ENABLE to enable/disable
 # the number of requests per unit time allowed in (s/m/h/d)
 RATELIMIT_RATE = env.str('RATELIMIT_RATE', '15/h')
-
-

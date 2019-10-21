@@ -14,7 +14,7 @@ class SubmissionRateLimitMixin:
     def ratelimit_check(self, serializer):
         rate_limited = False
 
-        if hasattr(serializer, 'instance.sender.is_blacklisted') and serializer.instance.sender.is_blacklisted:
+        if hasattr(serializer, 'instance.sender') and serializer.instance.sender.is_blacklisted:
             return
 
         request_sender_ip = helpers.get_request_with_sender_ip(serializer.instance)

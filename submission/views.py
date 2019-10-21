@@ -19,6 +19,7 @@ class SubmissionRateLimitMixin:
 
         request_sender_ip = helpers.get_request_with_sender_ip(serializer.instance)
         if request_sender_ip:
+            print(settings.RATELIMIT_RATE)
             rate_limited = is_ratelimited(
                 request_sender_ip, group='submission', key='ip',
                 rate=settings.RATELIMIT_RATE, increment=True

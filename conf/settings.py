@@ -304,6 +304,7 @@ ALLOWED_ADMIN_IP_RANGES = env.list('ALLOWED_ADMIN_IP_RANGES', default=[])
 SIGAUTH_URL_NAMES_WHITELIST = [
     'database',  # health check
     'ping',  # health check
+    'activity-stream',  # activity stream
 ]
 
 # Zendesk
@@ -358,7 +359,14 @@ GOV_NOTIFY_LETTER_API_KEY = env.str('GOV_NOTIFY_LETTER_API_KEY')
 # Test API
 FEATURE_TEST_API_ENABLED = env.bool('FEATURE_TEST_API_ENABLED', False)
 
+
+# Activity Stream API
+ACTIVITY_STREAM_ACCESS_KEY_ID = env.str('ACTIVITY_STREAM_ACCESS_KEY_ID')
+ACTIVITY_STREAM_SECRET_ACCESS_KEY = env.str('ACTIVITY_STREAM_SECRET_ACCESS_KEY')
+
 # Ratelimit config
 # Set RATELIMIT_ENABLE to enable/disable
 # the number of requests per unit time allowed in (s/m/h/d)
 RATELIMIT_RATE = env.str('RATELIMIT_RATE', '15/h')
+
+

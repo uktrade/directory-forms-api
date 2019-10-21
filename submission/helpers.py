@@ -131,6 +131,10 @@ def get_sender_email_address(submission_meta):
 
 
 def is_ratelimited(ip_address):
+    # Not every action may have an IP address also if the client isn't setting the IP address
+    # we need to let the request through to maintain backward compatibility
+    if not ip_address:
+        return False
     request = RequestFactory().get('/', REMOTE_ADDR=ip_address)
     return ratelimit.utils.is_ratelimited(
         request=request, group='submission', key='ip', rate=settings.RATELIMIT_RATE, increment=True

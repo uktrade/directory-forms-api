@@ -30,6 +30,7 @@ class SenderSerializer(serializers.Serializer):
             'email_address': obj.email_address,
             'is_blacklisted': obj.is_blacklisted,
             'is_whitelisted': obj.is_whitelisted,
+            'blacklisted_reason': obj.blacklisted_reason,
         }
 
 

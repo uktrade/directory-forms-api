@@ -1,8 +1,6 @@
 from rest_framework.generics import CreateAPIView
 from rest_framework.response import Response
 
-from django.conf import settings
-
 from submission import constants, helpers, serializers, tasks
 from client.authentication import ClientSenderIdAuthentication
 

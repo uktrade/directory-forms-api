@@ -1,8 +1,8 @@
 import pytest
 from copy import deepcopy
 
-from submission.tests import factories
 from submission.constants import BLACKLISTED_REASON_CHOICES
+
 
 @pytest.mark.django_db
 def test_set_gov_notify_email(

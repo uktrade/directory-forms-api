@@ -110,6 +110,4 @@ class SubmissionModelSerializer(serializers.ModelSerializer):
             data['meta']['action_name'] = (
                 constants.ACTION_NAME_GOV_NOTIFY_EMAIL
             )
-        if hasattr(self, 'request'):
-            data['meta']['ip_address'] = self.request.META['REMOTE_ADDR']
         return data

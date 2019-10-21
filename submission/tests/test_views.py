@@ -6,7 +6,7 @@ from django.urls import reverse
 
 from client.tests.factories import ClientFactory
 from submission.tests import factories
-from submission import models
+from submission import models, constants
 
 
 @pytest.fixture
@@ -37,6 +37,7 @@ def test_generic_form_submission_submit(mock_delay, api_client):
             'recipients': ['foo@bar.com'],
             'subject': 'Hello',
             'reply_to': ['reply@example.com'],
+            'sender_ip_address': '252.252.928.233'
         }
     }
     response = api_client.post(
@@ -336,14 +337,43 @@ def test_pardot_action(mock_delay, api_client, pardot_action_payload):
 
 
 @pytest.mark.django_db
-@mock.patch('submission.helpers.send_email')
-def test_email_action_rate_limit_exceeded(mock_email, api_client, email_action_payload):
-    for i in range(10):
+@mock.patch('submission.tasks.send_gov_notify_email.delay')
+def test_email_action_rate_limit_not_exceeded(mock_email, api_client, gov_notify_email_action_payload, settings):
+    settings.RATELIMIT_RATE = '100000/s'
+
+    for i in range(25):
         response = api_client.post(
             reverse('api:submission'),
-            data=email_action_payload,
+            data=gov_notify_email_action_payload,
             format='json'
         )
-        print(response.status_code)
-        print(response.json())
-        print(models.Submission.objects.all().count())
+        assert response.status_code == 201
+
+    submissions = models.Submission.objects.all()
+
+    assert submissions.count() == 25
+    non_black_listed_sender = models.Sender.objects.get(email_address='notify-user@example.com')
+    assert non_black_listed_sender.is_blacklisted is False
+    assert non_black_listed_sender.blacklisted_reason is None
+
+
+@pytest.mark.django_db
+@mock.patch('submission.tasks.send_gov_notify_email.delay')
+def test_email_action_rate_limit_exceeded(mock_email, api_client, gov_notify_email_action_payload, settings):
+    settings.RATELIMIT_RATE = '5/m'
+    for i in range(25):
+        response = api_client.post(
+            reverse('api:submission'),
+            data=gov_notify_email_action_payload,
+            format='json'
+        )
+        if i < 5:
+            assert response.status_code == 201
+        else:
+            assert response.status_code == 403
+            assert response.json()['detail'] == constants.RATE_LIMIT_ERROR
+
+    assert mock_email.call_count == 5
+    black_listed_sender = models.Sender.objects.get(email_address='notify-user@example.com')
+    assert black_listed_sender.is_blacklisted
+    assert black_listed_sender.blacklisted_reason == constants.BLACKLISTED_REASON_CHOICES[1][0]

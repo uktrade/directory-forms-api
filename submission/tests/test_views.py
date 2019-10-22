@@ -6,7 +6,7 @@ from django.urls import reverse
 
 from client.tests.factories import ClientFactory
 from submission.tests import factories
-from submission import models, constants
+from submission import models
 
 
 @pytest.fixture

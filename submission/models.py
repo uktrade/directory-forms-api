@@ -2,6 +2,7 @@ from django.contrib.postgres.fields import JSONField
 from django.db import models
 
 import core.helpers
+from submission import constants
 
 
 class Submission(core.helpers.TimeStampedModel):
@@ -34,12 +35,19 @@ class Submission(core.helpers.TimeStampedModel):
     def funnel(self):
         return self.meta.get('funnel_steps', [])
 
+    @property
+    def ip_address(self):
+        return self.meta.get('sender_ip_address')
+
 
 class Sender(core.helpers.TimeStampedModel):
 
     email_address = models.EmailField(unique=True)
     is_blacklisted = models.BooleanField(default=False)
     is_whitelisted = models.BooleanField(default=False)
+    blacklisted_reason = models.CharField(
+        max_length=15, choices=constants.BLACKLISTED_REASON_CHOICES, blank=True, null=True
+    )
 
     def __str__(self):
         return self.email_address
@@ -47,3 +55,8 @@ class Sender(core.helpers.TimeStampedModel):
     @property
     def is_enabled(self):
         return self.is_whitelisted or not self.is_blacklisted
+
+    def blacklist(self, reason):
+        self.is_blacklisted = True
+        self.blacklisted_reason = reason
+        self.save()

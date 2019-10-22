@@ -192,6 +192,7 @@ def test_lists_sent_submissions_in_stream(api_client, erp_zendesk_payload, email
         assert submission_attribute(items[i], 'sender')['email_address'] == submission.sender.email_address
         assert submission_attribute(items[i], 'sender')['is_blacklisted'] == submission.sender.is_blacklisted
         assert submission_attribute(items[i], 'sender')['is_whitelisted'] == submission.sender.is_whitelisted
+        assert submission_attribute(items[i], 'sender')['blacklisted_reason'] == submission.sender.blacklisted_reason
         assert submission_attribute(items[i], 'client')['name'] == submission.client.name
         assert submission_attribute(items[i], 'client')['is_active'] == submission.client.is_active
         assert submission_attribute(items[i], 'meta') == submission.meta

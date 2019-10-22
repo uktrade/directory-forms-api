@@ -6,6 +6,7 @@
 - No ticket - Improve label of client model fields in django admin
 - No ticket - update gov-notify sumbission type in testapi
 - TT-1922 - activity-stream-integration
+- TT-1975 - implement rate-limiting
 
 ### Fixed bugs:
 - No ticket - Upgrade django to 1.11.23 to fix vulnerability

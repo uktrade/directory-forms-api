@@ -1,11 +1,13 @@
 import requests
 
 from notifications_python_client import NotificationsAPIClient
+import ratelimit.utils
 from zenpy import Zenpy
 from zenpy.lib.api_objects import CustomField, Ticket, User as ZendeskUser
 
 from django.conf import settings
 from django.core.mail import EmailMultiAlternatives
+from django.test.client import RequestFactory
 
 from submission import constants
 
@@ -126,3 +128,14 @@ def get_sender_email_address(submission_meta):
         return None
     elif action_name == constants.ACTION_NAME_GOV_NOTIFY_LETTER:
         return None
+
+
+def is_ratelimited(ip_address):
+    # Not every action may have an IP address also if the client isn't setting the IP address
+    # we need to let the request through to maintain backward compatibility
+    if not ip_address:
+        return False
+    request = RequestFactory().get('/', REMOTE_ADDR=ip_address)
+    return ratelimit.utils.is_ratelimited(
+        request=request, group='submission', key='ip', rate=settings.RATELIMIT_RATE, increment=True
+    )

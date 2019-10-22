@@ -7,7 +7,7 @@ from django.db import migrations
 def update_blacklist_reason(apps, schema_editor):
     Sender = apps.get_model('submission', 'Sender')
     for sender in Sender.objects.filter(is_blacklisted=True):
-        sender.blacklisted_reason =='MA'
+        sender.blacklisted_reason = 'MA'
         sender.save()
 
 

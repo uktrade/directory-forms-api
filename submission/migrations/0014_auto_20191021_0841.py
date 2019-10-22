@@ -3,13 +3,11 @@
 from __future__ import unicode_literals
 from django.db import migrations
 
-from submission.constants import BLACKLISTED_REASON_CHOICES
-
 
 def update_blacklist_reason(apps, schema_editor):
     Sender = apps.get_model('submission', 'Sender')
     for sender in Sender.objects.filter(is_blacklisted=True):
-        sender.blacklisted_reason = BLACKLISTED_REASON_CHOICES[0][0]
+        sender.blacklisted_reason =='MA'
         sender.save()
 
 

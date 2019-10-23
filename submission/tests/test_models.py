@@ -35,3 +35,14 @@ def test_sender():
     sender = factories.SenderFactory()
 
     assert str(sender) == sender.email_address
+
+
+@pytest.mark.django_db
+def test_submission_ip_no_sender(submission):
+    assert submission.ip_address is None
+
+
+@pytest.mark.django_db
+def test_submission_ip(submission):
+    submission.meta['sender'] = {'email_address': 'test@tdfsf.com', 'ip_address': '192.893.21.1'}
+    assert submission.ip_address == '192.893.21.1'

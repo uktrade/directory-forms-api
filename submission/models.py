@@ -37,7 +37,10 @@ class Submission(core.helpers.TimeStampedModel):
 
     @property
     def ip_address(self):
-        return self.meta.get('sender_ip_address')
+        sender = self.meta.get('sender')
+        if sender:
+            return sender.get('ip_address')
+        return
 
 
 class Sender(core.helpers.TimeStampedModel):

@@ -112,7 +112,11 @@ def gov_notify_email_action_payload():
             'action_name': constants.ACTION_NAME_GOV_NOTIFY_EMAIL,
             'template_id': '213123',
             'email_address': 'notify-user@example.com',
-            'sender_ip_address': '252.252.928.233'
+            'sender': {
+                'country_code': None,
+                'email_address': 'erp+testform@jhgk.com',
+                'ip_address': '252.252.928.233'
+            },
         }
     }
 

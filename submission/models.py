@@ -32,11 +32,13 @@ class Submission(core.helpers.TimeStampedModel):
         return self.meta.get('action_name', 'unknown action')
 
     @property
-    def type(self):
-        if self.form_url == 'ERP_FORM_URL':
-            return 'ExcepionalReviewProcess'
+    def submission_type(self):
+        # This is to allow filtering in activity stream
+        # Temp solution we should move this to a more generic solution
+        if self.client:
+            return self.client.name.join(self.client.name.split())
         else:
-            return 'GeneralSubmission'
+            return 'Unknown'
 
     @property
     def funnel(self):

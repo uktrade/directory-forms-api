@@ -11,6 +11,7 @@ from django.utils import timezone
 
 from submission.models import Submission
 from submission.tests.factories import SubmissionFactory
+from activitystream.serializers import SubmissionSerializer
 
 URL = 'http://testserver' + reverse('activity-stream')
 URL_INCORRECT_DOMAIN = 'http://incorrect' + reverse('activity-stream')
@@ -183,24 +184,28 @@ def test_lists_sent_submissions_in_stream(api_client, erp_zendesk_payload, email
 
     id_prefix = 'dit:directoryFormsApi:Submission:'
     id_prefix_sender = 'dit:directoryFormsApi:Sender:'
+
     i = 0
     for submission in Submission.objects.all().order_by('id'):
-        assert submission_attribute(items[i], 'form_url') == submission.form_url
+        serializer = SubmissionSerializer(submission)
         assert submission_attribute(items[i], 'id') == id_prefix + str(submission.id)
-        assert submission_attribute(items[i], 'content') == submission.data
-        assert submission_attribute(items[i], 'sender')['id'] == id_prefix_sender + str(submission.sender.id)
-        assert submission_attribute(items[i], 'sender')['email_address'] == submission.sender.email_address
-        assert submission_attribute(items[i], 'sender')['is_blacklisted'] == submission.sender.is_blacklisted
-        assert submission_attribute(items[i], 'sender')['is_whitelisted'] == submission.sender.is_whitelisted
-        assert submission_attribute(items[i], 'sender')['blacklisted_reason'] == submission.sender.blacklisted_reason
-        assert submission_attribute(items[i], 'client')['name'] == submission.client.name
-        assert submission_attribute(items[i], 'client')['is_active'] == submission.client.is_active
-        assert submission_attribute(items[i], 'meta') == submission.meta
+        assert items[i]['actor'] == serializer.data['actor']
+        assert items[i]['actor']['id'] == id_prefix_sender + str(submission.sender.id)
+
+        assert items[i]['object'] == serializer.data['object']
+        assert submission_attribute(items[i], 'dit:directoryFormsApi:Submission:Meta') == submission.meta
+        assert submission_attribute(items[i], 'dit:directoryFormsApi:Submission:Data') == submission.data
+        assert submission_attribute(items[i], 'attributedTo')['type'] == (
+                'dit:directoryFormsApi:SubmissionAction:' + submission.action_name
+        )
+        assert submission_attribute(items[i], 'attributedTo')['id'] == (
+                'dit:directoryFormsApi:SubmissionType:' + submission.submission_type
+        )
         i += 1
 
-    assert items[0]['created'] == '2019-09-08T12:00:01+00:00'
-    assert items[1]['created'] == '2019-09-08T12:00:02+00:00'
-    assert items[2]['created'] == '2019-09-08T12:00:03+00:00'
+    assert items[0]['published'] == '2019-09-08T12:00:01+00:00'
+    assert items[1]['published'] == '2019-09-08T12:00:02+00:00'
+    assert items[2]['published'] == '2019-09-08T12:00:03+00:00'
 
 
 @pytest.mark.django_db
@@ -233,6 +238,7 @@ def test_pagination(api_client, django_assert_num_queries, erp_zendesk_payload, 
         Two queries to pull items 25 -> 49 due to filter being used,
         No queries on final blank page
     """
+
     with django_assert_num_queries(103):
         while next_url:
             num_pages += 1
@@ -250,4 +256,4 @@ def test_pagination(api_client, django_assert_num_queries, erp_zendesk_payload, 
     assert num_pages == 3
     assert len(items) == 50
     assert len(set([item['id'] for item in items])) == 50  # All unique
-    assert submission_attribute(items[49], 'form_url') == 'submission_24'
+    assert submission_attribute(items[49], 'name') == 'submission_24'

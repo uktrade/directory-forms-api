@@ -7,12 +7,12 @@ class SubmissionSerializer(serializers.Serializer):
 
     def to_representation(self, obj):
         return {
-            'id': f'dit:directory:forms:api:Submission:{obj.id}:Create',
-            'type': 'Created',
+            'id': f'dit:directoryFormsApi:Submission:{obj.id}:Create',
+            'type': 'Create',
             'created': obj.created.isoformat('T'),
             'object': {
-                'type': 'forms:api:Submission',
-                'id': f'dit:directory:forms:api:Submission:{obj.id}',
+                'type': 'dit:directoryFormsApi:Submission',
+                'id': f'dit:directoryFormsApi:Submission:{obj.id}',
                 'sender': SenderSerializer(obj.sender).data,
                 'client': ClientSerializer(obj.client).data,
                 'meta': obj.meta,
@@ -26,7 +26,7 @@ class SubmissionSerializer(serializers.Serializer):
 class SenderSerializer(serializers.Serializer):
     def to_representation(self, obj):
         return {
-            'id': f'dit:directory:forms:api:Sender:{obj.id}',
+            'id': f'dit:directoryFormsApi:Sender:{obj.id}',
             'email_address': obj.email_address,
             'is_blacklisted': obj.is_blacklisted,
             'is_whitelisted': obj.is_whitelisted,

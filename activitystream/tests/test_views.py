@@ -181,8 +181,8 @@ def test_lists_sent_submissions_in_stream(api_client, erp_zendesk_payload, email
 
     items = response.json()['orderedItems']
 
-    id_prefix = 'dit:directory:forms:api:Submission:'
-    id_prefix_sender = 'dit:directory:forms:api:Sender:'
+    id_prefix = 'dit:directoryFormsApi:Submission:'
+    id_prefix_sender = 'dit:directoryFormsApi:Sender:'
     i = 0
     for submission in Submission.objects.all().order_by('id'):
         assert submission_attribute(items[i], 'form_url') == submission.form_url

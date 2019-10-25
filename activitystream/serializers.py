@@ -7,8 +7,8 @@ class SubmissionSerializer(serializers.Serializer):
 
     def to_representation(self, obj):
         return {
-            'id': f'dit:directoryFormsApi:Submission:{obj.id}:Create',
-            'type': 'Create',
+            'id': f'dit:directoryFormsApi:Submission:{obj.id}:published',
+            'type': 'published',
             'created': obj.created.isoformat('T'),
             'object': {
                 'type': 'dit:directoryFormsApi:Submission',

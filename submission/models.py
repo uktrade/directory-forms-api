@@ -32,6 +32,13 @@ class Submission(core.helpers.TimeStampedModel):
         return self.meta.get('action_name', 'unknown action')
 
     @property
+    def type(self):
+        if self.form_url == 'ERP_FORM_URL':
+            return 'ExcepionalReviewProcess'
+        else:
+            return 'GeneralSubmission'
+
+    @property
     def funnel(self):
         return self.meta.get('funnel_steps', [])
 

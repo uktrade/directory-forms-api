@@ -9,16 +9,21 @@ class SubmissionSerializer(serializers.Serializer):
         return {
             'id': f'dit:directoryFormsApi:Submission:{obj.id}:published',
             'type': 'published',
-            'created': obj.created.isoformat('T'),
-            'object': {
+            'published': obj.created.isoformat('T'),
+             'object': {
                 'type': 'dit:directoryFormsApi:Submission',
                 'id': f'dit:directoryFormsApi:Submission:{obj.id}',
                 'sender': SenderSerializer(obj.sender).data,
                 'client': ClientSerializer(obj.client).data,
-                'meta': obj.meta,
+                'dit:directoryFormsApi:Submission:meta': obj.meta,
                 'content': obj.data,
-                'created': obj.created,
-                'form_url': obj.form_url
+                'published': obj.created,
+                'url': obj.form_url,
+                'attributedTo': {
+                    'type': f'dit:directoryFormsApi:SubmissionAction:{obj.action_name}',
+                    'id': f'dit:directoryFormsApi:SubmissionType:{obj.type}'
+                },
+
             },
         }
 

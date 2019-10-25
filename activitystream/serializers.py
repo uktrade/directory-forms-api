@@ -13,8 +13,8 @@ class SubmissionSerializer(serializers.Serializer):
              'object': {
                 'type': 'dit:directoryFormsApi:Submission',
                 'id': f'dit:directoryFormsApi:Submission:{obj.id}',
-                'sender': SenderSerializer(obj.sender).data,
-                'client': ClientSerializer(obj.client).data,
+                'dit:directoryFormsApi:Submission:sender': SenderSerializer(obj.sender).data,
+                'dit:directoryFormsApi:Submission:client': ClientSerializer(obj.client).data,
                 'dit:directoryFormsApi:Submission:meta': obj.meta,
                 'content': obj.data,
                 'published': obj.created,

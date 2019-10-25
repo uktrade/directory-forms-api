@@ -255,4 +255,4 @@ def test_pagination(api_client, django_assert_num_queries, erp_zendesk_payload, 
     assert num_pages == 3
     assert len(items) == 50
     assert len(set([item['id'] for item in items])) == 50  # All unique
-    assert submission_attribute(items[49], 'name') == 'submission_24'
+    assert submission_attribute(items[49], 'url') == 'submission_24'

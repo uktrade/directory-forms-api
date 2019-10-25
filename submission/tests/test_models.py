@@ -46,3 +46,14 @@ def test_submission_ip_no_sender(submission):
 def test_submission_ip(submission):
     submission.meta['sender'] = {'email_address': 'test@tdfsf.com', 'ip_address': '192.893.21.1'}
     assert submission.ip_address == '192.893.21.1'
+
+
+@pytest.mark.django_db
+def test_submission_type(submission):
+    assert submission.submission_type == submission.client.name.replace(" ", "")
+
+
+@pytest.mark.django_db
+def test_submission_type_unknown(submission):
+    submission.client = None
+    assert submission.submission_type == 'Unknown'

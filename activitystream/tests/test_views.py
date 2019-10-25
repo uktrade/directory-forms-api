@@ -191,7 +191,6 @@ def test_lists_sent_submissions_in_stream(api_client, erp_zendesk_payload, email
         assert submission_attribute(items[i], 'id') == id_prefix + str(submission.id)
         assert items[i]['actor'] == serializer.data['actor']
         assert items[i]['actor']['id'] == id_prefix_sender + str(submission.sender.id)
-
         assert items[i]['object'] == serializer.data['object']
         assert submission_attribute(items[i], 'dit:directoryFormsApi:Submission:Meta') == submission.meta
         assert submission_attribute(items[i], 'dit:directoryFormsApi:Submission:Data') == submission.data

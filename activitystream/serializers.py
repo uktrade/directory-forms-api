@@ -1,41 +1,41 @@
 from rest_framework import serializers
 
-from client.models import Client
+
+DIT_NAMESPACE = 'dit:directoryFormsApi'
+DIT_SUBMISSION_NAMESPACE = f'{DIT_NAMESPACE}:Submission'
 
 
 class SubmissionSerializer(serializers.Serializer):
 
     def to_representation(self, obj):
         return {
-            'id': f'dit:directory:forms:api:Submission:{obj.id}:Update',
-            'type': 'Update',
-            'created': obj.created.isoformat('T'),
+            'id': f'{DIT_SUBMISSION_NAMESPACE}:{obj.id}:Create',
+            'type': 'Create',
+            'published': obj.created.isoformat('T'),
+            'actor': SenderSerializer(obj.sender).data,
             'object': {
-                'type': 'Submission',
-                'id': f'dit:directory:forms:api:Submission:{obj.id}',
-                'sender': SenderSerializer(obj.sender).data,
-                'client': ClientSerializer(obj.client).data,
-                'meta': obj.meta,
-                'content': obj.data,
-                'created': obj.created,
-                'form_url': obj.form_url
+                'type': f'{DIT_SUBMISSION_NAMESPACE}',
+                'id': f'{DIT_SUBMISSION_NAMESPACE}:{obj.id}',
+                f'{DIT_SUBMISSION_NAMESPACE}:Meta': obj.meta,
+                f'{DIT_SUBMISSION_NAMESPACE}:Data': obj.data,
+                'published': obj.created.isoformat('T'),
+                'url': obj.form_url,
+                'attributedTo': {
+                    'type': f'{DIT_NAMESPACE}:SubmissionAction:{obj.action_name}',
+                    'id': f'{DIT_NAMESPACE}:SubmissionType:{obj.submission_type}'
+                },
             },
         }
 
 
 class SenderSerializer(serializers.Serializer):
+
     def to_representation(self, obj):
         return {
-            'id': f'dit:directory:forms:api:Sender:{obj.id}',
-            'email_address': obj.email_address,
-            'is_blacklisted': obj.is_blacklisted,
-            'is_whitelisted': obj.is_whitelisted,
-            'blacklisted_reason': obj.blacklisted_reason,
-        }
-
-
-class ClientSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = Client
-        fields = ['name', 'is_active']
+                'type': f'{DIT_SUBMISSION_NAMESPACE}:Sender',
+                'id': f'{DIT_NAMESPACE}:Sender:{obj.id}',
+                'dit:emailAddress': obj.email_address,
+                'dit:isBlacklisted': obj.is_blacklisted,
+                'dit:isWhitelisted': obj.is_whitelisted,
+                'dit:blackListedReason': obj.blacklisted_reason,
+            }

@@ -12,6 +12,7 @@
 - No ticket - Upgrade django to 1.11.23 to fix vulnerability
 - No ticket - turn off staff sso enforcement on local dev
 - No Ticker - fix-ip-restrictor
+- TT-2066 - change activity stream Schema
 
 ## [2019.08.12](https://github.com/uktrade/directory-forms-api/releases/tag/2019.08.12)
 [Full Changelog](https://github.com/uktrade/directory-forms-api/compare/2019.07.09...2019.08.12)

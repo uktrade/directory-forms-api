@@ -32,6 +32,15 @@ class Submission(core.helpers.TimeStampedModel):
         return self.meta.get('action_name', 'unknown action')
 
     @property
+    def submission_type(self):
+        # This is to allow filtering in activity stream
+        # Temp solution we should move this to a more generic solution
+        if self.client:
+            return self.client.name.join(self.client.name.split())
+        else:
+            return 'Unknown'
+
+    @property
     def funnel(self):
         return self.meta.get('funnel_steps', [])
 

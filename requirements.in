@@ -18,7 +18,7 @@ django-cryptography==0.3.0
 zenpy==1.1.10
 celery[redis]
 cryptography==2.3
-notifications-python-client
+notifications-python-client==5.3.0
 directory-components==3.5.0
 urllib3>=1.24.2,<2.0.0
 django-admin-ip-restrictor==1.0.0

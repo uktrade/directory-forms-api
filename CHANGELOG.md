@@ -3,6 +3,15 @@
 ## Pre release
 
 ### Implemented enhancements
+
+
+### Fixed bugs
+
+
+## [2019.22.10](https://github.com/uktrade/directory-forms-api/releases/tag/2019.22.10)
+[Full Changelog](https://github.com/uktrade/directory-forms-api/compare/2019.08.12...2019.22.10)
+
+### Implemented enhancements
 - No ticket - Improve label of client model fields in django admin
 - No ticket - update gov-notify sumbission type in testapi
 - TT-1922 - activity-stream-integration

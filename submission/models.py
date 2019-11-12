@@ -36,7 +36,7 @@ class Submission(core.helpers.TimeStampedModel):
         # This is to allow filtering in activity stream
         # Temp solution we should move this to a more generic solution
         if self.client:
-            return self.client.name.join(self.client.name.split())
+            return ''.join(self.client.name.split())
         else:
             return 'Unknown'
 

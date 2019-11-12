@@ -198,7 +198,7 @@ def test_lists_sent_submissions_in_stream(api_client, erp_zendesk_payload, email
                 'dit:directoryFormsApi:SubmissionAction:' + submission.action_name
         )
         assert submission_attribute(items[i], 'attributedTo')['id'] == (
-                'dit:directoryFormsApi:SubmissionType:' + submission.submission_type
+                'dit:directoryFormsApi:SubmissionType:' + submission.client.name.replace(' ', '')
         )
         i += 1
 

@@ -3,7 +3,7 @@
 ## Pre release
 
 ### Implemented enhancements
-
+-- TT2100 fix type name error for activitystream
 
 ### Fixed bugs
 

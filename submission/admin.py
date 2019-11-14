@@ -113,11 +113,13 @@ class SenderAdmin(core.helpers.DownloadCSVMixin, admin.ModelAdmin):
         'email_address',
         'is_whitelisted',
         'is_blacklisted',
+        'blacklisted_reason',
         'get_submission_count',
     )
     list_filter = (
         'is_whitelisted',
         'is_blacklisted',
+        'blacklisted_reason',
     )
 
     csv_filename = 'senders-{timestamp}.csv'.format(

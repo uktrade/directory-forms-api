@@ -7,6 +7,7 @@ from django.views.generic import RedirectView
 from django.conf import settings
 
 import submission.views
+from activitystream.views import ActivityStreamView
 import testapi.views
 
 
@@ -62,6 +63,7 @@ urlpatterns = [
         r'^testapi/',
         include(testapi_urls, namespace='testapi', app_name='testapi')
     ),
+    url(r'^activity-stream/v1/', ActivityStreamView.as_view(), name='activity-stream'),
 ]
 
 authbroker_urls = [

@@ -87,10 +87,12 @@ WSGI_APPLICATION = 'conf.wsgi.application'
 VCAP_SERVICES = env.json('VCAP_SERVICES', {})
 
 if 'redis' in VCAP_SERVICES:
+    REDIS_CACHE_URL = VCAP_SERVICES['redis'][0]['credentials']['uri']
     REDIS_CELERY_URL = VCAP_SERVICES['redis'][0]['credentials']['uri'].replace(
         'rediss://', 'redis://'
     )
 else:
+    REDIS_CACHE_URL = env.str('REDIS_CACHE_URL', '')
     REDIS_CELERY_URL = env.str('REDIS_CELERY_URL', '')
 
 
@@ -98,6 +100,17 @@ else:
 # https://docs.djangoproject.com/en/1.9/ref/settings/#databases
 DATABASES = {
     'default': dj_database_url.config()
+}
+# Caches
+CACHES = {
+    'default': {
+        'BACKEND': 'django_redis.cache.RedisCache',
+        # separate to REDIS_CELERY_URL as needs to start with 'rediss' for SSL
+        'LOCATION': REDIS_CACHE_URL,
+        'OPTIONS': {
+            'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+        }
+    }
 }
 
 # Internationalization

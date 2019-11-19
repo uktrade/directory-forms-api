@@ -40,6 +40,7 @@ DEBUG_SET_ENV_VARS := \
 	export DEFAULT_FROM_EMAIL=debug@example.com; \
 	export FEATURE_ENFORCE_STAFF_SSO_ENABLED=false; \
 	export REDIS_CELERY_URL=redis://127.0.0.1:6379; \
+	export REDIS_CACHE_URL=redis://127.0.0.1:6379; \
 	export CELERY_ALWAYS_EAGER=true; \
 	export AUTHBROKER_CLIENT_ID=debug; \
 	export AUTHBROKER_CLIENT_SECRET=debug; \

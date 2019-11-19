@@ -3,8 +3,8 @@
 ## Pre release
 
 ### Implemented enhancements
--- TT2100 fix type name error for activitystream
-
+- TT2100 fix type name error for activitystream
+- No Ticket - configure redis for default cache 
 ### Fixed bugs
 
 

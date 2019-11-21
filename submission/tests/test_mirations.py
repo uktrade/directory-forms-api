@@ -40,3 +40,30 @@ def test_set_gov_notify_email(
 
     assert post_submission_d.data == pardot_action_payload['data']
     assert post_submission_d.meta == pardot_action_payload['meta']
+
+
+@pytest.mark.django_db
+def test_update_blacklist_reason(migration):
+    old_apps = migration.before([('submission', '0013_auto_20191017_1108')])
+    Sender = old_apps.get_model('submission', 'Sender')
+
+    sender_1 = Sender.objects.create(email_address='1@example.com', is_blacklisted=True)
+    sender_2 = Sender.objects.create(email_address='2@example.com', is_blacklisted=True)
+    sender_3 = Sender.objects.create(email_address='3@example.com', is_blacklisted=False)
+
+    new_apps = migration.apply('submission', '0014_auto_20191021_0841')
+
+    Sender = new_apps.get_model('submission', 'Sender')
+
+    post_sender_1 = Sender.objects.get(pk=sender_1.pk)
+    post_sender_2 = Sender.objects.get(pk=sender_2.pk)
+    post_sender_3 = Sender.objects.get(pk=sender_3.pk)
+
+    assert Sender.objects.count() == 3
+    assert post_sender_1.is_blacklisted is True
+    assert post_sender_2.is_blacklisted is True
+    assert post_sender_3.is_blacklisted is False
+
+    assert post_sender_1.blacklisted_reason == 'MA'
+    assert post_sender_2.blacklisted_reason == 'MA'
+    assert post_sender_3.blacklisted_reason is None

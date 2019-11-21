@@ -87,10 +87,12 @@ WSGI_APPLICATION = 'conf.wsgi.application'
 VCAP_SERVICES = env.json('VCAP_SERVICES', {})
 
 if 'redis' in VCAP_SERVICES:
+    REDIS_CACHE_URL = VCAP_SERVICES['redis'][0]['credentials']['uri']
     REDIS_CELERY_URL = VCAP_SERVICES['redis'][0]['credentials']['uri'].replace(
         'rediss://', 'redis://'
     )
 else:
+    REDIS_CACHE_URL = env.str('REDIS_CACHE_URL', '')
     REDIS_CELERY_URL = env.str('REDIS_CELERY_URL', '')
 
 
@@ -98,6 +100,17 @@ else:
 # https://docs.djangoproject.com/en/1.9/ref/settings/#databases
 DATABASES = {
     'default': dj_database_url.config()
+}
+# Caches
+CACHES = {
+    'default': {
+        'BACKEND': 'django_redis.cache.RedisCache',
+        # separate to REDIS_CELERY_URL as needs to start with 'rediss' for SSL
+        'LOCATION': REDIS_CACHE_URL,
+        'OPTIONS': {
+            'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+        }
+    }
 }
 
 # Internationalization
@@ -296,14 +309,15 @@ DIRECTORY_HEALTHCHECK_BACKENDS = [
 ]
 
 # Admin restrictor
-RESTRICT_ADMIN = env.bool('RESTRICT_ADMIN', False)
-ALLOWED_ADMIN_IPS = env.list('ALLOWED_ADMIN_IPS', default=[])
-ALLOWED_ADMIN_IP_RANGES = env.list('ALLOWED_ADMIN_IP_RANGES', default=[])
+RESTRICT_ADMIN = env.bool('IP_RESTRICTOR_RESTRICT_IPS', False)
+ALLOWED_ADMIN_IPS = env.list('IP_RESTRICTOR_ALLOWED_ADMIN_IPS', default=[])
+ALLOWED_ADMIN_IP_RANGES = env.list('IP_RESTRICTOR_ALLOWED_ADMIN_IP_RANGES', default=[])
 
 # directory-signature-auth
 SIGAUTH_URL_NAMES_WHITELIST = [
     'database',  # health check
     'ping',  # health check
+    'activity-stream',  # activity stream
 ]
 
 # Zendesk
@@ -354,12 +368,16 @@ GOV_NOTIFY_API_KEY = env.str('GOV_NOTIFY_API_KEY')
 # Separate key to allow PDF viewing. In prod this can be live key
 GOV_NOTIFY_LETTER_API_KEY = env.str('GOV_NOTIFY_LETTER_API_KEY')
 
-# ip-restrictor
-RESTRICT_ADMIN = env.bool('IP_RESTRICTOR_RESTRICT_IPS', False)
-ALLOWED_ADMIN_IPS = env.list('IP_RESTRICTOR_ALLOWED_ADMIN_IPS', default=[])
-ALLOWED_ADMIN_IP_RANGES = env.list(
-    'IP_RESTRICTOR_ALLOWED_ADMIN_IP_RANGES', default=[]
-)
 
 # Test API
 FEATURE_TEST_API_ENABLED = env.bool('FEATURE_TEST_API_ENABLED', False)
+
+
+# Activity Stream API
+ACTIVITY_STREAM_ACCESS_KEY_ID = env.str('ACTIVITY_STREAM_ACCESS_KEY_ID')
+ACTIVITY_STREAM_SECRET_ACCESS_KEY = env.str('ACTIVITY_STREAM_SECRET_ACCESS_KEY')
+
+# Ratelimit config
+# Set RATELIMIT_ENABLE to enable/disable
+# the number of requests per unit time allowed in (s/m/h/d)
+RATELIMIT_RATE = env.str('RATELIMIT_RATE', '15/h')

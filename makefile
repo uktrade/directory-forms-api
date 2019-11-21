@@ -40,10 +40,13 @@ DEBUG_SET_ENV_VARS := \
 	export DEFAULT_FROM_EMAIL=debug@example.com; \
 	export FEATURE_ENFORCE_STAFF_SSO_ENABLED=false; \
 	export REDIS_CELERY_URL=redis://127.0.0.1:6379; \
+	export REDIS_CACHE_URL=redis://127.0.0.1:6379; \
 	export CELERY_ALWAYS_EAGER=true; \
 	export AUTHBROKER_CLIENT_ID=debug; \
 	export AUTHBROKER_CLIENT_SECRET=debug; \
-	export STAFF_SSO_AUTHBROKER_URL=https://test.com
+	export STAFF_SSO_AUTHBROKER_URL=https://test.com; \
+	export ACTIVITY_STREAM_ACCESS_KEY_ID=123-id-key; \
+	export ACTIVITY_STREAM_SECRET_ACCESS_KEY=123-secret-key
 
 TEST_SET_ENV_VARS := \
 	export ZENDESK_EMAIL=debug@example.com; \

@@ -8,6 +8,51 @@ from submission import constants
 
 
 @pytest.fixture
+def erp_zendesk_payload():
+    return {
+        'meta': {
+                'action_name': constants.ACTION_NAME_ZENDESK,
+                'email_address': 'erp+testform+testform@gmail.com',
+                'full_name': 'test test',
+                'funnel_steps': [],
+                'ingress_url': 'https://erp.service.dev.uktrade.io/triage/',
+                'sender': {'country_code': None,
+                           'email_address': 'erp+testform@jhgk.com'},
+                'service_name': 'erp',
+                'spam_control': {},
+                'subject': 'ERP form was submitted'
+        },
+        'data': {
+                'commodities': '190300 - Other',
+                'company_name': 'TASTE OF FOOD',
+                'company_number': '2387892',
+                'company_type': 'LIMITED',
+                'email': 'erp+testform@gmail.com',
+                'employees': '1-10',
+                'employment_regions': ['NORTH_EAST'],
+                'family_name': 'test',
+                'given_name': 'test',
+                'has_market_price_changed': False,
+                'has_market_size_changed': False,
+                'has_other_changes': False,
+                'has_price_changed': False,
+                'has_volume_changed': False,
+                'market_size_known': False,
+                'other_information': 'test',
+                'quarter_four_2018': '0',
+                'quarter_one_2019': '0',
+                'quarter_three_2019': '0',
+                'quarter_two_2019': '0',
+                'sales_volume_unit': 'KILOGRAM',
+                'sector': 'AEROSPACE',
+                'tariff_quota': 'N/A',
+                'tariff_rate': 'N/A',
+                'turnover': '0-25k'
+            },
+    }
+
+
+@pytest.fixture
 def email_action_payload():
     return {
         'data': {
@@ -67,6 +112,11 @@ def gov_notify_email_action_payload():
             'action_name': constants.ACTION_NAME_GOV_NOTIFY_EMAIL,
             'template_id': '213123',
             'email_address': 'notify-user@example.com',
+            'sender': {
+                'country_code': None,
+                'email_address': 'erp+testform@jhgk.com',
+                'ip_address': '252.252.928.233'
+            },
         }
     }
 

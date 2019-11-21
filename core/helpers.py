@@ -1,10 +1,11 @@
 import csv
 
+from submission.constants import ACTION_NAME_EMAIL
+
 from django.db import models
-from django_extensions.db.fields import (
-    CreationDateTimeField, ModificationDateTimeField,
-)
+from django_extensions.db.fields import CreationDateTimeField, ModificationDateTimeField
 from django.http import HttpResponse
+from bs4 import BeautifulSoup
 from django.utils.translation import ugettext_lazy as _
 
 
@@ -27,11 +28,7 @@ class DownloadCSVMixin:
 
 def generate_csv_response(queryset, filename, excluded_fields):
     response = HttpResponse(content_type='text/csv')
-    response['Content-Disposition'] = (
-        'attachment; filename="{filename}"'.format(
-            filename=filename
-        )
-    )
+    response['Content-Disposition'] = f'attachment; filename="{filename}"'
     generate_csv(
         file_object=response,
         queryset=queryset,
@@ -48,6 +45,12 @@ def generate_csv(file_object, queryset, excluded_fields):
     )
 
     objects = queryset.all().values(*fieldnames)
+    for item in objects:
+        if item['meta']['action_name'] == ACTION_NAME_EMAIL:
+            if 'html_body' in item['data']:
+                soup = BeautifulSoup(item['data']['html_body'], 'html.parser')
+                item['data'] = soup.body.text.strip()
+
     writer = csv.DictWriter(file_object, fieldnames=fieldnames)
     writer.writeheader()
     writer.writerows(objects)

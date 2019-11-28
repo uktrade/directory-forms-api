@@ -2,6 +2,7 @@ import pytest
 from rest_framework.test import APIClient
 
 from django.urls import reverse
+from rest_framework import status
 
 from client.tests.factories import ClientFactory
 from submission import models
@@ -55,7 +56,7 @@ def test_find_submissions_by_email(api_client_enabled_test_api):
         format='json'
     )
 
-    assert response.status_code == 201
+    assert response.status_code == status.HTTP_201_CREATED
     assert models.Submission.objects.count() == 1
 
     response = api_client_enabled_test_api.get(
@@ -63,7 +64,7 @@ def test_find_submissions_by_email(api_client_enabled_test_api):
                 kwargs={'email_address': 'foo@bar.com'}),
         format='json'
     )
-    assert response.status_code == 200
+    assert response.status_code == status.HTTP_200_OK
     assert response.json()[0]['meta']['recipients'][0] == 'foo@bar.com'
     assert response.json()[0]['is_sent'] is True
 
@@ -77,7 +78,7 @@ def test_return_404_if_no_submissions_are_found(api_client_enabled_test_api):
                 kwargs={'email_address': 'foo@bar.com'}),
         format='json'
     )
-    assert response.status_code == 404
+    assert response.status_code == status.HTTP_404_NOT_FOUND
 
 
 @pytest.mark.django_db
@@ -89,7 +90,7 @@ def test_return_404_if_testapi_is_disabled(api_client_disabled_testapi):
                 kwargs={'email_address': 'foo@bar.com'}),
         format='json'
     )
-    assert response.status_code == 404
+    assert response.status_code == status.HTTP_404_NOT_FOUND
 
 
 def test_return_401_when_unauthenticated():
@@ -98,4 +99,4 @@ def test_return_401_when_unauthenticated():
         reverse('testapi:submissions_by_email',
                 kwargs={'email_address': 'foo@bar.com'})
     )
-    assert response.status_code == 401
+    assert response.status_code == status.HTTP_401_UNAUTHORIZED

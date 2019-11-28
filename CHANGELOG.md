@@ -5,6 +5,8 @@
 ### Implemented enhancements
 - TT2100 fix type name error for activitystream
 - No Ticket - configure redis for default cache 
+- TT-2199 add testapi endpoint to delete submissions created by automated tests
+
 ### Fixed bugs
 
 

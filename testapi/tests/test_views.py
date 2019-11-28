@@ -14,8 +14,8 @@ def user():
 
 def api_client(settings, user, test_api_flag):
     settings.SIGAUTH_URL_NAMES_WHITELIST = [
-        'submissions-by-email',
         'submission'
+        'submissions_by_email',
     ]
     settings.FEATURE_TEST_API_ENABLED = test_api_flag
     client = APIClient()
@@ -59,7 +59,7 @@ def test_find_submissions_by_email(api_client_enabled_test_api):
     assert models.Submission.objects.count() == 1
 
     response = api_client_enabled_test_api.get(
-        reverse('testapi:submissions-by-email',
+        reverse('testapi:submissions_by_email',
                 kwargs={'email_address': 'foo@bar.com'}),
         format='json'
     )
@@ -73,7 +73,7 @@ def test_return_404_if_no_submissions_are_found(api_client_enabled_test_api):
     assert models.Submission.objects.count() == 0
 
     response = api_client_enabled_test_api.get(
-        reverse('testapi:submissions-by-email',
+        reverse('testapi:submissions_by_email',
                 kwargs={'email_address': 'foo@bar.com'}),
         format='json'
     )
@@ -85,7 +85,7 @@ def test_return_404_if_testapi_is_disabled(api_client_disabled_testapi):
     assert models.Submission.objects.count() == 0
 
     response = api_client_disabled_testapi.get(
-        reverse('testapi:submissions-by-email',
+        reverse('testapi:submissions_by_email',
                 kwargs={'email_address': 'foo@bar.com'}),
         format='json'
     )
@@ -95,7 +95,7 @@ def test_return_404_if_testapi_is_disabled(api_client_disabled_testapi):
 def test_return_401_when_unauthenticated():
     client = APIClient()
     response = client.get(
-        reverse('testapi:submissions-by-email',
+        reverse('testapi:submissions_by_email',
                 kwargs={'email_address': 'foo@bar.com'})
     )
     assert response.status_code == 401

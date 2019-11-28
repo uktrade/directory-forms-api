@@ -41,6 +41,11 @@ testapi_urls = [
         testapi.views.SubmissionsTestAPIView.as_view(),
         name='submissions_by_email',
     ),
+    url(
+        r'^test-submissions/$',
+        testapi.views.SubmissionsTestAPIView.as_view(),
+        name='delete_test_submissions',
+    ),
 ]
 
 urlpatterns = [

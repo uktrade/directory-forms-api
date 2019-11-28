@@ -3,6 +3,7 @@
 ## Pre release
 
 ### Implemented enhancements
+- TT-2199 add testapi endpoint to delete submissions created by automated tests
 
 ## [2019.11.21](https://github.com/uktrade/directory-forms-api/releases/tag/2019.11.21_2)
 [Full Changelog](https://github.com/uktrade/directory-forms-api/compare/2019.22.10...2019.11.21_2)

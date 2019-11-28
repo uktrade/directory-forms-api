@@ -3,12 +3,14 @@
 ## Pre release
 
 ### Implemented enhancements
-- TT2100 fix type name error for activitystream
-- No Ticket - configure redis for default cache 
 - TT-2199 add testapi endpoint to delete submissions created by automated tests
 
-### Fixed bugs
+## [2019.11.21](https://github.com/uktrade/directory-forms-api/releases/tag/2019.11.21_2)
+[Full Changelog](https://github.com/uktrade/directory-forms-api/compare/2019.22.10...2019.11.21_2)
 
+### Implemented enhancements
+- TT2100 fix type name error for activitystream
+- No Ticket - configure redis for default cache 
 
 ## [2019.22.10](https://github.com/uktrade/directory-forms-api/releases/tag/2019.22.10)
 [Full Changelog](https://github.com/uktrade/directory-forms-api/compare/2019.08.12...2019.22.10)

@@ -64,8 +64,7 @@ def test_find_submissions_by_email(api_client_enabled_test_api):
     assert models.Submission.objects.count() == 1
 
     response = api_client_enabled_test_api.get(
-        reverse('testapi:submissions_by_email',
-                kwargs={'email_address': 'foo@bar.com'}),
+        reverse('testapi:submissions_by_email', kwargs={'email_address': 'foo@bar.com'}),
         format='json'
     )
     assert response.status_code == status.HTTP_200_OK

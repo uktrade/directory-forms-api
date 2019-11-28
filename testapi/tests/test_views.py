@@ -118,7 +118,7 @@ def test_delete_test_submissions(api_client_enabled_test_api):
         reverse('testapi:delete_test_submissions')
     )
     assert response.status_code == status.HTTP_204_NO_CONTENT
-    assert len(Submission.objects.all()) == 0
+    assert Submission.objects.count() == 0
 
 
 @pytest.mark.django_db
@@ -136,7 +136,7 @@ def test_delete_test_submissions_email_action(api_client_enabled_test_api):
         reverse('testapi:delete_test_submissions')
     )
     assert response.status_code == status.HTTP_204_NO_CONTENT
-    assert len(Submission.objects.all()) == 0
+    assert Submission.objects.count() == 0
 
 
 @pytest.mark.django_db
@@ -151,7 +151,7 @@ def test_delete_test_submissions_gov_notify_action(
         reverse('testapi:delete_test_submissions')
     )
     assert response.status_code == status.HTTP_204_NO_CONTENT
-    assert len(Submission.objects.all()) == 0
+    assert Submission.objects.count() == 0
 
 
 @pytest.mark.django_db
@@ -166,7 +166,7 @@ def test_delete_test_submissions_zendesk_action(
         reverse('testapi:delete_test_submissions')
     )
     assert response.status_code == status.HTTP_204_NO_CONTENT
-    assert len(Submission.objects.all()) == 0
+    assert Submission.objects.count() == 0
 
 
 @pytest.mark.django_db
@@ -192,7 +192,7 @@ def test_delete_test_submissions_returns_404_with_disabled_testapi(
         reverse('testapi:delete_test_submissions')
     )
     assert response.status_code == status.HTTP_404_NOT_FOUND
-    assert len(Submission.objects.all()) == 1
+    assert Submission.objects.count() == 1
 
 
 @pytest.mark.django_db

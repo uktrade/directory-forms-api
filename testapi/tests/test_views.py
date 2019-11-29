@@ -7,7 +7,7 @@ from rest_framework import status
 
 from client.tests.factories import ClientFactory
 from submission import constants, models
-from submission.models import Submission
+from submission.models import Sender, Submission
 from submission.tests.factories import SubmissionFactory, SenderFactory
 
 
@@ -18,6 +18,7 @@ def user():
 
 def api_client(settings, user, test_api_flag):
     settings.SIGAUTH_URL_NAMES_WHITELIST = [
+        'delete_test_senders',
         'delete_test_submissions',
         'submissions_by_email',
         'submission',
@@ -199,3 +200,75 @@ def test_delete_test_submissions_returns_401_when_unauthenticated():
     client = APIClient()
     response = client.delete(reverse('testapi:delete_test_submissions'))
     assert response.status_code == status.HTTP_401_UNAUTHORIZED
+
+
+@pytest.mark.django_db
+def test_delete_test_senders(api_client_enabled_test_api):
+    SenderFactory.create_batch(
+        3,
+        email_address=Sequence(lambda n: f'test+{n}@directory.uktrade.io')
+    )
+    response = api_client_enabled_test_api.delete(
+        reverse('testapi:delete_test_senders')
+    )
+    assert response.status_code == status.HTTP_204_NO_CONTENT
+    assert Sender.objects.count() == 0
+
+
+@pytest.mark.django_db
+def test_delete_test_senders_returns_404_when_no_test_senders(api_client_enabled_test_api):
+    response = api_client_enabled_test_api.delete(
+        reverse('testapi:delete_test_senders')
+    )
+    assert response.status_code == status.HTTP_404_NOT_FOUND
+
+
+@pytest.mark.django_db
+def test_delete_test_senders_returns_404_with_disabled_testapi(api_client_disabled_testapi):
+    SenderFactory.create(
+        email_address=Sequence(lambda n: f'test+{n}@directory.uktrade.io')
+    )
+    response = api_client_disabled_testapi.delete(
+        reverse('testapi:delete_test_senders')
+    )
+    assert response.status_code == status.HTTP_404_NOT_FOUND
+    assert Sender.objects.count() == 1
+
+
+@pytest.mark.django_db
+def test_delete_test_senders_returns_401_when_unauthenticated():
+    client = APIClient()
+    response = client.delete(reverse('testapi:delete_test_senders'))
+    assert response.status_code == status.HTTP_401_UNAUTHORIZED
+
+
+@pytest.mark.django_db
+def test_delete_test_senders_and_submissions(api_client_enabled_test_api):
+    SubmissionFactory.create_batch(
+        3,
+        sender=SenderFactory(
+            email_address=Sequence(lambda n: f'test+{n}@directory.uktrade.io')
+        )
+    )
+    response = api_client_enabled_test_api.delete(
+        reverse('testapi:delete_test_senders')
+    )
+    assert response.status_code == status.HTTP_204_NO_CONTENT
+    assert Sender.objects.count() == 0
+    assert Submission.objects.count() == 0
+
+
+@pytest.mark.django_db
+def test_delete_test_senders_and_submissions_with_disabled_testapi(api_client_disabled_testapi):
+    SubmissionFactory.create_batch(
+        3,
+        sender=SenderFactory(
+            email_address=Sequence(lambda n: f'test+{n}@directory.uktrade.io')
+        )
+    )
+    response = api_client_disabled_testapi.delete(
+        reverse('testapi:delete_test_senders')
+    )
+    assert response.status_code == status.HTTP_404_NOT_FOUND
+    assert Sender.objects.count() == 1
+    assert Submission.objects.count() == 3

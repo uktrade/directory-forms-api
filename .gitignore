@@ -8,7 +8,6 @@ __pycache__/
 
 # Distribution / packaging
 .Python
-env/
 build/
 develop-eggs/
 dist/
@@ -23,6 +22,7 @@ var/
 *.egg-info/
 .installed.cfg
 *.egg
+conf/env/secrets-do-not-commit
 
 # PyInstaller
 #  Usually these files are written by a python script from a template

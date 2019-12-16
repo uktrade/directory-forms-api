@@ -33,43 +33,31 @@ For more information on installation please check the [Developers Onboarding Che
     $ cd directory-forms-api
     $ virtualenv .venv -p python3.6
     $ source .venv/bin/activate
-    $ pip install -r requirements_test.txt
+    $ make install_requirements
 
-### Configuration
+#### Configuration
 
-Secrets such as API keys and environment specific configurations are placed in `conf/.env` - a file that is not added to version control. You will need to create that file locally in order for the project to run.
+Secrets such as API keys and environment specific configurations are placed in `conf/env/secrets-do-not-commit` - a file that is not added to version control. To create a template secrets file with dummy values run `make init_secrets`.
 
-Here is an example `conf/.env` with placeholder values to get you going:
 
-```
-EMAIL_HOST=debug
-EMAIL_HOST_PASSWORD=debug
-EMAIL_HOST_USER=debug
-EMAIL_USE_TLS=debug
-ZENDESK_EMAIL=debug
-ZENDESK_SUBDOMAIN=debug
-ZENDESK_TOKEN=debug
-ZENDESK_CUSTOM_FIELD_ID=debug
-GOV_NOTIFY_API_KEY=debug
-ZENDESK_SUBDOMAIN_EUEXIT=debug
-ZENDESK_TOKEN_EUEXIT=debug
-ZENDESK_EMAIL_EUEXIT=debug
-ZENDESK_CUSTOM_FIELD_ID_EUEXIT=debug
-```
+### Commands
 
-## Running
-
-### Setup development environment
-
-    $ make debug
-
-### Run debug webserver
-
-    $ make debug_webserver
-
-### Run debug tests
-
-    $ make debug_test
+| Command                       | Description |
+| ----------------------------- | ------------|
+| make clean                    | Delete pyc files |
+| make pytest                   | Run all tests |
+| make pytest test_foo.py       | Run all tests in file called test_foo.py |
+| make pytest -- --last-failed` | Run the last tests to fail |
+| make pytest -- -k foo         | Run the test called foo |
+| make pytest -- <foo>          | Run arbitrary pytest command |
+| make manage <foo>             | Run arbitrary management command |
+| make webserver                | Run the development web server |
+| make requirements             | Compile the requirements file |
+| make install_requirements     | Installed the compile requirements file |
+| make css                      | Compile scss to css |
+| make init_secrets             | Create your secret env var file |
+| make worker                   | Run the celery worker |
+| make beat                     | Run the celery beat scheduler |
 
 
 

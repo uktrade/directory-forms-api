@@ -19,12 +19,14 @@ class Submission(core.helpers.TimeStampedModel):
         related_name='submissions',
         blank=True,
         null=True,
+        on_delete=models.SET_NULL,
     )
     sender = models.ForeignKey(
         'submission.Sender',
         related_name='submissions',
         blank=True,
         null=True,
+        on_delete=models.SET_NULL,
     )
 
     @property

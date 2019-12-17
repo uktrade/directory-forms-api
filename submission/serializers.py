@@ -91,9 +91,7 @@ class SubmissionModelSerializer(serializers.ModelSerializer):
         extra_kwargs = {'sender': {'required': True}}
 
     def create(self, validated_data):
-        sender_email_address = helpers.get_sender_email_address(
-            validated_data['meta']
-        )
+        sender_email_address = helpers.get_sender_email_address(validated_data['meta'])
         if sender_email_address:
             sender, _ = models.Sender.objects.get_or_create(
                 email_address=sender_email_address

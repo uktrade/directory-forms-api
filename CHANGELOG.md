@@ -5,6 +5,7 @@
 ### Implemented enhancements
 - TT-2199 - add testapi endpoint to delete submissions created by automated tests
 - TT-2204 - add testapi endpoint to delete senders created by automated tests
+- No ticket - Improve form url filter
 
 ### Fixed bugs:
 - TT-2228 - Use sender email address provded by meta.sender

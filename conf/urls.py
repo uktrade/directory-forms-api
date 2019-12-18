@@ -53,26 +53,12 @@ testapi_urls = [
     ),
 ]
 
-urlpatterns = [
-    url(
-        r'^api/healthcheck/',
-        include(
-            healthcheck_urls, namespace='healthcheck', app_name='healthcheck'
-        )
-    ),
 
-    url(
-        r'^api/',
-        include(api_urls, namespace='api', app_name='api')
-    ),
-    url(
-        r'^admin/',
-        include(admin.site.urls)
-    ),
-    url(
-        r'^testapi/',
-        include(testapi_urls, namespace='testapi', app_name='testapi')
-    ),
+urlpatterns = [
+    url(r'^api/healthcheck/', include((healthcheck_urls, 'healthcheck'), namespace='healthcheck')),
+    url(r'^api/', include((api_urls, 'api'), namespace='api')),
+    url(r'^admin/', admin.site.urls),
+    url(r'^testapi/', include((testapi_urls, 'testapi'), namespace='testapi')),
     url(r'^activity-stream/v1/', ActivityStreamView.as_view(), name='activity-stream'),
 ]
 

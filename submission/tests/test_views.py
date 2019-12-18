@@ -8,10 +8,17 @@ from client.tests.factories import ClientFactory
 from submission.tests import factories
 from submission import models
 
+from django.core.cache import cache
+
 
 @pytest.fixture
 def user():
     return ClientFactory()
+
+
+@pytest.fixture(autouse=True)
+def clear_cache():
+    cache.clear()
 
 
 @pytest.fixture
@@ -339,6 +346,8 @@ def test_pardot_action(mock_delay, api_client, pardot_action_payload):
 @pytest.mark.django_db
 @mock.patch('submission.tasks.send_gov_notify_email.delay')
 def test_email_action_rate_limit_not_exceeded(mock_email, api_client, gov_notify_email_action_payload, settings):
+    del gov_notify_email_action_payload['meta']['sender']
+
     settings.RATELIMIT_RATE = '100000/s'
 
     for i in range(25):
@@ -373,6 +382,8 @@ def test_email_action_rate_limit_exceeded(mock_email, api_client, gov_notify_ema
             assert response.status_code == 429
 
     assert mock_email.call_count == 5
-    black_listed_sender = models.Sender.objects.get(email_address='notify-user@example.com')
+    black_listed_sender = models.Sender.objects.get(
+        email_address=gov_notify_email_action_payload['meta']['sender']['email_address']
+    )
     assert black_listed_sender.is_blacklisted
     assert black_listed_sender.blacklisted_reason == 'IP'

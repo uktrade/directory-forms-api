@@ -23,7 +23,7 @@ class FormUrlFilter(SimpleListFilter):
     ]
 
     def lookups(self, request, model_admin):
-        queryset = models.Submission.objects.all()
+        queryset = models.Submission.objects.exclude(form_url__isnull=True)
         for url in self.common_urls:
             escaped = url.replace('/', r'\/').replace('*', '.+')
             queryset = queryset.exclude(form_url__iregex=f'{escaped}.*')

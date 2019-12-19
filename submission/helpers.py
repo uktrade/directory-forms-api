@@ -117,6 +117,8 @@ def send_pardot(pardot_url, payload):
 
 
 def get_sender_email_address(submission_meta):
+    if submission_meta.get('sender'):
+        return submission_meta['sender']['email_address']
     action_name = submission_meta['action_name']
     if action_name == constants.ACTION_NAME_ZENDESK:
         return submission_meta['email_address']

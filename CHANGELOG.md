@@ -3,10 +3,20 @@
 ## Pre release
 
 ### Implemented enhancements
+- TT-2199 - add testapi endpoint to delete submissions created by automated tests
+- TT-2204 - add testapi endpoint to delete senders created by automated tests
+- No ticket - Improve form url filter
+
+### Fixed bugs:
+- TT-2228 - Use sender email address provded by meta.sender
+
+
+## [2019.11.21](https://github.com/uktrade/directory-forms-api/releases/tag/2019.11.21_2)
+[Full Changelog](https://github.com/uktrade/directory-forms-api/compare/2019.22.10...2019.11.21_2)
+
+### Implemented enhancements
 - TT2100 fix type name error for activitystream
 - No Ticket - configure redis for default cache 
-### Fixed bugs
-
 
 ## [2019.22.10](https://github.com/uktrade/directory-forms-api/releases/tag/2019.22.10)
 [Full Changelog](https://github.com/uktrade/directory-forms-api/compare/2019.08.12...2019.22.10)

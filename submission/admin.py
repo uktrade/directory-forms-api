@@ -27,7 +27,7 @@ class FormUrlFilter(SimpleListFilter):
         for url in self.common_urls:
             escaped = url.replace('/', r'\/').replace('*', '.+')
             queryset = queryset.exclude(form_url__iregex=f'{escaped}.*')
-        lookups = list(queryset.values_list('form_url', flat=True))
+        lookups = list(queryset.distinct('form_url').order_by('form_url').values_list('form_url', flat=True))
         return [(item, item) for item in sorted(lookups + self.common_urls)]
 
     def queryset(self, request, queryset):

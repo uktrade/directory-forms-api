@@ -34,6 +34,10 @@ class Submission(core.helpers.TimeStampedModel):
         return self.meta.get('action_name', 'unknown action')
 
     @property
+    def recipient_email(self):
+        return self.meta.get('email_address')
+
+    @property
     def submission_type(self):
         # This is to allow filtering in activity stream
         # Temp solution we should move this to a more generic solution

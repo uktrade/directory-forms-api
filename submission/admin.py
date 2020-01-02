@@ -74,7 +74,8 @@ class SubmissionAdmin(core.helpers.DownloadCSVMixin, admin.ModelAdmin):
         'action_name',
         'created',
         'is_sent',
-        'sender'
+        'sender',
+        'recipient_email',
     )
     list_filter = (
         'client',
@@ -83,6 +84,7 @@ class SubmissionAdmin(core.helpers.DownloadCSVMixin, admin.ModelAdmin):
         'created',
         'is_sent',
         'sender',
+
     )
 
     actions = core.helpers.DownloadCSVMixin.actions + ['retry']

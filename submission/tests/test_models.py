@@ -50,13 +50,7 @@ def test_submission_ip(submission):
 
 @pytest.mark.django_db
 def test_submission_recipient_email(submission):
-    submission.meta = {'email_address': 'test@tdfsf.com'}
-    assert submission.recipient_email == 'test@tdfsf.com'
-
-
-@pytest.mark.django_db
-def test_submission_no_recipient_email(submission):
-    assert submission.recipient_email is None
+    assert submission.recipient_email == 'foo@bar.com'
 
 
 @pytest.mark.django_db

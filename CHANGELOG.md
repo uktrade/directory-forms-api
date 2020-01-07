@@ -10,7 +10,7 @@
 
 ### Fixed bugs:
 - TT-2228 - Use sender email address provded by meta.sender
-
+- No ticket - Upgrade waitress to fix security vulnerability
 
 ## [2019.11.21](https://github.com/uktrade/directory-forms-api/releases/tag/2019.11.21_2)
 [Full Changelog](https://github.com/uktrade/directory-forms-api/compare/2019.22.10...2019.11.21_2)

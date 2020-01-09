@@ -102,7 +102,7 @@ def test_signature_check_middleware_valid_client(admin_client, settings):
     url = reverse('test_view')
 
     signer = sigauth.helpers.RequestSigner(
-        secret='',
+        secret='test-key',
         sender_id=str(client_model_instance.identifier),
     )
     headers = signer.get_signature_headers(

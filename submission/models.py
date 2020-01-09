@@ -2,7 +2,7 @@ from django.contrib.postgres.fields import JSONField
 from django.db import models
 
 import core.helpers
-from submission import constants
+from submission import constants, helpers
 
 
 class Submission(core.helpers.TimeStampedModel):
@@ -32,6 +32,10 @@ class Submission(core.helpers.TimeStampedModel):
     @property
     def action_name(self):
         return self.meta.get('action_name', 'unknown action')
+
+    @property
+    def recipient_email(self):
+        return helpers.get_recipient_email_address(self.meta)
 
     @property
     def submission_type(self):

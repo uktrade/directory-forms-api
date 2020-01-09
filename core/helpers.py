@@ -49,7 +49,10 @@ def generate_csv(file_object, queryset, excluded_fields):
         if item['meta']['action_name'] == ACTION_NAME_EMAIL:
             if 'html_body' in item['data']:
                 soup = BeautifulSoup(item['data']['html_body'], 'html.parser')
-                item['data'] = soup.body.text.strip()
+                if soup.body:
+                    item['data'] = soup.body.text.strip()
+                else:
+                    item['data'] = soup.text.strip()
 
     writer = csv.DictWriter(file_object, fieldnames=fieldnames)
     writer.writeheader()

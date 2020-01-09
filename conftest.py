@@ -61,7 +61,7 @@ def email_action_payload():
         },
         'meta': {
             'action_name': constants.ACTION_NAME_EMAIL,
-            'recipients': ['foo@bar.com'],
+            'recipients': ['foo@bar.com', 'foo2@bar.com'],
             'subject': 'Hello',
             'reply_to': ['email-user@example.com'],
         }

@@ -284,9 +284,10 @@ def test_get_recipient_email_address_notify_action(gov_notify_email_action_paylo
     assert email == 'notify-user@example.com'
 
 
-def test_get_recipient_email_address_zendesk_action(zendesk_action_payload):
+def test_get_recipient_email_address_zendesk_action(zendesk_action_payload, settings):
+    zendesk_action_payload['meta']['subdomain'] = settings.ZENDESK_SUBDOMAIN_DEFAULT
     email = helpers.get_recipient_email_address(zendesk_action_payload['meta'])
-    assert email == 'zendesk-user@example.com'
+    assert email == f'{settings.ZENDESK_SUBDOMAIN_DEFAULT}:Market Access'
 
 
 def test_get_recipient_email_address_email_action(email_action_payload):

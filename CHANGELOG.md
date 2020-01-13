@@ -7,11 +7,13 @@
 - TT-2204 - add testapi endpoint to delete senders created by automated tests
 - No ticket - Improve form url filter
 - TT-2229 -add recipient email
+- TT-2248 - Facilitate .internal domain communication
 
 ### Fixed bugs:
 - TT-2228 - Use sender email address provded by meta.sender
 - No ticket - Upgrade waitress to fix security vulnerability
 - TT-2245 - error django download
+- TT-2251 - zendesk-recipient-email
 
 ## [2019.11.21](https://github.com/uktrade/directory-forms-api/releases/tag/2019.11.21_2)
 [Full Changelog](https://github.com/uktrade/directory-forms-api/compare/2019.22.10...2019.11.21_2)

@@ -20,7 +20,7 @@ directory-components==35.9.1
 directory-constants==20.10.0  # via directory-components
 directory-healthcheck==2.0.0
 dj-database-url==0.5.0
-django-admin-ip-restrictor==1.0.0
+django-admin-ip-restrictor==2.1.0
 django-appconf==1.0.2     # via django-cryptography
 django-cryptography==0.3.0
 django-environ==0.4.5

@@ -135,7 +135,9 @@ def get_sender_email_address(submission_meta):
 def get_recipient_email_address(submission_meta):
     action_name = submission_meta['action_name']
     if action_name == constants.ACTION_NAME_ZENDESK:
-        return submission_meta['email_address']
+        sub_domain = submission_meta.get('subdomain')
+        service_name = submission_meta.get('service_name')
+        return f'{sub_domain}:{service_name}'
     elif action_name == constants.ACTION_NAME_GOV_NOTIFY_EMAIL:
         return submission_meta['email_address']
     elif action_name == constants.ACTION_NAME_EMAIL:

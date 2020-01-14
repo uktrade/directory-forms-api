@@ -49,6 +49,11 @@ def test_submission_ip(submission):
 
 
 @pytest.mark.django_db
+def test_submission_recipient_email(submission):
+    assert submission.recipient_email == 'foo@bar.com'
+
+
+@pytest.mark.django_db
 def test_submission_type(submission):
     assert submission.submission_type == submission.client.name.replace(" ", "")
 

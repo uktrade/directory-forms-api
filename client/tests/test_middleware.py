@@ -7,7 +7,7 @@ from client.tests import factories
 from core.tests.test_views import reload_urlconf
 
 
-SIGNATURE_CHECK_REQUIRED_MIDDLEWARE_CLASSES = [
+SIGNATURE_CHECK_REQUIRED_MIDDLEWARE = [
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'client.middleware.SignatureCheckMiddleware',
@@ -15,7 +15,7 @@ SIGNATURE_CHECK_REQUIRED_MIDDLEWARE_CLASSES = [
 
 
 def test_signature_check_middleware_admin(admin_client, settings):
-    settings.MIDDLEWARE_CLASSES = SIGNATURE_CHECK_REQUIRED_MIDDLEWARE_CLASSES
+    settings.MIDDLEWARE = SIGNATURE_CHECK_REQUIRED_MIDDLEWARE
 
     response = admin_client.get(reverse('admin:auth_user_changelist'))
 
@@ -23,7 +23,7 @@ def test_signature_check_middleware_admin(admin_client, settings):
 
 
 def test_signature_check_middleware_healthcheck(admin_client, settings):
-    settings.MIDDLEWARE_CLASSES = SIGNATURE_CHECK_REQUIRED_MIDDLEWARE_CLASSES
+    settings.MIDDLEWARE = SIGNATURE_CHECK_REQUIRED_MIDDLEWARE
 
     response = admin_client.get(reverse('healthcheck:ping'))
 
@@ -38,7 +38,7 @@ def test_signature_check_middleware_healthcheck(admin_client, settings):
 def test_signature_check_middleware_unknown_client(
     admin_client, settings, sender_id
 ):
-    settings.MIDDLEWARE_CLASSES = SIGNATURE_CHECK_REQUIRED_MIDDLEWARE_CLASSES
+    settings.MIDDLEWARE = SIGNATURE_CHECK_REQUIRED_MIDDLEWARE
 
     url = reverse('test_view')
 
@@ -63,7 +63,7 @@ def test_signature_check_middleware_unknown_client(
 @pytest.mark.urls('client.tests.urls')
 @pytest.mark.django_db
 def test_signature_check_middleware_inactive_client(admin_client, settings):
-    settings.MIDDLEWARE_CLASSES = SIGNATURE_CHECK_REQUIRED_MIDDLEWARE_CLASSES
+    settings.MIDDLEWARE = SIGNATURE_CHECK_REQUIRED_MIDDLEWARE
 
     client_model_instance = factories.ClientFactory(
         name='test',
@@ -93,7 +93,7 @@ def test_signature_check_middleware_inactive_client(admin_client, settings):
 @pytest.mark.urls('client.tests.urls')
 @pytest.mark.django_db
 def test_signature_check_middleware_valid_client(admin_client, settings):
-    settings.MIDDLEWARE_CLASSES = SIGNATURE_CHECK_REQUIRED_MIDDLEWARE_CLASSES
+    settings.MIDDLEWARE = SIGNATURE_CHECK_REQUIRED_MIDDLEWARE
 
     client_model_instance = factories.ClientFactory(
         name='test',
@@ -121,7 +121,7 @@ def test_signature_check_middleware_valid_client(admin_client, settings):
 @pytest.mark.urls('client.tests.urls')
 @pytest.mark.django_db
 def test_signature_check_middleware_incorrect_secret(admin_client, settings):
-    settings.MIDDLEWARE_CLASSES = SIGNATURE_CHECK_REQUIRED_MIDDLEWARE_CLASSES
+    settings.MIDDLEWARE = SIGNATURE_CHECK_REQUIRED_MIDDLEWARE
 
     client_model_instance = factories.ClientFactory(
         name='test',
@@ -147,14 +147,14 @@ def test_signature_check_middleware_incorrect_secret(admin_client, settings):
 
 
 def test_signature_check_middleware_admin_login(admin_client, settings):
-    settings.MIDDLEWARE_CLASSES = SIGNATURE_CHECK_REQUIRED_MIDDLEWARE_CLASSES
+    settings.MIDDLEWARE = SIGNATURE_CHECK_REQUIRED_MIDDLEWARE
     response = admin_client.get(reverse('admin:login'))
 
     assert response.status_code == 302
 
 
 def test_signature_check_middleware_authbroker_login(admin_client, settings):
-    settings.MIDDLEWARE_CLASSES = SIGNATURE_CHECK_REQUIRED_MIDDLEWARE_CLASSES
+    settings.MIDDLEWARE = SIGNATURE_CHECK_REQUIRED_MIDDLEWARE
     settings.FEATURE_ENFORCE_STAFF_SSO_ENABLED = True
     reload_urlconf()
 

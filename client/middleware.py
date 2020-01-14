@@ -4,12 +4,11 @@ import sigauth.helpers
 from client import helpers
 
 
-class SignatureCheckMiddleware(
-    sigauth.middleware.SignatureCheckMiddlewareBase
-):
+class SignatureCheckMiddleware(sigauth.middleware.SignatureCheckMiddlewareBase):
     secret = None
 
     def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
         self.request_checker = helpers.RequestSignatureChecker(self.secret)
 
     def should_check(self, request):

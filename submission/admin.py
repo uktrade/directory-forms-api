@@ -11,6 +11,32 @@ import core.helpers
 from submission import constants, models, tasks
 
 
+class FormUrlFilter(SimpleListFilter):
+    title = 'form URL'
+    parameter_name = 'form_url'
+    common_urls = [
+        '/contact/office-finder/*/',
+        '/international/trade/suppliers/*/contact/',
+        '/international/investment-support-directory/*/contact/',
+        '/suppliers/*/contact/',
+        '/investment-support-directory/*/contact/',
+    ]
+
+    def lookups(self, request, model_admin):
+        queryset = models.Submission.objects.exclude(form_url__isnull=True)
+        for url in self.common_urls:
+            escaped = url.replace('/', r'\/').replace('*', '.+')
+            queryset = queryset.exclude(form_url__iregex=f'{escaped}.*')
+        lookups = list(queryset.distinct('form_url').order_by('form_url').values_list('form_url', flat=True))
+        return [(item, item) for item in sorted(lookups + self.common_urls)]
+
+    def queryset(self, request, queryset):
+        value = self.value()
+        if value:
+            queryset = queryset.filter(form_url=value)
+        return queryset
+
+
 class ActionFilter(SimpleListFilter):
     title = 'action'
     parameter_name = 'action_name'
@@ -48,15 +74,17 @@ class SubmissionAdmin(core.helpers.DownloadCSVMixin, admin.ModelAdmin):
         'action_name',
         'created',
         'is_sent',
-        'sender'
+        'sender',
+        'recipient_email',
     )
     list_filter = (
         'client',
         ActionFilter,
-        'form_url',
+        FormUrlFilter,
         'created',
         'is_sent',
         'sender',
+
     )
 
     actions = core.helpers.DownloadCSVMixin.actions + ['retry']

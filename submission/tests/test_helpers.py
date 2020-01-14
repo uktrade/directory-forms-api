@@ -263,15 +263,43 @@ def test_get_sender_email_address_zendesk_action(zendesk_action_payload):
     assert email == 'zendesk-user@example.com'
 
 
-def test_get_sender_email_address_notify_action(
-        gov_notify_email_action_payload
-):
-    email = helpers.get_sender_email_address(
-        gov_notify_email_action_payload['meta']
-    )
+def test_get_sender_email_address_notify_action(gov_notify_email_action_payload):
+    del gov_notify_email_action_payload['meta']['sender']
+    email = helpers.get_sender_email_address(gov_notify_email_action_payload['meta'])
     assert email == 'notify-user@example.com'
 
 
 def test_get_sender_email_address_pardot_action(pardot_action_payload):
     email = helpers.get_sender_email_address(pardot_action_payload['meta'])
+    assert email is None
+
+
+def test_get_sender_email_address_sender(gov_notify_email_action_payload):
+    email = helpers.get_sender_email_address(gov_notify_email_action_payload['meta'])
+    assert email == 'erp+testform@jhgk.com'
+
+
+def test_get_recipient_email_address_notify_action(gov_notify_email_action_payload):
+    email = helpers.get_recipient_email_address(gov_notify_email_action_payload['meta'])
+    assert email == 'notify-user@example.com'
+
+
+def test_get_recipient_email_address_zendesk_action(zendesk_action_payload, settings):
+    zendesk_action_payload['meta']['subdomain'] = settings.ZENDESK_SUBDOMAIN_DEFAULT
+    email = helpers.get_recipient_email_address(zendesk_action_payload['meta'])
+    assert email == f'{settings.ZENDESK_SUBDOMAIN_DEFAULT}:Market Access'
+
+
+def test_get_recipient_email_address_email_action(email_action_payload):
+    email = helpers.get_recipient_email_address(email_action_payload['meta'])
+    assert email == 'foo@bar.com,foo2@bar.com'
+
+
+def test_get_recipient_email_address_pardot_action(pardot_action_payload):
+    email = helpers.get_recipient_email_address(pardot_action_payload['meta'])
+    assert email is None
+
+
+def test_get_recipient_email_address_letter_action(gov_notify_letter_action_payload):
+    email = helpers.get_recipient_email_address(gov_notify_letter_action_payload['meta'])
     assert email is None

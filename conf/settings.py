@@ -1,6 +1,5 @@
 import os
 
-from directory_components.constants import IP_RETRIEVER_NAME_GOV_UK
 import dj_database_url
 import environ
 import sentry_sdk
@@ -250,11 +249,6 @@ SESSION_COOKIE_NAME = 'directory_forms_api_admin_session_id'
 SESSION_COOKIE_SECURE = env.bool('SESSION_COOKIE_SECURE', True)
 SESSION_COOKIE_HTTPONLY = True
 CSRF_COOKIE_SECURE = env.bool('CSRF_COOKIE_SECURE', True)
-
-# Activity Stream
-REMOTE_IP_ADDRESS_RETRIEVER = env.str(
-    'REMOTE_IP_ADDRESS_RETRIEVER', IP_RETRIEVER_NAME_GOV_UK
-)
 
 # health check
 DIRECTORY_HEALTHCHECK_TOKEN = env.str('HEALTH_CHECK_TOKEN')

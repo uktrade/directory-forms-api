@@ -5,6 +5,9 @@
 ### Implemented enhancements
 
 ### Fixed bugs
+- TT-2254 - Cleaned up obseolete settings
+
+### Fixed bugs
 
 ## [2020.01.14](https://github.com/uktrade/directory-forms-api/releases/tag/2020.01.14)
 [Full Changelog](https://github.com/uktrade/directory-forms-api/compare/2019.11.21_2...2020.01.14)

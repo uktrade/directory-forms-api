@@ -1,5 +1,5 @@
 import datetime
-import pprint
+import re
 
 from django.contrib import admin, messages
 from django.contrib.admin import SimpleListFilter
@@ -8,7 +8,10 @@ from django.shortcuts import redirect
 from django.urls import reverse
 
 import core.helpers
-from submission import constants, models, tasks
+from submission import constants, models, tasks, helpers
+
+
+QUERYSTRING = re.compile(r'\?.*$')
 
 
 class FormUrlFilter(SimpleListFilter):
@@ -20,20 +23,26 @@ class FormUrlFilter(SimpleListFilter):
         '/international/investment-support-directory/*/contact/',
         '/suppliers/*/contact/',
         '/investment-support-directory/*/contact/',
+        '/high-potential-opportunities/*/contact/'
     ]
+
+    @staticmethod
+    def escape_url(url):
+        return url.replace('/', r'\/').replace('*', '.+')
 
     def lookups(self, request, model_admin):
         queryset = models.Submission.objects.exclude(form_url__isnull=True)
         for url in self.common_urls:
-            escaped = url.replace('/', r'\/').replace('*', '.+')
-            queryset = queryset.exclude(form_url__iregex=f'{escaped}.*')
+            queryset = queryset.exclude(form_url__iregex=f'{self.escape_url(url)}.*')
         lookups = list(queryset.distinct('form_url').order_by('form_url').values_list('form_url', flat=True))
+        # remove querystrings
+        lookups = list(set(QUERYSTRING.sub('', item) for item in lookups))
         return [(item, item) for item in sorted(lookups + self.common_urls)]
 
     def queryset(self, request, queryset):
         value = self.value()
         if value:
-            queryset = queryset.filter(form_url=value)
+            queryset = queryset.filter(form_url__iregex=f'^{self.escape_url(value)}')
         return queryset
 
 
@@ -83,7 +92,6 @@ class SubmissionAdmin(core.helpers.DownloadCSVMixin, admin.ModelAdmin):
         FormUrlFilter,
         'created',
         'is_sent',
-        'sender',
 
     )
 
@@ -105,10 +113,10 @@ class SubmissionAdmin(core.helpers.DownloadCSVMixin, admin.ModelAdmin):
         return []
 
     def get_pretty_data(self, obj):
-        return pprint.pformat(obj.data)
+        return helpers.pprint_json(obj.data)
 
     def get_pretty_meta(self, obj):
-        return pprint.pformat(obj.meta)
+        return helpers.pprint_json(obj.meta)
 
     def get_pretty_client(self, obj):
         return obj.client
@@ -133,8 +141,40 @@ class SubmissionAdmin(core.helpers.DownloadCSVMixin, admin.ModelAdmin):
     get_pretty_funnel.short_description = 'Funnel'
 
 
+class SubmissionsInline(admin.options.TabularInline):
+    model = models.Submission
+
+    readonly_fields = (
+        'client',
+        'form_url',
+        'action_name',
+        'created',
+        'is_sent',
+        'created',
+        'get_pretty_data',
+        'get_pretty_meta',
+    )
+
+    exclude = ('data', 'meta',)
+    can_delete = False
+
+    def has_add_permission(self, request):
+        return False
+
+    def get_pretty_data(self, obj):
+        return helpers.pprint_json(obj.data)
+
+    def get_pretty_meta(self, obj):
+        return helpers.pprint_json(obj.meta)
+
+    get_pretty_data.short_description = 'Data'
+    get_pretty_meta.short_description = 'Mata'
+
+
 @admin.register(models.Sender)
 class SenderAdmin(core.helpers.DownloadCSVMixin, admin.ModelAdmin):
+    inlines = (SubmissionsInline,)
+
     search_fields = ('email_address',)
     readonly_fields = ('created',)
     list_display = (

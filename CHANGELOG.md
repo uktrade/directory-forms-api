@@ -4,6 +4,8 @@
 
 ### Implemented enhancements
 
+- No ticket - Improve filtering on Submission. Inline Submissions in Sender admin.
+
 ### Fixed bugs
 - TT-2254 - Cleaned up obseolete settings
 

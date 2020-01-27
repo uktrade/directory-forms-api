@@ -295,6 +295,12 @@ def test_get_recipient_email_address_email_action(email_action_payload):
     assert email == 'foo@bar.com,foo2@bar.com'
 
 
+def test_get_recipient_email_address_notify_action_none(email_action_payload):
+    email_action_payload['meta']['recipients'] = None
+    email = helpers.get_recipient_email_address(email_action_payload['meta'])
+    assert email is None
+
+
 def test_get_recipient_email_address_pardot_action(pardot_action_payload):
     email = helpers.get_recipient_email_address(pardot_action_payload['meta'])
     assert email is None

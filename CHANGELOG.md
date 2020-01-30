@@ -3,6 +3,18 @@
 ## Pre release
 
 ### Implemented enhancements
+
+- No ticket - Improve filtering on Submission. Inline Submissions in Sender admin.
+
+### Fixed bugs
+- TT-2254 - Cleaned up obseolete settings
+
+### Fixed bugs
+
+## [2020.01.14](https://github.com/uktrade/directory-forms-api/releases/tag/2020.01.14)
+[Full Changelog](https://github.com/uktrade/directory-forms-api/compare/2019.11.21_2...2020.01.14)
+
+### Implemented enhancements
 - TT-2199 - add testapi endpoint to delete submissions created by automated tests
 - TT-2204 - add testapi endpoint to delete senders created by automated tests
 - No ticket - Improve form url filter

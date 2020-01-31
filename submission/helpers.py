@@ -149,7 +149,7 @@ def get_recipient_email_address(submission_meta):
     elif action_name == constants.ACTION_NAME_GOV_NOTIFY_EMAIL:
         return submission_meta['email_address']
     elif action_name == constants.ACTION_NAME_EMAIL:
-        return ','.join(submission_meta.get('recipients'))
+        return ','.join(submission_meta['recipients'])
     elif action_name == constants.ACTION_NAME_PARDOT:
         return None
     elif action_name == constants.ACTION_NAME_GOV_NOTIFY_LETTER:

@@ -8,6 +8,7 @@
 
 ### Fixed bugs
 - TT-2254 - Cleaned up obseolete settings
+- TT-2261-non-recipient-email-fix
 
 ### Fixed bugs
 

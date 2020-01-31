@@ -98,6 +98,33 @@ def test_generic_form_submission_submit_new_sender(mock_delay, api_client):
 
 
 @pytest.mark.django_db
+@mock.patch('submission.helpers.send_email')
+def test_generic_form_submission_submit_no_recipient_error(mock_delay, api_client):
+
+    email_address = 'test@testsubmission.com'
+    payload = {
+        'data': {
+            'text_body': 'hello there',
+            'html_body': '<a>Hello there</a>',
+        },
+        'meta': {
+            'action_name': 'email',
+            'recipients': None,
+            'subject': 'Hello',
+            'reply_to': [email_address],
+        }
+    }
+    response = api_client.post(
+        reverse('api:submission'),
+        data=payload,
+        format='json'
+    )
+
+    assert response.status_code == 400
+    assert mock_delay.call_count == 0
+
+
+@pytest.mark.django_db
 @mock.patch('submission.tasks.send_email.delay')
 def test_generic_form_submission_submit_blacklisted(mock_delay, api_client):
     assert models.Submission.objects.count() == 0

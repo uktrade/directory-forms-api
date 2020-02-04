@@ -1,17 +1,18 @@
 # Changelog
 
+## Hotfix
+- No ticket - CVE-2020-5236 & CVE-2020-7471: Potential SQL injection via StringAgg(delimiter)
+
 ## Pre release
 
-### Implemented enhancements
+## [Release]
 
+### Implemented enhancements
 - No ticket - Improve filtering on Submission. Inline Submissions in Sender admin.
 
 ### Fixed bugs
 - TT-2254 - Cleaned up obseolete settings
 - TT-2261-non-recipient-email-fix
-- No ticket - CVE-2020-5236 & CVE-2020-7471: Potential SQL injection via StringAgg(delimiter)
-
-### Fixed bugs
 
 ## [2020.01.14](https://github.com/uktrade/directory-forms-api/releases/tag/2020.01.14)
 [Full Changelog](https://github.com/uktrade/directory-forms-api/compare/2019.11.21_2...2020.01.14)

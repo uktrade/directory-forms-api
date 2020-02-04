@@ -9,7 +9,7 @@
 ### Fixed bugs
 - TT-2254 - Cleaned up obseolete settings
 - TT-2261-non-recipient-email-fix
-- No ticket - CVE-2020-7471: Potential SQL injection via StringAgg(delimiter)
+- No ticket - CVE-2020-5236 & CVE-2020-7471: Potential SQL injection via StringAgg(delimiter)
 
 ### Fixed bugs
 

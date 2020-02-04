@@ -1,7 +1,11 @@
 # Changelog
 
+## Hotfix
+- No ticket - CVE-2020-5236 & CVE-2020-7471: Potential SQL injection via StringAgg(delimiter)
+
 ## Pre release
 
+## [Release]
 ### Implemented enhancements
 - TT-2199 - add testapi endpoint to delete submissions created by automated tests
 - TT-2204 - add testapi endpoint to delete senders created by automated tests
@@ -14,7 +18,6 @@
 - No ticket - Upgrade waitress to fix security vulnerability
 - TT-2245 - error django download
 - TT-2251 - zendesk-recipient-email
-- No ticket - CVE-2020-5236 & CVE-2020-7471: Potential SQL injection via StringAgg(delimiter)
 
 ## [2019.11.21](https://github.com/uktrade/directory-forms-api/releases/tag/2019.11.21_2)
 [Full Changelog](https://github.com/uktrade/directory-forms-api/compare/2019.22.10...2019.11.21_2)

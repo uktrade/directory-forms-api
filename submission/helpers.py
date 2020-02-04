@@ -1,15 +1,23 @@
-import requests
+import json
+
 
 from notifications_python_client import NotificationsAPIClient
 import ratelimit.utils
+import requests
 from zenpy import Zenpy
 from zenpy.lib.api_objects import CustomField, Ticket, User as ZendeskUser
 
 from django.conf import settings
 from django.core.mail import EmailMultiAlternatives
 from django.test.client import RequestFactory
+from django.utils.safestring import mark_safe
 
 from submission import constants
+
+
+def pprint_json(data):
+    dumped = json.dumps(data, indent=4, sort_keys=True)
+    return mark_safe(f'<pre>{dumped}</pre>')
 
 
 class ZendeskClient:

@@ -35,7 +35,7 @@ class ZendeskActionSerializer(serializers.Serializer):
 class EmailActionSerializer(serializers.Serializer):
     subject = serializers.CharField()
     reply_to = serializers.ListField(child=serializers.EmailField())
-    recipients = serializers.ListField(child=serializers.EmailField())
+    recipients = serializers.ListField(child=serializers.EmailField(), required=True)
     html_body = serializers.CharField()
     text_body = serializers.CharField(required=False)
 

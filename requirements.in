@@ -5,6 +5,7 @@ django_extensions==2.2.5
 djangorestframework==3.11.0
 django-filter==2.2.0
 django-pglocks==1.0.3
+django-json-widget==1.0.0
 whitenoise==5.0.1
 psycopg2==2.8.4
 gunicorn==20.0.4

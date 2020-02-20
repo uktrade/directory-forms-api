@@ -27,6 +27,7 @@ django-environ==0.4.5
 django-filter==2.2.0
 django-health-check==3.8.0  # via directory-healthcheck
 django-ipware==2.0.1      # via django-admin-ip-restrictor
+django-json-widget==1.0.0
 django-pglocks==1.0.3
 django-ratelimit==2.0
 django-redis==4.11.0
@@ -40,7 +41,7 @@ factory-boy==2.12.0
 faker==0.8.11             # via factory-boy
 flake8==3.7.9
 freezegun==0.3.12
-future==0.16.0            # via notifications-python-client
+future==0.16.0            # via django-json-widget, notifications-python-client
 gunicorn==20.0.4
 idna==2.6                 # via requests
 importlib-metadata==1.3.0  # via jsonschema, kombu, pluggy, pytest

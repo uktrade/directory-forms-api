@@ -3,8 +3,9 @@
 ## Pre release
 
 ### Implemented enhancements
-
 - No ticket - Improve filtering on Submission. Inline Submissions in Sender admin.
+- TT-2261 - non-recipient-email-fix
+- TT-2283 - Friendly JSON Widget display
 
 ### Fixed bugs
 - TT-2254 - Cleaned up obseolete settings

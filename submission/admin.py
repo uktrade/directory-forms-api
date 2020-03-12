@@ -6,7 +6,7 @@ from django.contrib.admin import SimpleListFilter
 from django.db.models import Count
 from django.shortcuts import redirect
 from django.urls import reverse
-from django_json_widget.widgets import JSONEditorWidget
+import django_json_widget.widgets
 from django.contrib.postgres import fields
 
 import core.helpers
@@ -14,6 +14,14 @@ from submission import constants, models, tasks, helpers
 
 
 QUERYSTRING = re.compile(r'\?.*$')
+
+
+# woraround for https://github.com/jmrivas86/django-json-widget/issues/33
+
+class JSONEditorWidget(django_json_widget.widgets.JSONEditorWidget):
+    class Media:
+        css = {'all': ('dist/jsoneditor.min.css', )}
+        js = ('dist/jsoneditor.min.js',)
 
 
 class FormUrlFilter(SimpleListFilter):

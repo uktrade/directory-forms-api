@@ -47,6 +47,11 @@ def send_pardot(*args, **kwargs):
     helpers.send_pardot(*args, **kwargs)
 
 
+@app.task(base=Task)
+def no_operation(*args, **kwargs):
+    pass
+
+
 action_map = {
     constants.ACTION_NAME_EMAIL: (
         send_email,
@@ -67,6 +72,10 @@ action_map = {
     constants.ACTION_NAME_PARDOT: (
         send_pardot,
         serializers.PardotSerializer,
+    ),
+    constants.ACTION_NAME_SAVE_ONLY_IN_DB: (
+        no_operation,
+        serializers.SaveInDatabaseOnlySerializer,
     ),
 }
 

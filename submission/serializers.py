@@ -9,6 +9,10 @@ from submission import helpers, models, constants
 logger = logging.getLogger(__name__)
 
 
+class SaveInDatabaseOnlySerializer(serializers.Serializer):
+    pass
+
+
 class ZendeskActionSerializer(serializers.Serializer):
     subject = serializers.CharField()
     full_name = serializers.CharField()

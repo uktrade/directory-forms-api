@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.postgres',
+    'django_json_widget',
     'rest_framework',
     'health_check.db',
     'health_check.cache',
@@ -47,6 +48,7 @@ INSTALLED_APPS = [
     'client.apps.ClientConfig',
     'testapi.apps.TestApiConfig',
     'authbroker_client',
+
 ]
 
 MIDDLEWARE = [
@@ -171,7 +173,6 @@ if FEATURE_ENFORCE_STAFF_SSO_ENABLED:
 AUTHBROKER_URL = env.str('STAFF_SSO_AUTHBROKER_URL')
 AUTHBROKER_CLIENT_ID = env.str('AUTHBROKER_CLIENT_ID')
 AUTHBROKER_CLIENT_SECRET = env.str('AUTHBROKER_CLIENT_SECRET')
-
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = env.str('SECRET_KEY')

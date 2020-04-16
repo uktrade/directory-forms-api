@@ -1,7 +1,11 @@
 # Changelog
 
+## Hotfix
+- No ticket - CVE-2020-5236 & CVE-2020-7471: Potential SQL injection via StringAgg(delimiter)
+
 ## Pre release
 
+## [Release]
 ### Implemented enhancements
 - No ticket - Improve filtering on Submission. Inline Submissions in Sender admin.
 - TT-2261 - non-recipient-email-fix

@@ -16,10 +16,10 @@ sigauth==4.1.1
 directory-healthcheck==2.0.0
 django-cryptography==0.3.0
 zenpy==1.1.10
-celery[redis]==4.4.0 
+celery[redis]==4.4.0
 cryptography==2.8
 notifications-python-client==5.4.1
-directory-components==35.9.1 
+directory-components==35.9.1
 urllib3>=1.24.2,<2.0.0
 django-admin-ip-restrictor==2.1.0
 django-ratelimit==2.0

@@ -6,6 +6,8 @@ from django.contrib.admin import SimpleListFilter
 from django.db.models import Count
 from django.shortcuts import redirect
 from django.urls import reverse
+from django_json_widget.widgets import JSONEditorWidget
+from django.contrib.postgres import fields
 
 import core.helpers
 from submission import constants, models, tasks, helpers
@@ -74,6 +76,9 @@ class ActionFilter(SimpleListFilter):
 
 @admin.register(models.Submission)
 class SubmissionAdmin(core.helpers.DownloadCSVMixin, admin.ModelAdmin):
+    formfield_overrides = {
+        fields.JSONField: {'widget': JSONEditorWidget},
+    }
     search_fields = ('data', 'meta',)
     readonly_fields = ('client', 'created', 'is_sent', 'form_url')
     list_display = (
@@ -85,6 +90,7 @@ class SubmissionAdmin(core.helpers.DownloadCSVMixin, admin.ModelAdmin):
         'is_sent',
         'sender',
         'recipient_email',
+        'data',
     )
     list_filter = (
         'client',
@@ -101,22 +107,10 @@ class SubmissionAdmin(core.helpers.DownloadCSVMixin, admin.ModelAdmin):
         timestamp=datetime.datetime.now().strftime("%Y%m%d%H%M%S")
     )
 
-    def get_readonly_fields(self, request, obj=None):
-        if obj:
-            readonly_fields = self.readonly_fields
-            return ('get_pretty_data', 'get_pretty_meta',) + readonly_fields
-        return self.readonly_fields
-
     def get_exclude(self, request, obj=None):
         if obj:
-            return ('data', 'meta', 'modified')
+            return ('modified')
         return []
-
-    def get_pretty_data(self, obj):
-        return helpers.pprint_json(obj.data)
-
-    def get_pretty_meta(self, obj):
-        return helpers.pprint_json(obj.meta)
 
     def get_pretty_client(self, obj):
         return obj.client
@@ -135,8 +129,6 @@ class SubmissionAdmin(core.helpers.DownloadCSVMixin, admin.ModelAdmin):
         return redirect(reverse('admin:submission_submission_changelist'))
 
     retry.short_description = "Retry sending this action."
-    get_pretty_data.short_description = 'Data'
-    get_pretty_meta.short_description = 'Meta'
     get_pretty_client.short_description = 'Service'
     get_pretty_funnel.short_description = 'Funnel'
 

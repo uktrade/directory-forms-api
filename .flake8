@@ -1,3 +1,3 @@
 [flake8]
-exclude=migrations,venv
+exclude=migrations,venv,.venv
 max-line-length=120

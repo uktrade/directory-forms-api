@@ -9,6 +9,14 @@ from submission import helpers, models, constants
 logger = logging.getLogger(__name__)
 
 
+class SaveInDatabaseOnlySerializer(serializers.Serializer):
+
+    @classmethod
+    def from_submission(cls, submission, *args, **kwargs):
+        data = {**submission.meta, **submission.data}
+        return cls(data=data, *args, **kwargs)
+
+
 class ZendeskActionSerializer(serializers.Serializer):
     subject = serializers.CharField()
     full_name = serializers.CharField()

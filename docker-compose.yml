@@ -1,0 +1,31 @@
+version: '2'
+services:
+
+  directory-forms-api:
+    build: .
+    ports:
+      - "8011:8011"
+    env_file:
+      - conf/env/dev
+      - conf/env/secrets-do-not-commit
+    environment:
+      - PYTHONUNBUFFERED=1
+    volumes:
+      - .:/app
+    depends_on:
+      - postgres
+      - redis
+    stdin_open: true
+    tty: true
+    command: "sh /app/start.sh"
+
+  postgres:
+    image: postgres:10
+    environment:
+      - POSTGRES_DB=directory_forms_api_debug
+      - POSTGRES_USER=debug
+      - POSTGRES_PASSWORD=debug
+
+  redis:
+    image: redis:3.2
+

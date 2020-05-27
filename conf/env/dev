@@ -5,7 +5,12 @@ DEBUG=true
 DB_NAME=directory_forms_api_debug
 DB_USER=debug
 DB_PASSWORD=debug
-DATABASE_URL=postgres://debug:debug@localhost:5432/directory_forms_api_debug
+
+DATABASE_URL=localhost://debug:debug@postgres:5432/directory_forms_api_debug
+
+# Setting if using docker-compose
+# DATABASE_URL=postgres://debug:debug@postgres:5432/directory_forms_api_debug
+
 HEALTH_CHECK_TOKEN=debug
 CSRF_COOKIE_SECURE=false
 SESSION_COOKIE_SECURE=false

@@ -7,6 +7,7 @@ services:
       - "8011:8011"
     env_file:
       - conf/env/dev
+      - conf/env/dev-for-dockercompose
       - conf/env/secrets-do-not-commit
     environment:
       - PYTHONUNBUFFERED=1

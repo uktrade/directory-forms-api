@@ -1,10 +1,15 @@
 version: '2'
 services:
 
-  directory-forms-api:
+  web:
     build: .
+    hostname: directory-forms-api
+    container_name: directory-forms-api-web
     ports:
       - "8011:8011"
+    networks:
+      - inside-network
+      - outside-network
     env_file:
       - conf/env/dev
       - conf/env/dev-for-dockercompose
@@ -19,14 +24,39 @@ services:
     stdin_open: true
     tty: true
     command: "sh /app/start.sh"
-
+  worker:
+    container_name: directory-forms-api-worker
+    build: .
+    networks:
+      - inside-network
+    env_file:
+      - conf/env/dev
+      - conf/env/dev-for-dockercompose
+      - conf/env/secrets-do-not-commit
+    environment:
+      - PYTHONUNBUFFERED=1
+    volumes:
+      - .:/app
+    depends_on:
+      - postgres
+      - redis
+    stdin_open: true
+    tty: true
+    command: "celery -A conf worker -l info"
   postgres:
     image: postgres:10
-    environment:
-      - POSTGRES_DB=directory_forms_api_debug
-      - POSTGRES_USER=debug
-      - POSTGRES_PASSWORD=debug
-
+    networks:
+      - inside-network
+    env_file:
+      - conf/env/dev-for-dockercompose
   redis:
     image: redis:3.2
+    networks:
+      - inside-network
+
+networks:
+  inside-network:
+    driver: bridge
+  outside-network:
+    driver: bridge
 

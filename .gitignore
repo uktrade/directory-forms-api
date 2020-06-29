@@ -100,3 +100,6 @@ conf/env/secrets-do-not-commit
 # Dynamically created
 .venv
 staticfiles
+
+# pyenv
+.python-version

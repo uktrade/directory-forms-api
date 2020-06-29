@@ -103,3 +103,6 @@ staticfiles
 
 # pyenv
 .python-version
+
+# vscode
+.vscode

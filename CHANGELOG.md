@@ -1,6 +1,7 @@
 # Changelog
 
 ## Hotfix
+- no ticket - vulnerability fix - update python to 2.2.13
 - No ticket - CVE-2020-5236 & CVE-2020-7471: Potential SQL injection via StringAgg(delimiter)
 
 ## Pre release
@@ -39,7 +40,7 @@
 
 ### Implemented enhancements
 - TT2100 fix type name error for activitystream
-- No Ticket - configure redis for default cache 
+- No Ticket - configure redis for default cache
 
 ## [2019.22.10](https://github.com/uktrade/directory-forms-api/releases/tag/2019.22.10)
 [Full Changelog](https://github.com/uktrade/directory-forms-api/compare/2019.08.12...2019.22.10)
@@ -64,7 +65,7 @@
 ### Implemented enhancements
 - TT-1604 - Send Letter Gov Notify
 - TT-1670 Allow-Govnotify send letters test mode set env GOV_NOTIFY_LETTER_API_KEY to test key to allow PDF viewing in Dev. In Prod set to live key
-- TT-1692 - SSO integration   (setup ENVS STAFF_SSO_AUTHBROKER_URL/AUTHBROKER_CLIENT_ID/AUTHBROKER_CLIENT_SECRET, ENFORCE_STAFF_SSO_ON) 
+- TT-1692 - SSO integration   (setup ENVS STAFF_SSO_AUTHBROKER_URL/AUTHBROKER_CLIENT_ID/AUTHBROKER_CLIENT_SECRET, ENFORCE_STAFF_SSO_ON)
 - TT-1692 - enhanced to give user grant staff status using grant_staff_status managment command
 - TT-1700 - Middleware admin status permission check
 - TT-1735 - Forms & Directory-API SSO display message for 1st time users

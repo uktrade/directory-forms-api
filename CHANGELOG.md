@@ -3,6 +3,7 @@
 ## Pre release
 ## Hotfix
 ### Fixed bugs
+- No ticket - fix hanging codecov
 ### Implemented enhancements
 
 ## [2020.04.16](https://github.com/uktrade/directory-forms-api/releases/tag/2020.04.16)

@@ -5,6 +5,15 @@
 - No ticket - CVE-2020-5236 & CVE-2020-7471: Potential SQL injection via StringAgg(delimiter)
 
 ## Pre release
+## Hotfix
+### Fixed bugs
+- No ticket - fix hanging codecov
+### Implemented enhancements
+
+## [2020.04.16](https://github.com/uktrade/directory-forms-api/releases/tag/2020.04.16)
+[Full Changelog](https://github.com/uktrade/directory-forms-api/compare/2020.01.14...2020.04.16)
+## Hotfix
+- No ticket - v3-cipipeline manifest.yml file fix
 
 ## [Release]
 ### Implemented enhancements
@@ -16,8 +25,6 @@
 ### Fixed bugs
 - TT-2254 - Cleaned up obseolete settings
 - TT-2261-non-recipient-email-fix
-
-### Fixed bugs
 
 ## [2020.01.14](https://github.com/uktrade/directory-forms-api/releases/tag/2020.01.14)
 [Full Changelog](https://github.com/uktrade/directory-forms-api/compare/2019.11.21_2...2020.01.14)

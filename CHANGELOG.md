@@ -5,7 +5,7 @@
 ### Fixed bugs
 ### Implemented enhancements
 
-## [2021.02.21](https://github.com/uktrade/directory-forms-api/releases/tag/1.1.0)
+## [2021.02.15](https://github.com/uktrade/directory-forms-api/releases/tag/1.1.0)
 [Full Changelog](https://github.com/uktrade/directory-forms-api/compare/1.1.0...1.2.0)
 
 ## Hotfix
@@ -18,7 +18,6 @@
 ## Hotfix
 - No ticket - v3-cipipeline manifest.yml file fix
 
-## [Release]
 ### Implemented enhancements
 - No ticket - Improve filtering on Submission. Inline Submissions in Sender admin.
 - TT-2261 - non-recipient-email-fix

@@ -13,9 +13,9 @@ celery[redis]==4.4.0      # via -r requirements.in
 certifi==2020.4.5.1       # via requests, sentry-sdk
 cffi==1.14.0              # via cryptography
 chardet==3.0.4            # via requests
-codecov==2.0.15           # via -r requirements_test.in
+codecov==2.1.7            # via -r requirements_test.in
 coverage==5.1             # via codecov, pytest-cov
-cryptography==2.8         # via -r requirements.in, django-cryptography, pyopenssl, requests
+cryptography==3.2         # via -r requirements.in, django-cryptography, pyopenssl, requests
 directory-components==35.9.1  # via -r requirements.in
 directory-constants==20.11.0  # via directory-components
 directory-healthcheck==2.0.0  # via -r requirements.in

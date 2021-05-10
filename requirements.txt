@@ -62,7 +62,7 @@ django-redis==4.11.0
     # via -r requirements.in
 django-staff-sso-client==1.0.1
     # via -r requirements.in
-django==2.2.19
+django==2.2.20
     # via
     #   -r requirements.in
     #   directory-components
@@ -153,7 +153,7 @@ soupsieve==1.9.5
     # via beautifulsoup4
 sqlparse==0.3.0
     # via django
-urllib3==1.25.7
+urllib3==1.25.8
     # via
     #   -r requirements.in
     #   requests

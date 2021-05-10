@@ -70,7 +70,7 @@ django-redis==4.11.0
     # via -r requirements.in
 django-staff-sso-client==1.0.1
     # via -r requirements.in
-django==2.2.19
+django==2.2.20
     # via
     #   -r requirements.in
     #   directory-components
@@ -137,7 +137,7 @@ pluggy==0.13.1
     # via pytest
 psycopg2==2.8.4
     # via -r requirements.in
-py==1.8.1
+py==1.10.0
     # via pytest
 pycodestyle==2.5.0
     # via flake8

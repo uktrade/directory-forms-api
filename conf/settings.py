@@ -270,6 +270,7 @@ SIGAUTH_URL_NAMES_WHITELIST = [
     'database',  # health check
     'ping',  # health check
     'activity-stream',  # activity stream
+
 ]
 
 # Zendesk

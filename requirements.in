@@ -1,4 +1,4 @@
-django==2.2.20
+django==2.2.21
 dj-database-url==0.5.0
 django-environ==0.4.5
 django_extensions==2.2.5
@@ -11,7 +11,7 @@ psycopg2==2.8.4
 gunicorn==20.0.4
 sentry-sdk==0.13.5
 django-staff-sso-client==1.0.1
-requests[security]==2.22.0
+requests[security]==2.25.1
 sigauth==4.1.1
 directory-healthcheck==2.0.0
 django-cryptography==0.3.0
@@ -25,3 +25,4 @@ django-admin-ip-restrictor==2.1.0
 django-ratelimit==2.0
 django-redis==4.11.0
 waitress==1.4.3
+urllib3>=1.26.5

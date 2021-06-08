@@ -5,6 +5,8 @@
 ### Fixed bugs
 ### Implemented enhancements
 
+- GP2-2718 - Added delete endpoint for data retention 
+
 ## [1.4.0](https://github.com/uktrade/directory-forms-api/releases/tag/1.4.0)
 [Full Changelog](https://github.com/uktrade/directory-forms-api/compare/1.2.0...1.4.0)
 

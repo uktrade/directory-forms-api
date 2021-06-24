@@ -33,6 +33,11 @@ api_urls = [
         submission.views.SubmissionCreateAPIView.as_view(),
         name='submission'
     ),
+    url(
+        r'^delete-submissions/(?P<email_address>.*)$',
+        submission.views.SubmissionDestroyAPIView.as_view(),
+        name='delete_submission',
+    ),
 ]
 
 testapi_urls = [

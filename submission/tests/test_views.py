@@ -443,3 +443,41 @@ def test_email_action_rate_limit_exceeded(mock_email, api_client, gov_notify_ema
     )
     assert black_listed_sender.is_blacklisted
     assert black_listed_sender.blacklisted_reason == 'IP'
+
+
+@pytest.mark.django_db
+@mock.patch('submission.helpers.send_email')
+def test_form_submission_delete_action(mock_delay, api_client):
+    assert models.Submission.objects.count() == 0
+
+    instance = factories.SubmissionFactory(data={'html_body': '<html><head></head><body>Hello</body></html>'})
+
+    assert models.Submission.objects.count() == 1
+
+    delete_response = api_client.delete(
+        reverse('api:delete_submission', kwargs={'email_address': instance.sender.email_address}),
+        data=None,
+        format='json'
+    )
+
+    assert delete_response.status_code == 204
+    assert models.Submission.objects.count() == 0
+
+
+@pytest.mark.django_db
+@mock.patch('submission.helpers.send_email')
+def test_form_submission_delete_with_non_existing_email(mock_delay, api_client):
+    assert models.Submission.objects.count() == 0
+
+    factories.SubmissionFactory(data={'html_body': '<html><head></head><body>Hello</body></html>'})
+
+    assert models.Submission.objects.count() == 1
+
+    delete_response = api_client.delete(
+        reverse('api:delete_submission', kwargs={'email_address': 'no-existing@email.com'}),
+        data=None,
+        format='json'
+    )
+
+    assert delete_response.status_code == 204
+    assert models.Submission.objects.count() == 1

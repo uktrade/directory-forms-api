@@ -13,5 +13,3 @@ VOLUME /reports
 ADD . /app/
 
 RUN pip install -r requirements.txt
-
-

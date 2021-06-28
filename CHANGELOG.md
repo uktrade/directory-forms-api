@@ -5,13 +5,19 @@
 ### Fixed bugs
 ### Implemented enhancements
 
-## [2021.02.15](https://github.com/uktrade/directory-forms-api/releases/tag/1.1.0)
-[Full Changelog](https://github.com/uktrade/directory-forms-api/compare/1.1.0...1.2.0)
+- GP2-2718 - Added delete endpoint for data retention 
+
+## [1.4.0](https://github.com/uktrade/directory-forms-api/releases/tag/1.4.0)
+[Full Changelog](https://github.com/uktrade/directory-forms-api/compare/1.2.0...1.4.0)
 
 ## Hotfix
 - no ticket - vulnerability fix - update python to 2.2.13
 - No ticket - CVE-2020-5236 & CVE-2020-7471: Potential SQL injection via StringAgg(delimiter)
 - No ticket - fix hanging codecov
+
+## [2021.02.15](https://github.com/uktrade/directory-forms-api/releases/tag/1.1.0)
+[Full Changelog](https://github.com/uktrade/directory-forms-api/compare/1.1.0...1.2.0)
+
 
 ## [2020.04.16](https://github.com/uktrade/directory-forms-api/releases/tag/2020.04.16)
 [Full Changelog](https://github.com/uktrade/directory-forms-api/compare/2020.01.14...2020.04.16)

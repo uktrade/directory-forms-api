@@ -48,8 +48,7 @@ def test_zendesk_client_create_user(mock_user):
     )
     with mock.patch.object(client.client.users, 'create_or_update') as stub:
         client.get_or_create_user(
-            full_name='Jim Example',
-            email_address='test@example.com'
+            full_name='Jim Example', email_address='test@example.com'
         )
         assert stub.call_count == 1
         assert stub.call_args == mock.call(
@@ -57,41 +56,100 @@ def test_zendesk_client_create_user(mock_user):
         )
 
 
+@pytest.mark.parametrize(
+    'parameters',
+    [
+        [
+            'subject123',
+            123,
+            {'field': 'value'},
+            'some-service-name',
+            None,
+            [{'id': 123, 'value': 'some-service-name'}],
+            'Field: value',
+        ],
+        [
+            'subject123',
+            123,
+            {
+                'field': 'value',
+                '_custom_fields': [
+                    {'id': '11', 'value': 'v1'},
+                    {'id': '22', 'value': 'v2'},
+                ],
+            },
+            'some-service-name',
+            None,
+            [
+                {'id': 123, 'value': 'some-service-name'},
+                {'id': '11', 'value': 'v1'},
+                {'id': '22', 'value': 'v2'},
+            ],
+            "Custom Fields: [{'id': '11', 'value': 'v1'}, {'id': '22', 'value': 'v2'}]\nField: value",
+        ],
+        [
+            'subject123',
+            123,
+            {'field': 'value', '_custom_fields': []},
+            'some-service-name',
+            None,
+            [{'id': 123, 'value': 'some-service-name'}],
+            'Custom Fields: []\nField: value',
+        ],
+        [
+            'subject123',
+            123,
+            {'field': 'value', '_tags': ['t1', 't2']},
+            'some-service-name',
+            ['t1', 't2'],
+            [{'id': 123, 'value': 'some-service-name'}],
+            "Tags: ['t1', 't2']\nField: value",
+        ],
+        [
+            'subject123',
+            '123',
+            {'field': 'value', '_tags': []},
+            'some-service-name',
+            None,
+            [{'id': '123', 'value': 'some-service-name'}],
+            'Tags: []\nField: value',
+        ],
+    ],
+)
 @mock.patch('submission.helpers.Ticket')
-@mock.patch('submission.helpers.CustomField')
-def test_zendesk_client_create_ticket(
-    mock_custom_field, mock_ticket, settings
-):
+def test_zendesk_client_create_ticket(mock_ticket, parameters, settings):
+    (
+        subject,
+        custom_field_id,
+        payload,
+        service_name,
+        tags,
+        custom_fields,
+        description,
+    ) = parameters
     client = helpers.ZendeskClient(
         email='test@example.com',
         token='token123',
         subdomain='subdomain123',
-        custom_field_id=123,
+        custom_field_id=custom_field_id,
     )
 
     user = mock.Mock()
-    with mock.patch.object(client.client.tickets, 'create') as stub:
-        client.create_ticket(
-            subject='subject123',
-            payload={'field': 'value'},
-            zendesk_user=user,
-            service_name='some-service'
-        )
-        assert stub.call_count == 1
-        assert stub.call_args == mock.call(
-            mock_ticket(
-                subject='subject123',
-                description='field: value',
-                submitter_id=user.id,
-                requester_id=user.id,
-                custom_fields=[
-                    mock_custom_field(
-                        id=123,
-                        value='some-service',
-                    )
-                ]
-            )
-        )
+    client.client = mock.Mock()
+    client.create_ticket(
+        subject=subject, payload=payload, zendesk_user=user, service_name=service_name
+    )
+
+    assert mock_ticket.call_count == 1
+    assert mock_ticket.call_args == mock.call(
+        subject=subject,
+        description=description,
+        submitter_id=user.id,
+        requester_id=user.id,
+        tags=tags,
+        custom_fields=custom_fields,
+    )
+    assert client.client.tickets.create.call_args == mock.call(mock_ticket())
 
 
 @mock.patch('submission.helpers.ZendeskClient')
@@ -126,7 +184,8 @@ def test_create_zendesk_ticket(mock_zendesk_client, settings):
 
     assert client.get_or_create_user.call_count == 1
     assert client.get_or_create_user.call_args == mock.call(
-        full_name='jim example', email_address='test@example.com',
+        full_name='jim example',
+        email_address='test@example.com',
     )
 
     assert client.get_or_create_user.call_count == 1
@@ -169,9 +228,7 @@ def test_create_zendesk_ticket_subdomain(mock_zendesk_client, settings):
 
 
 @mock.patch('submission.helpers.ZendeskClient')
-def test_create_zendesk_ticket_unsupported_subdomain(
-    mock_zendesk_client, settings
-):
+def test_create_zendesk_ticket_unsupported_subdomain(mock_zendesk_client, settings):
     settings.ZENDESK_CREDENTIALS = {}
 
     with pytest.raises(NotImplementedError):
@@ -226,15 +283,15 @@ def test_send_gov_notify_letter(mock_notify_client, settings):
 
     assert mock_notify_client().send_letter_notification.call_count == 1
     assert mock_notify_client().send_letter_notification.call_args == (
-            mock.call(
-                template_id='123-456-789-2222',
-                personalisation={
-                    'address_line_1': 'The Occupier',
-                    'address_line_2': '123 High Street',
-                    'postcode': 'SW14 6BF',
-                    'name': 'John Smith',
-                },
-            )
+        mock.call(
+            template_id='123-456-789-2222',
+            personalisation={
+                'address_line_1': 'The Occupier',
+                'address_line_2': '123 High Street',
+                'postcode': 'SW14 6BF',
+                'name': 'John Smith',
+            },
+        )
     )
 
 
@@ -301,5 +358,7 @@ def test_get_recipient_email_address_pardot_action(pardot_action_payload):
 
 
 def test_get_recipient_email_address_letter_action(gov_notify_letter_action_payload):
-    email = helpers.get_recipient_email_address(gov_notify_letter_action_payload['meta'])
+    email = helpers.get_recipient_email_address(
+        gov_notify_letter_action_payload['meta']
+    )
     assert email is None

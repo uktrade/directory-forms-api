@@ -1,8 +1,13 @@
 # Changelog
 
 ## Pre release
+- GP2-2867-Dockerise-d-form-api
 ## Hotfix
 ### Fixed bugs
+### Implemented enhancements
+
+## [1.5.0](https://github.com/uktrade/directory-forms-api/releases/tag/1.5.0)
+[Full Changelog](https://github.com/uktrade/directory-forms-api/compare/1.4.0...1.5.0)
 ### Implemented enhancements
 
 - GP2-2718 - Added delete endpoint for data retention 

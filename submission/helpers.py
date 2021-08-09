@@ -1,16 +1,14 @@
 import json
 
-
-from notifications_python_client import NotificationsAPIClient
 import ratelimit.utils
 import requests
-from zenpy import Zenpy
-from zenpy.lib.api_objects import CustomField, Ticket, User as ZendeskUser
-
 from django.conf import settings
 from django.core.mail import EmailMultiAlternatives
 from django.test.client import RequestFactory
 from django.utils.safestring import mark_safe
+from notifications_python_client import NotificationsAPIClient
+from zenpy import Zenpy
+from zenpy.lib.api_objects import Ticket, User as ZendeskUser
 
 from submission import constants
 
@@ -34,7 +32,7 @@ class ZendeskClient:
 
     def create_ticket(self, subject, payload, zendesk_user, service_name):
         description = [
-            '{0}: {1}'.format(key.title().replace('_', ' '), value)
+            '{0}: {1}'.format(key.title().replace('_', ' ').strip(), value)
             for key, value in sorted(payload.items())
         ]
         ticket = Ticket(
@@ -42,12 +40,9 @@ class ZendeskClient:
             description='\n'.join(description),
             submitter_id=zendesk_user.id,
             requester_id=zendesk_user.id,
-            custom_fields=[
-                CustomField(
-                    id=self.custom_field_id,
-                    value=service_name
-                )
-            ]
+            tags=payload.get('_tags') or None,
+            custom_fields=[{'id': self.custom_field_id, 'value': service_name}]
+            + (payload.get('_custom_fields') or []),
         )
         return self.client.tickets.create(ticket)
 

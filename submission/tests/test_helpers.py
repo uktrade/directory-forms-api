@@ -85,7 +85,7 @@ def test_zendesk_client_create_user(mock_user):
                 {'id': '11', 'value': 'v1'},
                 {'id': '22', 'value': 'v2'},
             ],
-            "Custom Fields: [{'id': '11', 'value': 'v1'}, {'id': '22', 'value': 'v2'}]\nField: value",
+            'Field: value',
         ],
         [
             'subject123',
@@ -94,7 +94,7 @@ def test_zendesk_client_create_user(mock_user):
             'some-service-name',
             None,
             [{'id': 123, 'value': 'some-service-name'}],
-            'Custom Fields: []\nField: value',
+            'Field: value',
         ],
         [
             'subject123',
@@ -103,7 +103,7 @@ def test_zendesk_client_create_user(mock_user):
             'some-service-name',
             ['t1', 't2'],
             [{'id': 123, 'value': 'some-service-name'}],
-            "Tags: ['t1', 't2']\nField: value",
+            'Field: value',
         ],
         [
             'subject123',
@@ -112,7 +112,7 @@ def test_zendesk_client_create_user(mock_user):
             'some-service-name',
             None,
             [{'id': '123', 'value': 'some-service-name'}],
-            'Tags: []\nField: value',
+            'Field: value',
         ],
     ],
 )

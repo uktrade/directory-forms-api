@@ -32,8 +32,9 @@ class ZendeskClient:
 
     def create_ticket(self, subject, payload, zendesk_user, service_name):
         description = [
-            '{0}: {1}'.format(key.title().replace('_', ' ').strip(), value)
+            '{0}: {1}'.format(key.title().replace('_', ' '), value)
             for key, value in sorted(payload.items())
+            if not key.title().startswith('_')
         ]
         ticket = Ticket(
             subject=subject,

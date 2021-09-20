@@ -7,6 +7,7 @@ from unittest import mock
 
 from submission import constants
 
+
 @pytest.fixture
 def erp_zendesk_payload():
     return {

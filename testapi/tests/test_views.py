@@ -9,6 +9,14 @@ from client.tests.factories import ClientFactory
 from submission import constants, models
 from submission.models import Sender, Submission
 from submission.tests.factories import SubmissionFactory, SenderFactory
+from client.tests.utils import sign_invalid_client_hawk_header
+
+API_TEST_NAMES_WHITELIST = [
+    'delete_test_senders',
+    'delete_test_submissions',
+    'submissions_by_email',
+    'submission',
+]
 
 
 @pytest.fixture
@@ -17,15 +25,18 @@ def user():
 
 
 def api_client(settings, user, test_api_flag):
-    settings.SIGAUTH_URL_NAMES_WHITELIST = [
-        'delete_test_senders',
-        'delete_test_submissions',
-        'submissions_by_email',
-        'submission',
-    ]
+    settings.SIGAUTH_URL_NAMES_WHITELIST = API_TEST_NAMES_WHITELIST
     settings.FEATURE_TEST_API_ENABLED = test_api_flag
     client = APIClient()
     client.force_authenticate(user=user)
+    return client
+
+
+@pytest.fixture
+def api_client_test_white_listed(settings):
+    settings.SIGAUTH_URL_NAMES_WHITELIST = API_TEST_NAMES_WHITELIST
+    settings.FEATURE_TEST_API_ENABLED = True
+    client = APIClient()
     return client
 
 
@@ -97,13 +108,13 @@ def test_return_404_if_testapi_is_disabled(api_client_disabled_testapi):
     assert response.status_code == status.HTTP_404_NOT_FOUND
 
 
-def test_return_401_when_unauthenticated():
-    client = APIClient()
-    response = client.get(
+def test_return_403_when_unauthenticated(api_client_test_white_listed):
+    response = api_client_test_white_listed.get(
         reverse('testapi:submissions_by_email',
-                kwargs={'email_address': 'foo@bar.com'})
+                kwargs={'email_address': 'foo@bar.com'}),
+        HTTP_X_SIGNATURE=sign_invalid_client_hawk_header()
     )
-    assert response.status_code == status.HTTP_401_UNAUTHORIZED
+    assert response.status_code == 403
 
 
 @pytest.mark.django_db
@@ -196,10 +207,12 @@ def test_delete_test_submissions_returns_404_with_disabled_testapi(
 
 
 @pytest.mark.django_db
-def test_delete_test_submissions_returns_401_when_unauthenticated(mock_middleware_test_sig):
-    client = APIClient()
-    response = client.delete(reverse('testapi:delete_test_submissions'))
-    assert response.status_code == status.HTTP_401_UNAUTHORIZED
+def test_delete_test_submissions_returns_403_when_unauthenticated(api_client_test_white_listed):
+    response = api_client_test_white_listed.delete(
+        reverse('testapi:delete_test_submissions'),
+        HTTP_X_SIGNATURE=sign_invalid_client_hawk_header(),
+    )
+    assert response.status_code == 403
 
 
 @pytest.mark.django_db
@@ -236,10 +249,12 @@ def test_delete_test_senders_returns_404_with_disabled_testapi(api_client_disabl
 
 
 @pytest.mark.django_db
-def test_delete_test_senders_returns_401_when_unauthenticated():
-    client = APIClient()
-    response = client.delete(reverse('testapi:delete_test_senders'))
-    assert response.status_code == status.HTTP_401_UNAUTHORIZED
+def test_delete_test_senders_returns_403_when_unauthenticated(api_client_test_white_listed):
+    response = api_client_test_white_listed.delete(
+        reverse('testapi:delete_test_senders'),
+        HTTP_X_SIGNATURE=sign_invalid_client_hawk_header(),
+    )
+    assert response.status_code == 403
 
 
 @pytest.mark.django_db

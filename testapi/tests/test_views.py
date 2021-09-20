@@ -196,7 +196,7 @@ def test_delete_test_submissions_returns_404_with_disabled_testapi(
 
 
 @pytest.mark.django_db
-def test_delete_test_submissions_returns_401_when_unauthenticated():
+def test_delete_test_submissions_returns_401_when_unauthenticated(mock_middleware_test_sig):
     client = APIClient()
     response = client.delete(reverse('testapi:delete_test_submissions'))
     assert response.status_code == status.HTTP_401_UNAUTHORIZED

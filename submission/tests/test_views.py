@@ -447,7 +447,7 @@ def test_email_action_rate_limit_exceeded(mock_email, api_client, gov_notify_ema
 
 @pytest.mark.django_db
 @mock.patch('submission.helpers.send_email')
-def test_form_submission_delete_action(mock_delay, api_client):
+def test_form_submission_delete_action(mock_delay, mock_middleware_test_sig, api_client):
     assert models.Submission.objects.count() == 0
 
     instance = factories.SubmissionFactory(data={'html_body': '<html><head></head><body>Hello</body></html>'})
@@ -459,7 +459,7 @@ def test_form_submission_delete_action(mock_delay, api_client):
         data=None,
         format='json'
     )
-
+    mock_middleware_test_sig.assert_called_once()
     assert delete_response.status_code == 204
     assert models.Submission.objects.count() == 0
 

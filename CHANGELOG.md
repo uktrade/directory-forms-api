@@ -5,6 +5,7 @@
 ## Hotfix
 ### Fixed bugs
 ### Implemented enhancements
+- TC-1009 - ESS - Stop custom fields blob being submitted into zendesk
 
 ## [1.5.0](https://github.com/uktrade/directory-forms-api/releases/tag/1.5.0)
 [Full Changelog](https://github.com/uktrade/directory-forms-api/compare/1.4.0...1.5.0)

@@ -71,6 +71,15 @@ def test_zendesk_client_create_user(mock_user):
         [
             'subject123',
             123,
+            {},
+            'some-service-name',
+            None,
+            [{'id': 123, 'value': 'some-service-name'}],
+            '',
+        ],
+        [
+            'subject123',
+            123,
             {
                 'field': 'value',
                 '_custom_fields': [

@@ -6,7 +6,8 @@
 ### Fixed bugs
 ### Implemented enhancements
 - GP2-2867 Dockerise  d-form-api
-- GP2-3409 full hawk authetication
+- GP2-3409 full hawk authentication
+- GP2-3409 -support standard hawk authentication
 
 ## [1.5.0](https://github.com/uktrade/directory-forms-api/releases/tag/1.5.0)
 [Full Changelog](https://github.com/uktrade/directory-forms-api/compare/1.4.0...1.5.0)

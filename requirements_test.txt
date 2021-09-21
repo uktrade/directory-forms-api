@@ -192,7 +192,7 @@ requests_mock==1.7.0
     # via -r requirements_test.in
 sentry-sdk==0.13.5
     # via -r requirements.in
-sigauth==4.1.1
+sigauth==5.0.0
     # via -r requirements.in
 six==1.14.0
     # via

@@ -27,6 +27,10 @@ DEBUG = env.bool('DEBUG', False)
 # PaaS, we can open ALLOWED_HOSTS
 ALLOWED_HOSTS = ['*']
 
+# Don't enforce SECURE_BROWSER_XSS_FILTER, which is recommended to be disabled
+SILENCED_SYSTEM_CHECKS = [
+    "security.W007",
+]
 
 # Application definition
 

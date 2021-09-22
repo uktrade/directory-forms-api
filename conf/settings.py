@@ -28,6 +28,7 @@ DEBUG = env.bool('DEBUG', False)
 ALLOWED_HOSTS = ['*']
 
 # Don't enforce SECURE_BROWSER_XSS_FILTER, which is recommended to be disabled
+SECURE_CONTENT_TYPE_NOSNIFF = True
 SILENCED_SYSTEM_CHECKS = [
     "security.W007",
 ]

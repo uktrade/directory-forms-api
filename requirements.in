@@ -12,7 +12,7 @@ gunicorn==20.0.4
 sentry-sdk==0.13.5
 django-staff-sso-client==1.0.1
 requests[security]==2.25.1
-sigauth==4.1.1
+sigauth==5.1.0
 directory-healthcheck==2.0.0
 django-cryptography==0.3.0
 zenpy==1.1.10

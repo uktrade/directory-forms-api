@@ -1,4 +1,4 @@
-import sigauth.middleware
+from sigauth.helpers import RequestSignatureChecker
 
 from django.core.exceptions import ValidationError
 
@@ -10,7 +10,7 @@ MESSAGE_INVALID_SENDER = 'Invalid sender'
 MESSAGE_INACTIVE_SENDER = 'Inactive sender'
 
 
-class RequestSignatureChecker(sigauth.helpers.RequestSignatureChecker):
+class RequestSignatureChecker(RequestSignatureChecker):
 
     def lookup_credentials(self, sender_id):
         client = lookup_client(sender_id)

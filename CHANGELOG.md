@@ -5,9 +5,12 @@
 ## Hotfix
 ### Fixed bugs
 ### Implemented enhancements
+- TC-1009_Remove_Custom_Field_From_Zendesk_Description
+- TC-1009 - ESS - Stop custom fields blob being submitted into zendesk
 - GP2-2867 Dockerise  d-form-api
 - GP2-3409 full hawk authentication
 - GP2-3409 -support standard hawk authentication
+
 
 ## [1.5.0](https://github.com/uktrade/directory-forms-api/releases/tag/1.5.0)
 [Full Changelog](https://github.com/uktrade/directory-forms-api/compare/1.4.0...1.5.0)

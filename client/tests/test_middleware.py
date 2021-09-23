@@ -5,7 +5,7 @@ from django.urls import reverse
 
 from client.tests import factories
 from core.tests.test_views import reload_urlconf
-
+from rest_framework.exceptions import AuthenticationFailed
 
 SIGNATURE_CHECK_REQUIRED_MIDDLEWARE = [
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -52,12 +52,11 @@ def test_signature_check_middleware_unknown_client(
         method='get',
         content_type='text/plain',
     )
-
-    response = admin_client.get(
-        url, {}, HTTP_X_SIGNATURE=headers[signer.header_name]
-    )
-
-    assert response.status_code == 401
+    with pytest.raises(AuthenticationFailed):
+        response = admin_client.get(
+            url, {}, HTTP_X_SIGNATURE=headers[signer.header_name]
+        )
+        assert response.status_code == 401
 
 
 @pytest.mark.urls('client.tests.urls')
@@ -82,12 +81,11 @@ def test_signature_check_middleware_inactive_client(admin_client, settings):
         method='get',
         content_type='text/plain',
     )
-
-    response = admin_client.get(
-        url, {}, HTTP_X_SIGNATURE=headers[signer.header_name]
-    )
-
-    assert response.status_code == 401
+    with pytest.raises(AuthenticationFailed):
+        response = admin_client.get(
+            url, {}, HTTP_X_SIGNATURE=headers[signer.header_name]
+        )
+        assert response.status_code == 401
 
 
 @pytest.mark.urls('client.tests.urls')
@@ -139,11 +137,11 @@ def test_signature_check_middleware_incorrect_secret(admin_client, settings):
         method='get',
         content_type='text/plain',
     )
-    response = admin_client.get(
-        url, {}, HTTP_X_SIGNATURE=headers[signer.header_name]
-    )
-
-    assert response.status_code == 401
+    with pytest.raises(AuthenticationFailed):
+        response = admin_client.get(
+            url, {}, HTTP_X_SIGNATURE=headers[signer.header_name]
+        )
+        assert response.status_code == 401
 
 
 def test_signature_check_middleware_admin_login(admin_client, settings):

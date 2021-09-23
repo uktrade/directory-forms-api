@@ -3,6 +3,7 @@ import pytest
 from django import db
 from django.core.management import call_command
 from django.db.migrations.executor import MigrationExecutor
+from unittest import mock
 
 from submission import constants
 
@@ -197,3 +198,11 @@ def migration(transactional_db):
 
     yield Migrator()
     call_command('migrate')
+
+
+@pytest.fixture(autouse=False)
+def mock_middleware_test_sig():
+    yield mock.patch(
+        'client.helpers.RequestSignatureChecker.test_signature',
+        return_value=True,
+    ).start()

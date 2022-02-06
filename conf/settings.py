@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'client.apps.ClientConfig',
     'testapi.apps.TestApiConfig',
     'authbroker_client',
+    'django_celery_beat',
 
 ]
 

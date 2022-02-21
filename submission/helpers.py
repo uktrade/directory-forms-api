@@ -1,16 +1,20 @@
+import csv
 import json
+from datetime import timedelta
 
 import ratelimit.utils
 import requests
 from django.conf import settings
 from django.core.mail import EmailMultiAlternatives
 from django.test.client import RequestFactory
+from django.utils import timezone
 from django.utils.safestring import mark_safe
-from notifications_python_client import NotificationsAPIClient
+from notifications_python_client import NotificationsAPIClient, prepare_upload
 from zenpy import Zenpy
-from zenpy.lib.api_objects import Ticket, User as ZendeskUser
+from zenpy.lib.api_objects import Ticket
+from zenpy.lib.api_objects import User as ZendeskUser
 
-from submission import constants
+from submission import constants, models
 
 
 def pprint_json(data):
@@ -161,3 +165,66 @@ def is_ratelimited(ip_address):
     return ratelimit.utils.is_ratelimited(
         request=request, group='submission', key='ip', rate=settings.RATELIMIT_RATE, increment=True
     )
+
+
+def send_buy_from_uk_enquiries_as_csv(form_url='/international/trade/contact/'):
+    """A method to create last seven days data for buy from uk contact details"""
+    today = timezone.now()
+    week_ago = today - timedelta(days=7)
+    submissions = models.Submission.objects.filter(
+        created__gte=week_ago,
+        form_url=form_url
+    )
+
+    with open('email.csv', 'w+') as csvfile:
+        filewriter = csv.writer(csvfile)
+        filewriter.writerow([
+            'Sender',
+            'body',
+            'sector',
+            'source',
+            'country',
+            'given_name',
+            'family_name',
+            'country_name',
+            'phone_number',
+            'source_other',
+            'email_address',
+            'organisation_name',
+            'organisation_size',
+            'email_contact_consent',
+            'telephone_contact_consent',
+            'Form',
+            'Created'
+        ])
+
+        for submission in submissions:
+            filewriter.writerow([
+                submission.sender,
+                submission.data['body'],
+                submission.data['sector'],
+                submission.data['source'],
+                submission.data['country'],
+                submission.data['given_name'],
+                submission.data['family_name'],
+                submission.data['country_name'],
+                submission.data['phone_number'],
+                submission.data['source_other'],
+                submission.data['email_address'],
+                submission.data['organisation_name'],
+                submission.data['organisation_size'],
+                submission.data['email_contact_consent'],
+                submission.data['telephone_contact_consent'],
+                submission.form_url,
+                submission.created,
+            ])
+
+    with open('email.csv', 'rb') as f:
+
+        send_gov_notify_email(
+            template_id=settings.BUY_FROM_UK_ENQUIRY_TEMPLATE_ID,
+            email_address=settings.BUY_FROM_UK_EMAIL_ADDRESS,
+            personalisation={'link_to_file': prepare_upload(f, is_csv=True)},
+            # this is UUID is id of listed email in notification service
+            email_reply_to_id='c071d4f6-94a7-4afd-9acb-6b164737731c'
+        )

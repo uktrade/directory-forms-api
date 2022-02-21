@@ -319,6 +319,9 @@ CELERY_TASK_ALWAYS_EAGER = env.bool('CELERY_ALWAYS_EAGER', False)
 
 # Gov UK Notify
 GOV_NOTIFY_API_KEY = env.str('GOV_NOTIFY_API_KEY')
+BUY_FROM_UK_ENQUIRY_TEMPLATE_ID = env.str('BUY_FROM_UK_ENQUIRY_TEMPLATE_ID', 'b3212b30-6321-46e7-9dba-ad37bd92df89')
+BUY_FROM_UK_EMAIL_ADDRESS = env.str('BUY_FROM_UK_EMAIL_ADDRESS', 'enquiries@invest-trade.uk')
+
 # Separate key to allow PDF viewing. In prod this can be live key
 GOV_NOTIFY_LETTER_API_KEY = env.str('GOV_NOTIFY_LETTER_API_KEY')
 

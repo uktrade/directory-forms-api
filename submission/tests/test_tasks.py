@@ -1,3 +1,4 @@
+import pytest
 from unittest import mock
 
 from submission import tasks
@@ -68,3 +69,13 @@ def test_task_send_pardot(mock_send_pardot):
 
     assert mock_send_pardot.call_count == 1
     assert mock_send_pardot.call_args == mock.call(**kwargs)
+
+
+@pytest.mark.django_db
+@mock.patch('submission.helpers.send_gov_notify_email')
+def test_task_send_buy_from_uk_enquiries_as_csv(mock_send_gov_notify_email):
+    kwargs = {
+    }
+    tasks.send_buy_from_uk_enquiries_as_csv(**kwargs)
+
+    assert mock_send_gov_notify_email.call_count == 1

@@ -225,6 +225,5 @@ def send_buy_from_uk_enquiries_as_csv(form_url='/international/trade/contact/'):
             template_id=settings.BUY_FROM_UK_ENQUIRY_TEMPLATE_ID,
             email_address=settings.BUY_FROM_UK_EMAIL_ADDRESS,
             personalisation={'link_to_file': prepare_upload(f, is_csv=True)},
-            # this is UUID is id of listed email in notification service
-            email_reply_to_id='c071d4f6-94a7-4afd-9acb-6b164737731c'
+            email_reply_to_id=settings.BUY_FROM_UK_REPLY_TO_EMAIL_ADDRESS
         )

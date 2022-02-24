@@ -22,7 +22,7 @@ For more information on installation please check the [Developers Onboarding Che
 
 ## Requirements
 
-[Python 3.6](https://www.python.org/downloads/release/python-366/)
+[Python 3.9](https://www.python.org/downloads/release/python-395/)
 
 [Redis](https://redis.io/)
 
@@ -32,7 +32,7 @@ For more information on installation please check the [Developers Onboarding Che
 
     $ git clone https://github.com/uktrade/directory-forms-api
     $ cd directory-forms-api
-    $ virtualenv .venv -p python3.6
+    $ virtualenv .venv -p python3.9
     $ source .venv/bin/activate
     $ make install_requirements
 

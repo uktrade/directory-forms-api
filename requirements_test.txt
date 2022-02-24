@@ -17,7 +17,9 @@ billiard==3.6.4.0
 cachetools==4.1.0
     # via zenpy
 celery[redis]==5.2.3
-    # via -r requirements.in
+    # via
+    #   -r requirements.in
+    #   django-celery-beat
 certifi==2020.4.5.1
     # via
     #   requests
@@ -66,15 +68,19 @@ django==2.2.27
     #   directory-healthcheck
     #   django-admin-ip-restrictor
     #   django-appconf
+    #   django-celery-beat
     #   django-filter
     #   django-redis
     #   django-staff-sso-client
+    #   django-timezone-field
     #   djangorestframework
     #   sigauth
 django-admin-ip-restrictor==2.1.0
     # via -r requirements.in
 django-appconf==1.0.4
     # via django-cryptography
+django-celery-beat==2.2.1
+    # via -r requirements.in
 django-cryptography==0.3.0
     # via -r requirements.in
 django-environ==0.4.5
@@ -97,6 +103,8 @@ django-redis==4.11.0
     # via -r requirements.in
 django-staff-sso-client==1.0.1
     # via -r requirements.in
+django-timezone-field==4.2.3
+    # via django-celery-beat
 djangorestframework==3.12.2
     # via
     #   -r requirements.in
@@ -113,8 +121,6 @@ flake8==3.7.9
     # via -r requirements_test.in
 freezegun==0.3.12
     # via -r requirements_test.in
-future==0.18.2
-    # via notifications-python-client
 gunicorn==20.0.4
     # via -r requirements.in
 idna==2.8
@@ -127,11 +133,9 @@ mccabe==0.6.1
     # via flake8
 mohawk==0.3.4
     # via sigauth
-monotonic==1.5
-    # via notifications-python-client
 more-itertools==8.2.0
     # via pytest
-notifications-python-client==5.4.1
+notifications-python-client==6.3.0
     # via -r requirements.in
 oauthlib==3.1.0
     # via requests-oauthlib
@@ -173,15 +177,19 @@ pytest-django==3.7.0
     # via -r requirements_test.in
 pytest-sugar==0.9.2
     # via -r requirements_test.in
+python-crontab==2.6.0
+    # via django-celery-beat
 python-dateutil==2.8.1
     # via
     #   faker
     #   freezegun
+    #   python-crontab
     #   zenpy
 pytz==2021.3
     # via
     #   celery
     #   django
+    #   django-timezone-field
 redis==3.4.1
     # via
     #   celery

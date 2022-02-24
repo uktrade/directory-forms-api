@@ -2,7 +2,6 @@ import celery
 from requests.exceptions import RequestException
 
 from conf.celery import app
-
 from submission import constants, helpers, models, serializers
 
 
@@ -89,3 +88,8 @@ def execute_for_submission(submission):
             **kwargs_builder.validated_data,
             submission_id=submission.pk
         )
+
+
+@app.task()
+def send_buy_from_uk_enquiries_as_csv(*args, **kwargs):
+    helpers.send_buy_from_uk_enquiries_as_csv(*args, **kwargs)

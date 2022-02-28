@@ -1,8 +1,11 @@
+import csv
 from unittest import mock
 
 import pytest
+from freezegun import freeze_time
 
 from submission import helpers
+from submission.tests.factories import SubmissionFactory
 
 
 def test_send_email_with_html(mailoutbox, settings):
@@ -371,3 +374,89 @@ def test_get_recipient_email_address_letter_action(gov_notify_letter_action_payl
         gov_notify_letter_action_payload['meta']
     )
     assert email is None
+
+
+@pytest.mark.django_db
+@mock.patch('submission.helpers.NotificationsAPIClient')
+def test_send_buy_from_uk_enquiries_as_csv(mock_notify_client):
+    data = {
+        'body': 'Testing...',
+        'sector': 'AIRPORTS',
+        'source': 'Digital - outdoor advertising digital screens',
+        'country': 'AU',
+        'given_name': 'Test',
+        'family_name': 'Testing',
+        'country_name': 'Australia',
+        'phone_number': '0123456789',
+        'source_other': '',
+        'email_address': 'test@testing.com',
+        'organisation_name': '23',
+        'organisation_size': '11-50',
+        'email_contact_consent': False,
+        'telephone_contact_consent': False
+    }
+    SubmissionFactory(
+        data=data,
+        form_url='/international/trade/contact/'
+    )
+
+    # this will generates email.csv
+    helpers.send_buy_from_uk_enquiries_as_csv()
+
+    assert mock_notify_client.call_count == 1
+
+    with open('email.csv', 'r') as file:
+
+        csv_file = [row for row in csv.reader(file)]
+
+        # the header/contents of the CSV file
+        csv_header = csv_file[0]
+        csv_content = csv_file[1]
+
+        for key, value in data.items():
+            assert key in csv_header
+            assert str(value) in csv_content
+
+
+@pytest.mark.django_db
+@mock.patch('submission.helpers.NotificationsAPIClient')
+def test_send_buy_from_uk_enquiries_as_csv_with_older_submission(mock_notify_client):
+    data = {
+        'body': 'Testing - SHOULDNT APPEAR IN CSV',
+        'sector': 'AIRPORTS',
+        'source': 'Digital - outdoor advertising digital screens',
+        'country': 'AU',
+        'given_name': 'Test',
+        'family_name': 'Testing',
+        'country_name': 'Australia',
+        'phone_number': '0123456789',
+        'source_other': '',
+        'email_address': 'test@testing.com',
+        'organisation_name': '23',
+        'organisation_size': '11-50',
+        'email_contact_consent': False,
+        'telephone_contact_consent': False
+    }
+
+    with freeze_time("2020-01-01"):
+        SubmissionFactory(
+            data=data,
+            form_url='/international/trade/contact/',
+        )
+
+    # this will generates email.csv
+    helpers.send_buy_from_uk_enquiries_as_csv()
+
+    assert mock_notify_client.call_count == 1
+
+    with open('email.csv', 'r') as file:
+
+        csv_file = [row for row in csv.reader(file)]
+        # the hedaers of the CSV file
+        csv_header = csv_file[0]
+
+        for key, value in data.items():
+            assert key in csv_header
+
+        with pytest.raises(IndexError):
+            csv_file[1]

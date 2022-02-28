@@ -5,6 +5,7 @@
 ## Hotfix
 ### Fixed bugs
 ### Implemented enhancements
+- GLS-75  - Schedule email to delivery for submission enquiries
 - TC-1009_Remove_Custom_Field_From_Zendesk_Description
 - TC-1009 - ESS - Stop custom fields blob being submitted into zendesk
 - GP2-2867 Dockerise  d-form-api
@@ -16,7 +17,7 @@
 [Full Changelog](https://github.com/uktrade/directory-forms-api/compare/1.4.0...1.5.0)
 ### Implemented enhancements
 
-- GP2-2718 - Added delete endpoint for data retention 
+- GP2-2718 - Added delete endpoint for data retention
 
 ## [1.4.0](https://github.com/uktrade/directory-forms-api/releases/tag/1.4.0)
 [Full Changelog](https://github.com/uktrade/directory-forms-api/compare/1.2.0...1.4.0)

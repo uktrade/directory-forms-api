@@ -127,7 +127,7 @@ psycopg2==2.8.4
     # via -r requirements.in
 pycparser==2.19
     # via cffi
-pyjwt==1.7.1
+pyjwt==2.4.0
     # via notifications-python-client
 pyopenssl==19.1.0
     # via requests

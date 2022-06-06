@@ -79,7 +79,7 @@ django-cryptography==0.3.0
     # via -r requirements.in
 django-environ==0.4.5
     # via -r requirements.in
-django-extensions==2.2.5
+django_extensions==2.2.5
     # via -r requirements.in
 django-filter==21.1
     # via -r requirements.in
@@ -189,7 +189,7 @@ vine==5.0.0
     #   amqp
     #   celery
     #   kombu
-waitress==2.1.1
+waitress==2.1.2
     # via -r requirements.in
 wcwidth==0.2.5
     # via prompt-toolkit

@@ -98,7 +98,7 @@ django-ipware==2.1.0
     # via django-admin-ip-restrictor
 django-json-widget==0.2.0
     # via -r requirements.in
-django-pglocks==1.0.3
+django-pglocks==1.0.4
     # via -r requirements.in
 django-ratelimit==2.0
     # via -r requirements.in
@@ -220,6 +220,7 @@ six==1.14.0
     #   click-repl
     #   cryptography
     #   django-extensions
+    #   django-pglocks
     #   freezegun
     #   jsonschema
     #   mohawk

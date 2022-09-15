@@ -17,15 +17,15 @@ class SaveInDatabaseOnlySerializer(serializers.Serializer):
         return cls(data=data, *args, **kwargs)
 
 
-class ZendeskActionSerializer(serializers.Serializer):
+class HelpdeskActionSerializer(serializers.Serializer):
     subject = serializers.CharField()
     full_name = serializers.CharField()
     email_address = serializers.EmailField()
     payload = serializers.DictField()
     service_name = serializers.CharField()
     subdomain = serializers.ChoiceField(
-        choices=list(settings.ZENDESK_CREDENTIALS.keys()),
-        default=settings.ZENDESK_SUBDOMAIN_DEFAULT,
+        choices=list(settings.HELP_DESK_CREDENTIALS.keys()),
+        default=settings.HELP_DESK_SUBDOMAIN_DEFAULT,
     )
 
     @classmethod

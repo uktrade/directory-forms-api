@@ -22,8 +22,8 @@ class Task(celery.Task):
 
 
 @app.task(base=Task, autoretry_for=(RequestException,))
-def create_zendesk_ticket(*args, **kwargs):
-    helpers.create_zendesk_ticket(*args, **kwargs)
+def create_helpdesk_ticket(*args, **kwargs):
+    helpers.create_helpdesk_ticket(*args, **kwargs)
 
 
 @app.task(base=Task)
@@ -56,9 +56,9 @@ action_map = {
         send_email,
         serializers.EmailActionSerializer,
     ),
-    constants.ACTION_NAME_ZENDESK: (
-        create_zendesk_ticket,
-        serializers.ZendeskActionSerializer,
+    constants.ACTION_NAME_HELP_DESK: (
+        create_helpdesk_ticket,
+        serializers.HelpdeskActionSerializer,
     ),
     constants.ACTION_NAME_GOV_NOTIFY_EMAIL: (
         send_gov_notify_email,

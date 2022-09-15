@@ -166,12 +166,12 @@ def test_delete_test_submissions_gov_notify_action(
 
 
 @pytest.mark.django_db
-def test_delete_test_submissions_zendesk_action(
-        api_client_enabled_test_api, zendesk_action_payload
+def test_delete_test_submissions_helpdesk_action(
+        api_client_enabled_test_api, helpdesk_action_payload
 ):
     email = 'test+zendeskaction@directory.uktrade.io'
-    zendesk_action_payload['meta']['email_address'] = email
-    Submission.objects.create(**zendesk_action_payload)
+    helpdesk_action_payload['meta']['email_address'] = email
+    Submission.objects.create(**helpdesk_action_payload)
 
     response = api_client_enabled_test_api.delete(
         reverse('testapi:delete_test_submissions')

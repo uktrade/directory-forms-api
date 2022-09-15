@@ -10,7 +10,7 @@ from submission.constants import (
     ACTION_NAME_EMAIL,
     ACTION_NAME_GOV_NOTIFY_EMAIL,
     ACTION_NAME_PARDOT,
-    ACTION_NAME_ZENDESK,
+    ACTION_NAME_HELP_DESK,
 )
 
 
@@ -43,7 +43,7 @@ class SubmissionsTestAPIView(TestAPIView, DestroyAPIView, RetrieveAPIView):
                 if submission.data['email'] == email_address:
                     results.append(self.data_and_meta(submission))
             if submission.meta['action_name'] in [
-                ACTION_NAME_GOV_NOTIFY_EMAIL, ACTION_NAME_ZENDESK
+                ACTION_NAME_GOV_NOTIFY_EMAIL, ACTION_NAME_HELP_DESK
             ]:
                 if submission.meta['email_address'] == email_address:
                     results.append(self.data_and_meta(submission))

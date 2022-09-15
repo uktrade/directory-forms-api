@@ -1,4 +1,4 @@
-ACTION_NAME_ZENDESK = 'zendesk'
+ACTION_NAME_HELP_DESK = 'helpdesk'
 ACTION_NAME_EMAIL = 'email'
 ACTION_NAME_GOV_NOTIFY_EMAIL = 'gov-notify-email'
 ACTION_NAME_GOV_NOTIFY_LETTER = 'gov-notify-letter'

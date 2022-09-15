@@ -54,7 +54,7 @@ class ActionFilter(SimpleListFilter):
 
     def lookups(self, request, model_admin):
         return (
-            (constants.ACTION_NAME_ZENDESK, 'Create Zendesk ticket'),
+            (constants.ACTION_NAME_HELP_DESK, 'Create Helpdesk ticket'),
             (constants.ACTION_NAME_PARDOT, 'Submit to Pardot'),
             (constants.ACTION_NAME_EMAIL, 'Send via Email'),
             (

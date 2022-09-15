@@ -24,11 +24,11 @@ def email_submission(email_action_payload, rf, user):
 
 
 @pytest.fixture
-def zendesk_submission(zendesk_action_payload, rf, user):
+def helpdesk_submission(helpdesk_action_payload, rf, user):
     request = rf.get('/')
     request.user = user
     serializer = serializers.SubmissionModelSerializer(
-        data=zendesk_action_payload,
+        data=helpdesk_action_payload,
         context={'request': request}
 
     )
@@ -190,23 +190,23 @@ def test_email_action_serializer_from_submission(email_submission):
 
 
 @pytest.mark.django_db
-def test_zendesk_action_serializer_from_submission(
-    zendesk_submission, settings
+def test_helpdesk_action_serializer_from_submission(
+    helpdesk_submission, settings
 ):
-    serializer = serializers.ZendeskActionSerializer.from_submission(
-        zendesk_submission
+    serializer = serializers.HelpdeskActionSerializer.from_submission(
+        helpdesk_submission
     )
     assert serializer.is_valid()
     assert serializer.validated_data == {
-        'subject': zendesk_submission.meta['subject'],
-        'full_name': zendesk_submission.meta['full_name'],
-        'email_address': zendesk_submission.meta['email_address'],
+        'subject': helpdesk_submission.meta['subject'],
+        'full_name': helpdesk_submission.meta['full_name'],
+        'email_address': helpdesk_submission.meta['email_address'],
         'payload': {
-            **zendesk_submission.data,
-            'ingress_url': zendesk_submission.meta['ingress_url'],
+            **helpdesk_submission.data,
+            'ingress_url': helpdesk_submission.meta['ingress_url'],
         },
-        'subdomain': settings.ZENDESK_SUBDOMAIN_DEFAULT,
-        'service_name': zendesk_submission.meta['service_name'],
+        'subdomain': settings.HELP_DESK_SUBDOMAIN_DEFAULT,
+        'service_name': helpdesk_submission.meta['service_name'],
     }
 
 

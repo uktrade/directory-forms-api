@@ -10,9 +10,15 @@ from django.test.client import RequestFactory
 from django.utils import timezone
 from django.utils.safestring import mark_safe
 from notifications_python_client import NotificationsAPIClient, prepare_upload
-from zenpy import Zenpy
-from zenpy.lib.api_objects import Ticket
-from zenpy.lib.api_objects import User as ZendeskUser
+from helpdesk_client import get_helpdesk_interface
+from helpdesk_client.interfaces import (
+    HelpDeskCustomField,
+    HelpDeskTicket,
+    HelpDeskUser,
+    Priority,
+    Status,
+    TicketType,
+)
 
 from submission import constants, models
 
@@ -22,60 +28,41 @@ def pprint_json(data):
     return mark_safe(f'<pre>{dumped}</pre>')
 
 
-class ZendeskClient:
+def create_helpdesk_ticket(
+    subject, full_name, email_address, payload, service_name, subdomain
+):
+    try:
+        credentials = settings.HELP_DESK_CREDENTIALS[subdomain]
+    except KeyError:
+        raise NotImplementedError(f'subdomain {subdomain} not supported')
 
-    def __init__(self, email, token, subdomain, custom_field_id):
-        self.client = Zenpy(
-            timeout=5, email=email, token=token, subdomain=subdomain
-        )
-        self.custom_field_id = custom_field_id
+    helpdesk_interface = get_helpdesk_interface(settings.HELP_DESK_INTERFACE)
+    helpdesk = helpdesk_interface(credentials=credentials)
 
-    def get_or_create_user(self, full_name, email_address):
-        zendesk_user = ZendeskUser(name=full_name, email=email_address)
-        return self.client.users.create_or_update(zendesk_user)
-
-    def create_ticket(self, subject, payload, zendesk_user, service_name):
-        description = [
+    helpdesk_user = HelpDeskUser(
+        full_name=full_name, email=email_address
+    )
+    description = [
             '{0}: {1}'.format(key.title().replace('_', ' '), value)
             for key, value in sorted(payload.items())
             if not key.title().startswith('_')
         ]
-        ticket = Ticket(
+    custom_field_service_name = HelpDeskCustomField(
+        id=credentials['custom_field_id'] , value=service_name
+    )
+
+    
+    ticket =  helpdesk.create_ticket(
+        HelpDeskTicket(
             subject=subject,
             description='\n'.join(description),
-            submitter_id=zendesk_user.id,
-            requester_id=zendesk_user.id,
-            tags=payload.get('_tags') or None,
-            custom_fields=[{'id': self.custom_field_id, 'value': service_name}]
-            + (payload.get('_custom_fields') or []),
+            user=helpdesk_user,
+            tags=payload.get('_tags'),
+            custom_fields=[custom_field_service_name]
+            + (payload.get('_custom_fields') or [])
         )
-        return self.client.tickets.create(ticket)
-
-
-def create_zendesk_ticket(
-    subject, full_name, email_address, payload, service_name, subdomain
-):
-    try:
-        credentials = settings.ZENDESK_CREDENTIALS[subdomain]
-    except KeyError:
-        raise NotImplementedError(f'subdomain {subdomain} not supported')
-
-    client = ZendeskClient(
-        email=credentials['email'],
-        token=credentials['token'],
-        subdomain=subdomain,
-        custom_field_id=credentials['custom_field_id'],
     )
-
-    zendesk_user = client.get_or_create_user(
-        full_name=full_name, email_address=email_address
-    )
-    return client.create_ticket(
-        subject=subject,
-        payload=payload,
-        zendesk_user=zendesk_user,
-        service_name=service_name,
-    )
+    return ticket
 
 
 def send_email(subject, reply_to, recipients, text_body, html_body=None):
@@ -128,7 +115,7 @@ def get_sender_email_address(submission_meta):
     if submission_meta.get('sender'):
         return submission_meta['sender']['email_address']
     action_name = submission_meta['action_name']
-    if action_name == constants.ACTION_NAME_ZENDESK:
+    if action_name == constants.ACTION_NAME_HELP_DESK:
         return submission_meta['email_address']
     elif action_name == constants.ACTION_NAME_EMAIL:
         return submission_meta['reply_to'][0]
@@ -142,7 +129,7 @@ def get_sender_email_address(submission_meta):
 
 def get_recipient_email_address(submission_meta):
     action_name = submission_meta['action_name']
-    if action_name == constants.ACTION_NAME_ZENDESK:
+    if action_name == constants.ACTION_NAME_HELP_DESK:
         sub_domain = submission_meta.get('subdomain')
         service_name = submission_meta.get('service_name')
         return f'{sub_domain}:{service_name}'

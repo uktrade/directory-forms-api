@@ -291,29 +291,29 @@ def test_email_action(mock_delay, api_client, email_action_payload):
 
 
 @pytest.mark.django_db
-@mock.patch('submission.tasks.create_zendesk_ticket.delay')
-def test_zendesk_action(
-    mock_delay, api_client, zendesk_action_payload, settings
+@mock.patch('submission.tasks.create_helpdesk_ticket.delay')
+def test_helpdesk_action(
+    mock_delay, api_client, helpdesk_action_payload, settings
 ):
     response = api_client.post(
         reverse('api:submission'),
-        data=zendesk_action_payload,
+        data=helpdesk_action_payload,
         format='json'
     )
     expected_payload = {
-        **zendesk_action_payload['data'],
-        'ingress_url': zendesk_action_payload['meta']['ingress_url'],
+        **helpdesk_action_payload['data'],
+        'ingress_url': helpdesk_action_payload['meta']['ingress_url'],
     }
 
     assert response.status_code == 201
     assert mock_delay.call_count == 1
     assert mock_delay.call_args == mock.call(
-        subject=zendesk_action_payload['meta']['subject'],
-        full_name=zendesk_action_payload['meta']['full_name'],
-        email_address=zendesk_action_payload['meta']['email_address'],
+        subject=helpdesk_action_payload['meta']['subject'],
+        full_name=helpdesk_action_payload['meta']['full_name'],
+        email_address=helpdesk_action_payload['meta']['email_address'],
         payload=expected_payload,
-        service_name=zendesk_action_payload['meta']['service_name'],
-        subdomain=settings.ZENDESK_SUBDOMAIN_DEFAULT,
+        service_name=helpdesk_action_payload['meta']['service_name'],
+        subdomain=settings.HELP_DESK_SUBDOMAIN_DEFAULT,
         submission_id=models.Submission.objects.last().pk,
     )
 

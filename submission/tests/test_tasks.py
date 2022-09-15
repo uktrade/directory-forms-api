@@ -18,8 +18,8 @@ def test_task_send_email(mock_send_email):
     assert mock_send_email.call_args == mock.call(**kwargs)
 
 
-@mock.patch('submission.helpers.create_zendesk_ticket')
-def test_create_zendesk_ticket(mock_create_zendesk_ticket):
+@mock.patch('submission.helpers.create_helpdesk_ticket')
+def test_create_helpdesk_ticket(mock_create_helpdesk_ticket):
     kwargs = {
         'subject': 'subject123',
         'full_name': 'jim example',
@@ -27,10 +27,10 @@ def test_create_zendesk_ticket(mock_create_zendesk_ticket):
         'payload': {'field': 'value'},
         'service_name': 'some-service',
     }
-    tasks.create_zendesk_ticket(submission_id=1, **kwargs)
+    tasks.create_helpdesk_ticket(submission_id=1, **kwargs)
 
-    assert mock_create_zendesk_ticket.call_count == 1
-    assert mock_create_zendesk_ticket.call_args == mock.call(**kwargs)
+    assert mock_create_helpdesk_ticket.call_count == 1
+    assert mock_create_helpdesk_ticket.call_args == mock.call(**kwargs)
 
 
 @mock.patch('submission.helpers.send_gov_notify_email')

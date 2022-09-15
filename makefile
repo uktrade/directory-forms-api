@@ -13,6 +13,10 @@ manage:
 webserver:
 	ENV_FILES='secrets-do-not-commit,dev' python manage.py runserver 0.0.0.0:8011 $(ARGUMENTS)
 
+docker-requirements:
+	docker-compose run --rm web pip-compile --output-file requirements.txt requirements.in
+	docker-compose run --rm web pip-compile --output-file requirements_test.txt requirements_test.in
+	
 requirements:
 	pip-compile requirements.in
 	pip-compile requirements_test.in

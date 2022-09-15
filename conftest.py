@@ -12,7 +12,7 @@ from submission import constants
 def erp_zendesk_payload():
     return {
         'meta': {
-                'action_name': constants.ACTION_NAME_ZENDESK,
+                'action_name': constants.ACTION_NAME_HELP_DESK,
                 'email_address': 'erp+testform+testform@gmail.com',
                 'full_name': 'test test',
                 'funnel_steps': [],
@@ -70,13 +70,13 @@ def email_action_payload():
 
 
 @pytest.fixture
-def zendesk_action_payload():
+def helpdesk_action_payload():
     return {
         'data': {
             'title': 'hello',
         },
         'meta': {
-            'action_name': constants.ACTION_NAME_ZENDESK,
+            'action_name': constants.ACTION_NAME_HELP_DESK,
             'subject': 'Hello',
             'full_name': 'Jim Example',
             'email_address': 'zendesk-user@example.com',

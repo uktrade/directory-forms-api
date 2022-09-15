@@ -41,133 +41,6 @@ def test_send_email_without_html(mailoutbox, settings):
     assert list(message.to) == ['to@example.com']
     assert message.body == 'Hello'
 
-
-# @mock.patch('submission.helpers.ZendeskUser')
-# def test_zendesk_client_create_user(mock_user):
-#     client = helpers.ZendeskClient(
-#         email='test@example.com',
-#         token='token123',
-#         subdomain='subdomain123',
-#         custom_field_id=123,
-#     )
-#     with mock.patch.object(client.client.users, 'create_or_update') as stub:
-#         client.get_or_create_user(
-#             full_name='Jim Example', email_address='test@example.com'
-#         )
-#         assert stub.call_count == 1
-#         assert stub.call_args == mock.call(
-#             mock_user(name='Jim Example', email='test@example.com')
-#         )
-
-
-# @pytest.mark.parametrize(
-#     'parameters',
-#     [
-#         [
-#             'subject123',
-#             123,
-#             {'field': 'value'},
-#             'some-service-name',
-#             None,
-#             [{'id': 123, 'value': 'some-service-name'}],
-#             'Field: value',
-#         ],
-#         [
-#             'subject123',
-#             123,
-#             {},
-#             'some-service-name',
-#             None,
-#             [{'id': 123, 'value': 'some-service-name'}],
-#             '',
-#         ],
-#         [
-#             'subject123',
-#             123,
-#             {
-#                 'field': 'value',
-#                 '_custom_fields': [
-#                     {'id': '11', 'value': 'v1'},
-#                     {'id': '22', 'value': 'v2'},
-#                 ],
-#             },
-#             'some-service-name',
-#             None,
-#             [
-#                 {'id': 123, 'value': 'some-service-name'},
-#                 {'id': '11', 'value': 'v1'},
-#                 {'id': '22', 'value': 'v2'},
-#             ],
-#             'Field: value',
-#         ],
-#         [
-#             'subject123',
-#             123,
-#             {'field': 'value', '_custom_fields': []},
-#             'some-service-name',
-#             None,
-#             [{'id': 123, 'value': 'some-service-name'}],
-#             'Field: value',
-#         ],
-#         [
-#             'subject123',
-#             123,
-#             {'field': 'value', '_tags': ['t1', 't2']},
-#             'some-service-name',
-#             ['t1', 't2'],
-#             [{'id': 123, 'value': 'some-service-name'}],
-#             'Field: value',
-#         ],
-#         [
-#             'subject123',
-#             '123',
-#             {'field': 'value', '_tags': []},
-#             'some-service-name',
-#             None,
-#             [{'id': '123', 'value': 'some-service-name'}],
-#             'Field: value',
-#         ],
-#     ],
-# )
-# @mock.patch(
-#     'submission.helpers.get_helpdesk_interface',
-#     return_value=get_helpdesk_interface("helpdesk_client.interfaces.HelpDeskStubbed")
-# )
-# def test_helpdesk_client_create_ticket(mock_client, parameters, settings):
-#     (
-#         subject,
-#         custom_field_id,
-#         payload,
-#         service_name,
-#         tags,
-#         custom_fields,
-#         description,
-#     ) = parameters
-#     client = helpers.ZendeskClient(
-#         email='test@example.com',
-#         token='token123',
-#         subdomain='subdomain123',
-#         custom_field_id=custom_field_id,
-#     )
-
-#     user = mock.Mock()
-#     client.client = mock.Mock()
-#     client.create_ticket(
-#         subject=subject, payload=payload, zendesk_user=user, service_name=service_name
-#     )
-
-#     assert mock_ticket.call_count == 1
-#     assert mock_ticket.call_args == mock.call(
-#         subject=subject,
-#         description=description,
-#         submitter_id=user.id,
-#         requester_id=user.id,
-#         tags=tags,
-#         custom_fields=custom_fields,
-#     )
-#     assert client.client.tickets.create.call_args == mock.call(mock_ticket())
-
-
 @mock.patch(
     'submission.helpers.get_helpdesk_interface',
     return_value=get_helpdesk_interface("helpdesk_client.interfaces.HelpDeskStubbed")
@@ -198,8 +71,6 @@ def test_create_helpdesk_ticket(mock_client, settings):
     assert ticket_response.subject == "subject123"
     assert ticket_response.description == "Field: value"
 
-
-
 @mock.patch(
     'submission.helpers.get_helpdesk_interface',
     return_value=get_helpdesk_interface("helpdesk_client.interfaces.HelpDeskStubbed")
@@ -229,8 +100,6 @@ def test_create_helpdesk_ticket_subdomain(mock_client, settings):
     assert ticket_response.id == 1
     assert ticket_response.subject == "subject123"
     assert ticket_response.description == "Field: value"
-
-
 
 @mock.patch(
     'submission.helpers.get_helpdesk_interface',

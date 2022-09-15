@@ -14,10 +14,7 @@ from helpdesk_client import get_helpdesk_interface
 from helpdesk_client.interfaces import (
     HelpDeskCustomField,
     HelpDeskTicket,
-    HelpDeskUser,
-    Priority,
-    Status,
-    TicketType,
+    HelpDeskUser
 )
 
 from submission import constants, models
@@ -48,11 +45,10 @@ def create_helpdesk_ticket(
             if not key.title().startswith('_')
         ]
     custom_field_service_name = HelpDeskCustomField(
-        id=credentials['custom_field_id'] , value=service_name
+        id=credentials['custom_field_id'], value=service_name
     )
 
-    
-    ticket =  helpdesk.create_ticket(
+    ticket = helpdesk.create_ticket(
         HelpDeskTicket(
             subject=subject,
             description='\n'.join(description),

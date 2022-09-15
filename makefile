@@ -34,3 +34,22 @@ worker:
 	ENV_FILES='secrets-do-not-commit,dev' celery -A conf worker -l info
 
 .PHONY: clean pytest manage webserver requirements install_requirements css worker beat
+
+build-docker:
+	docker-compose -f docker-compose.test.yml build
+
+up-docker:	
+	docker-compose -f docker-compose.test.yml up
+
+pytest-docker:
+	docker-compose -f docker-compose.test.yml run --rm web pytest 
+
+all-requirements-docker:
+	docker-compose -f docker-compose.test.yml run --rm web pip-compile --output-file requirements.txt requirements.in
+	docker-compose -f docker-compose.test.yml run --rm web pip-compile --output-file requirements_test.txt requirements_test.in
+
+bash-docker:
+	docker-compose -f docker-compose.test.yml run --rm web bash
+	
+shell-docker:
+	docker-compose -f docker-compose.test.yml run --rm web python manage.py shell

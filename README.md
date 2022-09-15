@@ -36,6 +36,20 @@ For more information on installation please check the [Developers Onboarding Che
     $ source .venv/bin/activate
     $ make install_requirements
 
+#### Running locally using docker
+Build local docker build and run it. 
+
+    make build-docker 
+    make up-docker 
+
+Run pytest on docker.
+
+    make pytest
+    
+Compile requirements via docker, this allows you to compile the requirements without having to configure postgres on your machine
+
+    make all-requirements-docker
+
 ### Configuration
 
 Secrets such as API keys and environment specific configurations are placed in `conf/env/secrets-do-not-commit` - a file that is not added to version control. To create a template secrets file with dummy values run `make secrets`.
@@ -56,6 +70,12 @@ Secrets such as API keys and environment specific configurations are placed in `
 | make install_requirements                                  | Installed the compile requirements file  |
 | make css                                                   | Compile scss to css                      |
 | make secrets                                               | Create your secret env var file          |
+| make build-docker                                          | Build local docker instance              |
+| make up-docker                                             | Start up local docker instance           |
+| make pytest-docker                                         | Run all tests from within docker instance|
+| make all-requirements-docker                               | Compile the requirements file from docker|
+| make bash-docker                                           | Access bash in docker container          |
+| make shell-docker                                          | Access django shell in docker container  | 
 
 - [Developers Onboarding Checklist](https://uktrade.atlassian.net/wiki/spaces/ED/pages/32243946/Developers+onboarding+checklist)
 - [Gitflow branching](https://uktrade.atlassian.net/wiki/spaces/ED/pages/737182153/Gitflow+and+releases)

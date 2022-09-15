@@ -41,6 +41,7 @@ def test_send_email_without_html(mailoutbox, settings):
     assert list(message.to) == ['to@example.com']
     assert message.body == 'Hello'
 
+
 @mock.patch(
     'submission.helpers.get_helpdesk_interface',
     return_value=get_helpdesk_interface("helpdesk_client.interfaces.HelpDeskStubbed")
@@ -71,6 +72,7 @@ def test_create_helpdesk_ticket(mock_client, settings):
     assert ticket_response.subject == "subject123"
     assert ticket_response.description == "Field: value"
 
+
 @mock.patch(
     'submission.helpers.get_helpdesk_interface',
     return_value=get_helpdesk_interface("helpdesk_client.interfaces.HelpDeskStubbed")
@@ -100,6 +102,7 @@ def test_create_helpdesk_ticket_subdomain(mock_client, settings):
     assert ticket_response.id == 1
     assert ticket_response.subject == "subject123"
     assert ticket_response.description == "Field: value"
+
 
 @mock.patch(
     'submission.helpers.get_helpdesk_interface',

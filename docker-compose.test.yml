@@ -13,7 +13,7 @@ services:
       - inside-network
       - outside-network
     env_file:
-      - conf/env/dev
+      - conf/env/local
       - conf/env/dev-docker
       - conf/env/secrets-do-not-commit
     environment:
@@ -34,7 +34,7 @@ services:
     networks:
       - inside-network
     env_file:
-      - conf/env/dev
+      - conf/env/local
       - conf/env/dev-docker
       - conf/env/secrets-do-not-commit
     environment:

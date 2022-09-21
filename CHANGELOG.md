@@ -2,8 +2,13 @@
 
 ## Pre release
 
-## Hotfix
-### Fixed bugs
+## [1.9.0](https://github.com/uktrade/directory-forms-api/releases/tag/1.9.0)
+[Full Changelog](https://github.com/uktrade/directory-forms-api/compare/1.9.0...1.8.0)
+
+### Implemented enhancements
+- TSR-80 - Update to use helpdesk interface (abstracting zendesk integration)
+## [1.8.0](https://github.com/uktrade/directory-forms-api/releases/tag/1.8.0)
+[Full Changelog](https://github.com/uktrade/directory-forms-api/compare/1.8.0...1.7.0)
 ### Implemented enhancements
 - GLS-75  - Schedule email to delivery for submission enquiries
 - TC-1009_Remove_Custom_Field_From_Zendesk_Description

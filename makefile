@@ -39,21 +39,21 @@ worker:
 
 .PHONY: clean pytest manage webserver requirements install_requirements css worker beat
 
-build-docker:
+docker-build:
 	docker-compose -f docker-compose.test.yml build
 
-up-docker:	
+docker-up:	
 	docker-compose -f docker-compose.test.yml up
 
-pytest-docker:
+docker-pytest:
 	docker-compose -f docker-compose.test.yml run --rm web pytest 
 
-all-requirements-docker:
+docker-all-requirements:
 	docker-compose -f docker-compose.test.yml run --rm web pip-compile --output-file requirements.txt requirements.in
 	docker-compose -f docker-compose.test.yml run --rm web pip-compile --output-file requirements_test.txt requirements_test.in
 
-bash-docker:
+docker-bash:
 	docker-compose -f docker-compose.test.yml run --rm web bash
 	
-shell-docker:
+docker-shell:
 	docker-compose -f docker-compose.test.yml run --rm web python manage.py shell

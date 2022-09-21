@@ -1,4 +1,4 @@
-DATABASE_URL=postgres://debug:debug@postgres:5432/directory_forms_api_debug
+DATABASE_URL=postgres://postgres:postgres@great_postgres:5432/directory_forms_api_debug
 POSTGRES_DB=directory_forms_api_debug
 POSTGRES_USER=debug
 POSTGRES_PASSWORD=debug

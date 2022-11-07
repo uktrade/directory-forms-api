@@ -3,21 +3,21 @@ import logging
 from mohawk.exc import HawkFail
 from rest_framework.authentication import BaseAuthentication
 from rest_framework.exceptions import AuthenticationFailed
+
 from activitystream.helpers import authorise
 
 logger = logging.getLogger(__name__)
-NO_CREDENTIALS_MESSAGE = 'Authentication credentials were not provided.'
-INCORRECT_CREDENTIALS_MESSAGE = 'Incorrect authentication credentials.'
+NO_CREDENTIALS_MESSAGE = "Authentication credentials were not provided."
+INCORRECT_CREDENTIALS_MESSAGE = "Incorrect authentication credentials."
 
 
 class ActivityStreamAuthentication(BaseAuthentication):
-
     def authenticate_header(self, request):
         """This is returned as the WWW-Authenticate header when
         AuthenticationFailed is raised. DRF also requires this
         to send a 401 (as opposed to 403)
         """
-        return 'Hawk'
+        return "Hawk"
 
     def authenticate(self, request):
         """Authenticates a request using Hawk signature
@@ -28,13 +28,13 @@ class ActivityStreamAuthentication(BaseAuthentication):
         return self.authenticate_by_hawk(request)
 
     def authenticate_by_hawk(self, request):
-        if 'HTTP_AUTHORIZATION' not in request.META:
+        if "HTTP_AUTHORIZATION" not in request.META:
             raise AuthenticationFailed(NO_CREDENTIALS_MESSAGE)
 
         try:
             hawk_receiver = authorise(request)
         except HawkFail as e:
-            logger.warning(f'Failed authentication {e}')
+            logger.warning(f"Failed authentication {e}")
             raise AuthenticationFailed(INCORRECT_CREDENTIALS_MESSAGE)
 
         return (None, hawk_receiver)
@@ -45,9 +45,12 @@ class ActivityStreamHawkResponseMiddleware:
     of the request can authenticate the response
     """
 
+    def __init__(self, *args, **kwargs):
+        pass
+
     def process_response(self, viewset, response):
-        response['Server-Authorization'] = viewset.request.auth.respond(
+        response["Server-Authorization"] = viewset.request.auth.respond(
             content=response.content,
-            content_type=response['Content-Type'],
+            content_type=response["Content-Type"],
         )
         return response

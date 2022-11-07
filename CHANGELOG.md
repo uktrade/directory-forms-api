@@ -11,6 +11,8 @@
 - GP2-2867 Dockerise  d-form-api
 - GP2-3409 full hawk authentication
 - GP2-3409 -support standard hawk authentication
+- GLS-381 - Django 3.2 upgrade
+- KLS-115 - Upgrade to secure django version - 3.2.16
 
 
 ## [1.5.0](https://github.com/uktrade/directory-forms-api/releases/tag/1.5.0)

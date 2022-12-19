@@ -4,6 +4,12 @@
 
 ## Hotfix
 ### Fixed bugs
+
+### Implemented enhancements
+
+- KLS-261 - Patch directory-forms-api certifi to version 2022.12.07
+
+
 ### Implemented enhancements
 - GLS-75  - Schedule email to delivery for submission enquiries
 - TC-1009_Remove_Custom_Field_From_Zendesk_Description

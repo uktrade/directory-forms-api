@@ -6,11 +6,6 @@
 ### Fixed bugs
 
 ### Implemented enhancements
-
-- KLS-261 - Patch directory-forms-api certifi to version 2022.12.07
-
-
-### Implemented enhancements
 - GLS-75  - Schedule email to delivery for submission enquiries
 - TC-1009_Remove_Custom_Field_From_Zendesk_Description
 - TC-1009 - ESS - Stop custom fields blob being submitted into zendesk
@@ -19,6 +14,7 @@
 - GP2-3409 -support standard hawk authentication
 - GLS-381 - Django 3.2 upgrade
 - KLS-115 - Upgrade to secure django version - 3.2.16
+- KLS-261 - Patch directory-forms-api certifi to version 2022.12.07
 
 
 ## [1.5.0](https://github.com/uktrade/directory-forms-api/releases/tag/1.5.0)

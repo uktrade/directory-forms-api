@@ -4,77 +4,206 @@
 #
 #    pip-compile requirements.in
 #
-amqp==5.0.9               # via kombu
-asgiref==3.5.2            # via django
-attrs==19.3.0             # via jsonschema
-beautifulsoup4==4.8.1     # via directory-components
-billiard==3.6.4.0         # via celery
-cachetools==4.0.0         # via zenpy
-celery[redis]==5.2.3      # via -r requirements.in, django-celery-beat
-certifi==2019.11.28       # via requests, sentry-sdk
-cffi==1.13.2              # via cryptography
-chardet==3.0.4            # via requests
-click-didyoumean==0.3.0   # via celery
-click-plugins==1.1.1      # via celery
-click-repl==0.2.0         # via celery
-click==8.0.3              # via celery, click-didyoumean, click-plugins, click-repl
-cryptography==3.3.2       # via -r requirements.in, django-cryptography, pyopenssl, requests
-deprecated==1.2.13        # via redis
-directory-components==38.2.0  # via -r requirements.in
-directory-constants==22.0.1  # via directory-components
-directory-healthcheck==3.0.0  # via -r requirements.in
-dj-database-url==0.5.0    # via -r requirements.in
-django-admin-ip-restrictor==2.2.0  # via -r requirements.in
-django-appconf==1.0.3     # via django-cryptography
-django-celery-beat==2.2.1  # via -r requirements.in
-django-cryptography==1.0  # via -r requirements.in
-django-environ==0.4.5     # via -r requirements.in
-django-filter==21.1       # via -r requirements.in
-django-health-check==3.16.5  # via directory-healthcheck
-django-ipware==2.1.0      # via django-admin-ip-restrictor
-django-json-widget==0.2.0  # via -r requirements.in
-django-pglocks==1.0.4     # via -r requirements.in
-django-ratelimit==2.0     # via -r requirements.in
-django-redis==5.2.0       # via -r requirements.in
-django-staff-sso-client==4.0.1  # via -r requirements.in
-django-timezone-field==4.2.3  # via django-celery-beat
-django==3.2.16            # via -r requirements.in, directory-components, directory-constants, directory-healthcheck, django-admin-ip-restrictor, django-appconf, django-celery-beat, django-filter, django-health-check, django-redis, django-staff-sso-client, django-timezone-field, djangorestframework, sigauth
-django_extensions==2.2.5  # via -r requirements.in
-djangorestframework==3.12.2  # via -r requirements.in, sigauth
-docopt==0.6.2             # via notifications-python-client
-gunicorn==20.0.4          # via -r requirements.in
-idna==2.8                 # via requests
-jsonschema==3.2.0         # via directory-components
-kombu==5.2.3              # via celery
-mohawk==0.3.4             # via sigauth
-notifications-python-client==6.3.0  # via -r requirements.in
-oauthlib==3.1.0           # via requests-oauthlib
-packaging==21.3           # via redis
-prompt-toolkit==3.0.24    # via click-repl
-psycopg2==2.8.4           # via -r requirements.in
-pycparser==2.19           # via cffi
-pyjwt==2.4.0              # via -r requirements.in, notifications-python-client
-pyopenssl==19.1.0         # via requests
-pyparsing==3.0.6          # via packaging
-pyrsistent==0.15.6        # via jsonschema
-python-crontab==2.6.0     # via django-celery-beat
-python-dateutil==2.8.1    # via python-crontab, zenpy
-pytz==2021.3              # via celery, django, django-timezone-field
-redis==4.1.0              # via celery, django-redis
-requests-oauthlib==1.3.0  # via django-staff-sso-client
-requests[security]==2.25.1  # via -r requirements.in, notifications-python-client, requests-oauthlib, zenpy
-sentry-sdk==0.13.5        # via -r requirements.in
-sigauth==5.1.1            # via -r requirements.in
-six==1.13.0               # via click-repl, cryptography, django-appconf, django-extensions, django-pglocks, jsonschema, mohawk, pyopenssl, pyrsistent, python-dateutil
-soupsieve==1.9.5          # via beautifulsoup4
-sqlparse==0.3.0           # via django
-urllib3==1.26.5           # via -r requirements.in, requests, sentry-sdk
-vine==5.0.0               # via amqp, celery, kombu
-waitress==2.1.2           # via -r requirements.in
-wcwidth==0.2.5            # via prompt-toolkit
-whitenoise==5.0.1         # via -r requirements.in
-wrapt==1.13.3             # via deprecated
-zenpy==1.1.10             # via -r requirements.in
+amqp==5.0.9
+    # via kombu
+asgiref==3.5.2
+    # via django
+attrs==19.3.0
+    # via jsonschema
+beautifulsoup4==4.8.1
+    # via directory-components
+billiard==3.6.4.0
+    # via celery
+cachetools==4.0.0
+    # via zenpy
+celery[redis]==5.2.3
+    # via
+    #   -r requirements.in
+    #   django-celery-beat
+certifi==2022.12.7
+    # via
+    #   -r requirements.in
+    #   requests
+    #   sentry-sdk
+cffi==1.13.2
+    # via cryptography
+chardet==3.0.4
+    # via requests
+click==8.0.3
+    # via
+    #   celery
+    #   click-didyoumean
+    #   click-plugins
+    #   click-repl
+click-didyoumean==0.3.0
+    # via celery
+click-plugins==1.1.1
+    # via celery
+click-repl==0.2.0
+    # via celery
+cryptography==3.3.2
+    # via
+    #   -r requirements.in
+    #   django-cryptography
+    #   pyopenssl
+    #   requests
+deprecated==1.2.13
+    # via redis
+directory-components==38.2.0
+    # via -r requirements.in
+directory-constants==22.0.1
+    # via directory-components
+directory-healthcheck==3.0.0
+    # via -r requirements.in
+dj-database-url==0.5.0
+    # via -r requirements.in
+django==3.2.16
+    # via
+    #   -r requirements.in
+    #   directory-components
+    #   directory-constants
+    #   directory-healthcheck
+    #   django-admin-ip-restrictor
+    #   django-appconf
+    #   django-celery-beat
+    #   django-filter
+    #   django-health-check
+    #   django-redis
+    #   django-staff-sso-client
+    #   django-timezone-field
+    #   djangorestframework
+    #   sigauth
+django-admin-ip-restrictor==2.2.0
+    # via -r requirements.in
+django-appconf==1.0.3
+    # via django-cryptography
+django-celery-beat==2.2.1
+    # via -r requirements.in
+django-cryptography==1.0
+    # via -r requirements.in
+django-environ==0.4.5
+    # via -r requirements.in
+django-extensions==2.2.5
+    # via -r requirements.in
+django-filter==21.1
+    # via -r requirements.in
+django-health-check==3.16.5
+    # via directory-healthcheck
+django-ipware==2.1.0
+    # via django-admin-ip-restrictor
+django-json-widget==0.2.0
+    # via -r requirements.in
+django-pglocks==1.0.4
+    # via -r requirements.in
+django-ratelimit==2.0
+    # via -r requirements.in
+django-redis==5.2.0
+    # via -r requirements.in
+django-staff-sso-client==4.0.1
+    # via -r requirements.in
+django-timezone-field==4.2.3
+    # via django-celery-beat
+djangorestframework==3.12.2
+    # via
+    #   -r requirements.in
+    #   sigauth
+docopt==0.6.2
+    # via notifications-python-client
+gunicorn==20.0.4
+    # via -r requirements.in
+idna==2.8
+    # via requests
+jsonschema==3.2.0
+    # via directory-components
+kombu==5.2.3
+    # via celery
+mohawk==0.3.4
+    # via sigauth
+notifications-python-client==6.3.0
+    # via -r requirements.in
+oauthlib==3.1.0
+    # via requests-oauthlib
+packaging==21.3
+    # via redis
+prompt-toolkit==3.0.24
+    # via click-repl
+psycopg2==2.8.4
+    # via -r requirements.in
+pycparser==2.19
+    # via cffi
+pyjwt==2.4.0
+    # via
+    #   -r requirements.in
+    #   notifications-python-client
+pyopenssl==19.1.0
+    # via requests
+pyparsing==3.0.6
+    # via packaging
+pyrsistent==0.15.6
+    # via jsonschema
+python-crontab==2.6.0
+    # via django-celery-beat
+python-dateutil==2.8.1
+    # via
+    #   python-crontab
+    #   zenpy
+pytz==2021.3
+    # via
+    #   celery
+    #   django
+    #   django-timezone-field
+redis==4.1.0
+    # via
+    #   celery
+    #   django-redis
+requests[security]==2.25.1
+    # via
+    #   -r requirements.in
+    #   notifications-python-client
+    #   requests-oauthlib
+    #   zenpy
+requests-oauthlib==1.3.0
+    # via django-staff-sso-client
+sentry-sdk==0.13.5
+    # via -r requirements.in
+sigauth==5.1.1
+    # via -r requirements.in
+six==1.13.0
+    # via
+    #   click-repl
+    #   cryptography
+    #   django-appconf
+    #   django-extensions
+    #   django-pglocks
+    #   jsonschema
+    #   mohawk
+    #   pyopenssl
+    #   pyrsistent
+    #   python-dateutil
+soupsieve==1.9.5
+    # via beautifulsoup4
+sqlparse==0.3.0
+    # via django
+urllib3==1.26.5
+    # via
+    #   -r requirements.in
+    #   requests
+    #   sentry-sdk
+vine==5.0.0
+    # via
+    #   amqp
+    #   celery
+    #   kombu
+waitress==2.1.2
+    # via -r requirements.in
+wcwidth==0.2.5
+    # via prompt-toolkit
+whitenoise==5.0.1
+    # via -r requirements.in
+wrapt==1.13.3
+    # via deprecated
+zenpy==1.1.10
+    # via -r requirements.in
 
 # The following packages are considered to be unsafe in a requirements file:
 # setuptools

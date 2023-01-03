@@ -28,3 +28,4 @@ waitress==2.1.2
 urllib3>=1.26.5
 django-celery-beat==2.2.1
 pyjwt==2.4.0
+certifi==2022.12.07

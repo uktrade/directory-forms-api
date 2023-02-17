@@ -1,5 +1,8 @@
 # Changelog
 
+## Upgrated django verison
+-Updated Django version to 3.2.18
+
 ## Pre release
 
 ## Hotfix

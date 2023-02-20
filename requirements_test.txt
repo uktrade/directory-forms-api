@@ -49,7 +49,7 @@ coverage==5.1
     # via
     #   codecov
     #   pytest-cov
-cryptography==3.3.2
+cryptography==39.0.1
     # via
     #   -r requirements.in
     #   django-cryptography
@@ -219,7 +219,6 @@ sigauth==5.1.1
 six==1.14.0
     # via
     #   click-repl
-    #   cryptography
     #   django-extensions
     #   django-pglocks
     #   freezegun

@@ -1,4 +1,4 @@
-django==3.2.16
+django==3.2.18
 dj-database-url==0.5.0
 django-environ==0.4.5
 django_extensions==2.2.5
@@ -19,7 +19,7 @@ zenpy==1.1.10
 celery[redis]>=5.2.2
 cryptography==3.3.2
 notifications-python-client==6.3.0
-directory-components==38.2.0
+directory-components==38.2.1
 urllib3>=1.24.2,<2.0.0
 django-admin-ip-restrictor==2.2.0
 django-ratelimit==2.0

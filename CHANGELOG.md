@@ -4,6 +4,7 @@
 -Updated Django version to 3.2.18
 
 ## Pre release
+- CPS-426 - Add startTime to the serialization of submissions.
 
 ## Hotfix
 ### Fixed bugs

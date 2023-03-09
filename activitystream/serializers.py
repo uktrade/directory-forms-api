@@ -19,6 +19,7 @@ class SubmissionSerializer(serializers.Serializer):
                 f'{DIT_SUBMISSION_NAMESPACE}:Meta': obj.meta,
                 f'{DIT_SUBMISSION_NAMESPACE}:Data': obj.data,
                 'published': obj.created.isoformat('T'),
+                'startTime': obj.created.isoformat('T'),
                 'url': obj.form_url,
                 'attributedTo': {
                     'type': f'{DIT_NAMESPACE}:SubmissionAction:{obj.action_name}',

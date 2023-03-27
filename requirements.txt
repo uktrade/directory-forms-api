@@ -8,6 +8,8 @@ amqp==5.0.9
     # via kombu
 asgiref==3.5.2
     # via django
+async-timeout==4.0.2
+    # via redis
 attrs==19.3.0
     # via jsonschema
 beautifulsoup4==4.8.1
@@ -47,8 +49,6 @@ cryptography==39.0.1
     #   django-cryptography
     #   pyopenssl
     #   requests
-deprecated==1.2.13
-    # via redis
 directory-components==38.2.1
     # via -r requirements.in
 directory-constants==22.0.2
@@ -123,8 +123,6 @@ notifications-python-client==6.3.0
     # via -r requirements.in
 oauthlib==3.1.0
     # via requests-oauthlib
-packaging==21.3
-    # via redis
 prompt-toolkit==3.0.24
     # via click-repl
 psycopg2==2.8.4
@@ -137,8 +135,6 @@ pyjwt==2.4.0
     #   notifications-python-client
 pyopenssl==19.1.0
     # via requests
-pyparsing==3.0.6
-    # via packaging
 pyrsistent==0.15.6
     # via jsonschema
 python-crontab==2.6.0
@@ -152,7 +148,7 @@ pytz==2021.3
     #   celery
     #   django
     #   django-timezone-field
-redis==4.1.0
+redis==4.5.3
     # via
     #   celery
     #   django-redis
@@ -199,8 +195,6 @@ wcwidth==0.2.5
     # via prompt-toolkit
 whitenoise==5.0.1
     # via -r requirements.in
-wrapt==1.13.3
-    # via deprecated
 zenpy==1.1.10
     # via -r requirements.in
 

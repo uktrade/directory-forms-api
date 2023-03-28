@@ -18,6 +18,7 @@
 - GLS-381 - Django 3.2 upgrade
 - KLS-115 - Upgrade to secure django version - 3.2.16
 - KLS-261 - Patch directory-forms-api certifi to version 2022.12.07
+- KLS-506 - patch sentry-sdk to 1.14.0
 
 
 ## [1.5.0](https://github.com/uktrade/directory-forms-api/releases/tag/1.5.0)

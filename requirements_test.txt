@@ -139,7 +139,7 @@ mccabe==0.6.1
     # via flake8
 mohawk==0.3.4
     # via sigauth
-notifications-python-client==6.3.0
+notifications-python-client==8.0.0
     # via -r requirements.in
 oauthlib==3.1.0
     # via requests-oauthlib

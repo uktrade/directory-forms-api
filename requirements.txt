@@ -148,7 +148,7 @@ pytz==2023.3
     #   celery
     #   django
     #   django-timezone-field
-redis==4.5.4
+redis==4.4.4
     # via
     #   celery
     #   django-redis

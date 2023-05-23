@@ -1,4 +1,4 @@
-from django.conf.urls import url
+from django.urls import re_path
 
 from django.views import View
 from django.http.response import HttpResponse
@@ -10,7 +10,7 @@ class TestView(View):
 
 
 urlpatterns = [
-    url(
+    re_path(
         r'^test/$',
         TestView.as_view(),
         name='test_view'

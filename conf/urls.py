@@ -1,7 +1,6 @@
 import directory_healthcheck.views
 
-from django.conf.urls import url, include
-from django.urls import reverse_lazy
+from django.urls import path, re_path, include, reverse_lazy
 from django.contrib import admin
 from django.views.generic import RedirectView
 from django.conf import settings
@@ -15,12 +14,12 @@ admin.autodiscover()
 
 
 healthcheck_urls = [
-    url(
+    re_path(
         r'^$',
         directory_healthcheck.views.HealthcheckView.as_view(),
         name='healthcheck'
     ),
-    url(
+    re_path(
         r'^ping/$',
         directory_healthcheck.views.PingView.as_view(),
         name='ping'
@@ -28,12 +27,12 @@ healthcheck_urls = [
 ]
 
 api_urls = [
-    url(
+    re_path(
         r'^submission/$',
         submission.views.SubmissionCreateAPIView.as_view(),
         name='submission'
     ),
-    url(
+    re_path(
         r'^delete-submissions/(?P<email_address>.*)$',
         submission.views.SubmissionDestroyAPIView.as_view(),
         name='delete_submission',
@@ -41,17 +40,17 @@ api_urls = [
 ]
 
 testapi_urls = [
-    url(
+    re_path(
         r'^submissions-by-email/(?P<email_address>.*)/$',
         testapi.views.SubmissionsTestAPIView.as_view(),
         name='submissions_by_email',
     ),
-    url(
+    re_path(
         r'^test-senders/$',
         testapi.views.SendersTestAPIView.as_view(),
         name='delete_test_senders',
     ),
-    url(
+    re_path(
         r'^test-submissions/$',
         testapi.views.SubmissionsTestAPIView.as_view(),
         name='delete_test_submissions',
@@ -59,24 +58,24 @@ testapi_urls = [
 ]
 
 urlpatterns = [
-    url(
+    re_path(
         r'^api/healthcheck/',
         include((healthcheck_urls, 'healthcheck'), namespace='healthcheck')
     ),
 
-    url(r'^api/', include((api_urls, 'api'), namespace='api')),
-    url(r'^admin/', admin.site.urls),
-    url(r'^testapi/', include((testapi_urls, 'testapi'), namespace='testapi')),
-    url(r'^activity-stream/v1/', ActivityStreamView.as_view(), name='activity-stream'),
+    re_path(r'^api/', include((api_urls, 'api'), namespace='api')),
+    re_path(r'^admin/', admin.site.urls),
+    re_path(r'^testapi/', include((testapi_urls, 'testapi'), namespace='testapi')),
+    re_path(r'^activity-stream/v1/', ActivityStreamView.as_view(), name='activity-stream'),
 ]
 
 authbroker_urls = [
-    url(
+    re_path(
         r'^admin/login/$',
         RedirectView.as_view(url=reverse_lazy('authbroker_client:login'), query_string=True, )
     ),
-    url('^auth/', include('authbroker_client.urls')),
+    re_path('^auth/', include('authbroker_client.urls')),
 ]
 
 if settings.FEATURE_ENFORCE_STAFF_SSO_ENABLED:
-    urlpatterns = [url('^', include(authbroker_urls))] + urlpatterns
+    urlpatterns = [re_path('^', include(authbroker_urls))] + urlpatterns

@@ -191,7 +191,7 @@ waitress==2.1.2
     # via -r requirements.in
 wcwidth==0.2.6
     # via prompt-toolkit
-whitenoise==5.0.1
+whitenoise==6.4.0
     # via -r requirements.in
 zenpy==1.1.10
     # via -r requirements.in

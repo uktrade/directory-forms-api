@@ -55,7 +55,6 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'core.middleware.AdminPermissionCheckMiddleware',
-    'admin_ip_restrictor.middleware.AdminIPRestrictorMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -259,12 +258,6 @@ DIRECTORY_HEALTHCHECK_BACKENDS = [
     # health_check.cache.backends.CacheBackend are also registered in
     # INSTALLED_APPS's health_check.db and health_check.cache
 ]
-
-# Admin restrictor
-RESTRICT_ADMIN = env.bool('IP_RESTRICTOR_RESTRICT_IPS', False)
-ALLOWED_ADMIN_IPS = env.list('IP_RESTRICTOR_ALLOWED_ADMIN_IPS', default=[])
-ALLOWED_ADMIN_IP_RANGES = env.list('IP_RESTRICTOR_ALLOWED_ADMIN_IP_RANGES', default=[])
-TRUST_PRIVATE_IP = True
 
 # directory-signature-auth
 SIGAUTH_URL_NAMES_WHITELIST = [

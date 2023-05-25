@@ -6,7 +6,7 @@ djangorestframework==3.14.0
 django-filter>=23.2
 django-pglocks==1.0.4
 django-json-widget==0.2.0
-whitenoise==5.0.1
+whitenoise==6.4.0
 psycopg2==2.8.4
 gunicorn==20.0.4
 sentry-sdk==1.14.0

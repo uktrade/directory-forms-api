@@ -72,6 +72,7 @@ django==4.1.9
     #   django-redis
     #   django-staff-sso-client
     #   djangorestframework
+    #   drf-spectacular
     #   sigauth
 django-appconf==1.0.5
     # via django-cryptography
@@ -102,15 +103,22 @@ django-timezone-field==5.0
 djangorestframework==3.14.0
     # via
     #   -r requirements.in
+    #   drf-spectacular
     #   sigauth
 docopt==0.6.2
     # via notifications-python-client
+drf-spectacular==0.26.2
+    # via -r requirements.in
 gunicorn==20.0.4
     # via -r requirements.in
 idna==2.10
     # via requests
+inflection==0.5.1
+    # via drf-spectacular
 jsonschema==3.2.0
-    # via directory-components
+    # via
+    #   directory-components
+    #   drf-spectacular
 kombu==5.2.4
     # via celery
 mohawk==1.1.0
@@ -142,6 +150,8 @@ pytz==2023.3
     #   celery
     #   django-timezone-field
     #   djangorestframework
+pyyaml==6.0
+    # via drf-spectacular
 redis==4.4.4
     # via
     #   celery
@@ -173,6 +183,8 @@ sqlparse==0.4.4
     #   django
 tzdata==2023.3
     # via django-celery-beat
+uritemplate==4.1.1
+    # via drf-spectacular
 urllib3==1.26.15
     # via
     #   -r requirements.in

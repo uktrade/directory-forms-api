@@ -20,6 +20,12 @@ A service with a write-only API for submitting schemaless JSON documents that re
 
 For more information on installation please check the [Developers Onboarding Checklist](https://uktrade.atlassian.net/wiki/spaces/ED/pages/32243946/Developers+onboarding+checklist)
 
+## API Schema
+API schema is available at paths:  
+Direct download (yaml) - openapi/  
+Swagger UI - openapi/ui/  
+Redoc - openapi/ui/redoc/  
+
 ## Requirements
 
 [Python 3.9](https://www.python.org/downloads/release/python-395/)

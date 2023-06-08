@@ -1,9 +1,11 @@
 import directory_healthcheck.views
+from django.contrib.auth.decorators import login_required
 
-from django.urls import re_path, include, reverse_lazy
+from django.urls import re_path, include, reverse_lazy, path
 from django.contrib import admin
 from django.views.generic import RedirectView
 from django.conf import settings
+from drf_spectacular.views import SpectacularRedocView, SpectacularSwaggerView, SpectacularAPIView
 
 import submission.views
 from activitystream.views import ActivityStreamView
@@ -79,3 +81,18 @@ authbroker_urls = [
 
 if settings.FEATURE_ENFORCE_STAFF_SSO_ENABLED:
     urlpatterns = [re_path('^', include(authbroker_urls))] + urlpatterns
+
+if settings.FEATURE_OPENAPI_ENABLED:
+    urlpatterns += [
+        path('openapi/', SpectacularAPIView.as_view(), name='schema'),
+        path(
+            'openapi/ui/',
+            login_required(SpectacularSwaggerView.as_view(url_name='schema'), login_url='admin:login'),
+            name='swagger-ui'
+        ),
+        path(
+            'openapi/ui/redoc/',
+            login_required(SpectacularRedocView.as_view(url_name='schema'), login_url='admin:login'),
+            name='redoc'
+        ),
+    ]

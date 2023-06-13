@@ -1,3 +1,4 @@
+from drf_spectacular.utils import extend_schema
 from rest_framework.generics import CreateAPIView, DestroyAPIView
 from rest_framework.response import Response
 from django.http import Http404
@@ -12,6 +13,7 @@ class Ratelimited(Exception):
     pass
 
 
+@extend_schema(methods=['POST'], description='Submit forms')
 class SubmissionCreateAPIView(CreateAPIView):
     serializer_class = serializers.SubmissionModelSerializer
     authentication_classes = [ClientSenderIdAuthentication]

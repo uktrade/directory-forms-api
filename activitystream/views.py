@@ -1,4 +1,6 @@
 from django.utils.decorators import decorator_from_middleware
+from drf_spectacular.types import OpenApiTypes
+from drf_spectacular.utils import extend_schema, OpenApiExample, OpenApiParameter
 
 from rest_framework.response import Response
 from rest_framework.reverse import reverse
@@ -14,7 +16,6 @@ MAX_PER_PAGE = 25
 
 class ActivityStreamView(ListAPIView):
     """List-only view set for the activity stream"""
-
     authentication_classes = (ActivityStreamAuthentication,)
     permission_classes = ()
 
@@ -27,6 +28,22 @@ class ActivityStreamView(ListAPIView):
         )
 
     @decorator_from_middleware(ActivityStreamHawkResponseMiddleware)
+    @extend_schema(
+        responses=OpenApiTypes.OBJECT,
+        examples=[
+            OpenApiExample(
+                'GET Request 200 Example',
+                value={
+                    '@context': 'list',
+                    'type': 'Collection',
+                    'orderedItems': 'list',
+                    'next_page': 'url'
+                },
+                response_only=True,
+            ),
+        ],
+        parameters=[OpenApiParameter(name='after', description='After Timestamp String', required=True, type=str)],
+    )
     def list(self, request):
         """A single page of activities"""
         filter = SubmissionFilter(request.GET, queryset=Submission.objects.all())

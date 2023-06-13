@@ -49,7 +49,7 @@ INSTALLED_APPS = [
     'testapi.apps.TestApiConfig',
     'authbroker_client',
     'django_celery_beat',
-
+    'drf_spectacular',
 ]
 
 MIDDLEWARE = [
@@ -177,8 +177,18 @@ AUTHBROKER_CLIENT_SECRET = env.str('AUTHBROKER_CLIENT_SECRET')
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = env.str('SECRET_KEY')
 
+# OpenAPI
+
+FEATURE_OPENAPI_ENABLED = env.bool("FEATURE_OPENAPI_ENABLED", False)
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'Directory Forms API spec',
+    'DESCRIPTION': 'Directory Forms API - the Department for Business and Trade (DBT)',
+    'VERSION': os.environ.get('GIT_TAG', 'dev'),
+}
+
 # DRF
 REST_FRAMEWORK = {
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
     'DEFAULT_FILTER_BACKENDS': (
         'django_filters.rest_framework.DjangoFilterBackend',
     ),
@@ -264,7 +274,9 @@ SIGAUTH_URL_NAMES_WHITELIST = [
     'database',  # health check
     'ping',  # health check
     'activity-stream',  # activity stream
-
+    'schema',
+    'swagger-ui',
+    'redoc',
 ]
 
 # Zendesk

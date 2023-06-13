@@ -53,7 +53,7 @@ coverage==5.1
     #   pytest-cov
 cron-descriptor==1.4.0
     # via django-celery-beat
-cryptography==40.0.2
+cryptography==41.0.0
     # via
     #   -r requirements.in
     #   django-cryptography

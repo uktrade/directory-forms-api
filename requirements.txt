@@ -46,7 +46,7 @@ click-repl==0.2.0
     # via celery
 cron-descriptor==1.4.0
     # via django-celery-beat
-cryptography==40.0.2
+cryptography==41.0.3
     # via
     #   -r requirements.in
     #   django-cryptography
@@ -93,7 +93,7 @@ django-json-widget==0.2.0
     # via -r requirements.in
 django-pglocks==1.0.4
     # via -r requirements.in
-django-ratelimit==2.0.0
+django-ratelimit==2.0
     # via -r requirements.in
 django-redis==5.2.0
     # via -r requirements.in

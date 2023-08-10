@@ -251,6 +251,17 @@ if env.str('SENTRY_DSN', ''):
         integrations=[DjangoIntegration(), CeleryIntegration()]
     )
 
+# Elastic APM logging
+ELASTIC_APM_ENABLED = env('ELASTIC_APM_ENABLED', default=False)
+if ELASTIC_APM_ENABLED:
+    ELASTIC_APM = {
+        'SERVICE_NAME': env('SERVICE_NAME', default='directory-forms-api'),
+        'SECRET_TOKEN': env('ELASTIC_APM_SECRET_TOKEN'),
+        'SERVER_URL': env('ELASTIC_APM_URL'),
+        'ENVIRONMENT': env('APP_ENVIRONMENT', default='dev'),
+        'SERVER_TIMEOUT': env('ELASTIC_APM_SERVER_TIMEOUT', default='20s'),
+    }
+    INSTALLED_APPS.append('elasticapm.contrib.django')
 
 # Admin proxy
 USE_X_FORWARDED_HOST = True

@@ -17,7 +17,7 @@ directory-healthcheck==3.1.2
 django-cryptography==1.1
 zenpy==1.1.10
 celery[redis]>=5.2.2
-cryptography==40.0.2
+cryptography==41.0.3
 notifications-python-client==8.0.0
 directory-components==39.1.2
 urllib3>=1.24.2,<2.0.0
@@ -30,3 +30,4 @@ pyjwt==2.4.0
 certifi==2022.12.07
 sqlparse==0.4.4
 drf-spectacular>=0.26.0
+elastic-apm==6.1.*

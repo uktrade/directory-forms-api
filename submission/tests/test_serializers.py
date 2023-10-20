@@ -189,10 +189,15 @@ def test_email_action_serializer_from_submission(email_submission):
     }
 
 
+@pytest.mark.parametrize("sort_fields_alphabetically, expected_serialized_sort_alphabetically", [
+    (True, True),
+    (False, False)
+])
 @pytest.mark.django_db
 def test_zendesk_action_serializer_from_submission(
-    zendesk_submission, settings
+    zendesk_submission, settings, sort_fields_alphabetically, expected_serialized_sort_alphabetically
 ):
+    zendesk_submission.meta['sort_fields_alphabetically'] = sort_fields_alphabetically
     serializer = serializers.ZendeskActionSerializer.from_submission(
         zendesk_submission
     )
@@ -204,6 +209,7 @@ def test_zendesk_action_serializer_from_submission(
         'payload': {
             **zendesk_submission.data,
             'ingress_url': zendesk_submission.meta['ingress_url'],
+            '_sort_fields_alphabetically': expected_serialized_sort_alphabetically
         },
         'subdomain': settings.ZENDESK_SUBDOMAIN_DEFAULT,
         'service_name': zendesk_submission.meta['service_name'],

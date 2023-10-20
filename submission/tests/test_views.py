@@ -303,6 +303,7 @@ def test_zendesk_action(
     expected_payload = {
         **zendesk_action_payload['data'],
         'ingress_url': zendesk_action_payload['meta']['ingress_url'],
+        '_sort_fields_alphabetically': zendesk_action_payload['meta']['sort_fields_alphabetically'],
     }
 
     assert response.status_code == 201

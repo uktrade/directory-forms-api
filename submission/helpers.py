@@ -35,9 +35,11 @@ class ZendeskClient:
         return self.client.users.create_or_update(zendesk_user)
 
     def create_ticket(self, subject, payload, zendesk_user, service_name):
+        sort_fields_alphabetically = payload.get('_sort_fields_alphabetically', True)
+        items = sorted(payload.items()) if sort_fields_alphabetically else payload.items()
         description = [
             '{0}: {1}'.format(key.title().replace('_', ' '), value)
-            for key, value in sorted(payload.items())
+            for key, value in items
             if not key.title().startswith('_')
         ]
         ticket = Ticket(

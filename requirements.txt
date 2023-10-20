@@ -46,7 +46,7 @@ click-repl==0.2.0
     # via celery
 cron-descriptor==1.4.0
     # via django-celery-beat
-cryptography==41.0.3
+cryptography==41.0.4
     # via
     #   -r requirements.in
     #   django-cryptography
@@ -188,7 +188,7 @@ tzdata==2023.3
     # via django-celery-beat
 uritemplate==4.1.1
     # via drf-spectacular
-urllib3==1.26.15
+urllib3==1.26.18
     # via
     #   -r requirements.in
     #   elastic-apm

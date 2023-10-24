@@ -35,6 +35,7 @@ class ZendeskActionSerializer(serializers.Serializer):
             'payload': {
                 **submission.data,
                 'ingress_url': submission.meta.get('ingress_url'),
+                '_sort_fields_alphabetically': submission.meta.get('sort_fields_alphabetically')
             }
         }
         return cls(data=data, *args, **kwargs)

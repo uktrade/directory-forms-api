@@ -101,7 +101,7 @@ django-json-widget==0.2.0
     # via -r requirements.in
 django-pglocks==1.0.4
     # via -r requirements.in
-django-ratelimit==2.0
+django-ratelimit==2.0.0
     # via -r requirements.in
 django-redis==5.2.0
     # via -r requirements.in
@@ -252,7 +252,7 @@ tzdata==2023.3
     # via django-celery-beat
 uritemplate==4.1.1
     # via drf-spectacular
-urllib3==1.26.15
+urllib3==1.26.18
     # via
     #   -r requirements.in
     #   elastic-apm

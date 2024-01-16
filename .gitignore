@@ -107,3 +107,6 @@ venv/
 
 # vscode
 .vscode
+
+#Docker config file
+Dockerfile.dev

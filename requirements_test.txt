@@ -6,7 +6,7 @@
 #
 amqp==5.0.9
     # via kombu
-asgiref==3.5.2
+asgiref==3.7.2
     # via django
 async-timeout==4.0.2
     # via redis
@@ -23,6 +23,7 @@ cachetools==4.1.0
 celery[redis]==5.2.3
     # via
     #   -r requirements.in
+    #   celery
     #   django-celery-beat
 certifi==2023.7.22
     # via
@@ -58,15 +59,15 @@ cryptography==41.0.7
     # via
     #   -r requirements.in
     #   django-cryptography
-directory-components==39.1.4
+directory-components==40.0.0
     # via -r requirements.in
 directory-constants==23.1.0
     # via directory-components
-directory-healthcheck==3.1.2
+directory-healthcheck==3.2
     # via -r requirements.in
 dj-database-url==0.5.0
     # via -r requirements.in
-django==4.1.13
+django==4.2
     # via
     #   -r requirements.in
     #   directory-components
@@ -101,11 +102,11 @@ django-json-widget==0.2.0
     # via -r requirements.in
 django-pglocks==1.0.4
     # via -r requirements.in
-django-ratelimit==2.0
+django-ratelimit==2.0.0
     # via -r requirements.in
 django-redis==5.2.0
     # via -r requirements.in
-django-staff-sso-client==4.1.1
+django-staff-sso-client==4.2.1
     # via -r requirements.in
 django-timezone-field==5.0
     # via django-celery-beat
@@ -214,6 +215,7 @@ requests[security]==2.31.0
     #   -r requirements.in
     #   codecov
     #   notifications-python-client
+    #   requests
     #   requests-mock
     #   requests-oauthlib
     #   zenpy
@@ -248,6 +250,8 @@ text-unidecode==1.3
     # via faker
 toml==0.10.2
     # via pytest
+typing-extensions==4.9.0
+    # via asgiref
 tzdata==2023.3
     # via django-celery-beat
 uritemplate==4.1.1

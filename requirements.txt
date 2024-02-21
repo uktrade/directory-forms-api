@@ -21,6 +21,7 @@ cachetools==5.3.0
 celery[redis]==5.2.7
     # via
     #   -r requirements.in
+    #   celery
     #   django-celery-beat
 certifi==2023.7.22
     # via
@@ -46,7 +47,7 @@ click-repl==0.2.0
     # via celery
 cron-descriptor==1.4.0
     # via django-celery-beat
-cryptography==41.0.7
+cryptography==42.0.4
     # via
     #   -r requirements.in
     #   django-cryptography
@@ -164,6 +165,7 @@ requests[security]==2.31.0
     # via
     #   -r requirements.in
     #   notifications-python-client
+    #   requests
     #   requests-oauthlib
     #   zenpy
 requests-oauthlib==1.3.1

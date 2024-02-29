@@ -15,9 +15,9 @@ requests[security]==2.31.0
 sigauth==5.2.3
 directory-healthcheck==3.3
 django-cryptography==1.1
-zenpy==1.1.10
+zenpy==2.0.46
 celery[redis]>=5.2.2
-cryptography>=41.0.7
+cryptography>=42.0.4
 notifications-python-client==8.0.0
 directory-components==40.1.1
 urllib3==2.0.7

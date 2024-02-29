@@ -23,7 +23,6 @@ cachetools==4.1.0
 celery[redis]==5.2.3
     # via
     #   -r requirements.in
-    #   celery
     #   django-celery-beat
 certifi==2023.7.22
     # via
@@ -55,7 +54,7 @@ coverage==5.1
     #   pytest-cov
 cron-descriptor==1.4.0
     # via django-celery-beat
-cryptography==41.0.7
+cryptography==42.0.5
     # via
     #   -r requirements.in
     #   django-cryptography
@@ -204,6 +203,7 @@ pytz==2021.3
     #   celery
     #   django-timezone-field
     #   djangorestframework
+    #   zenpy
 pyyaml==6.0
     # via drf-spectacular
 redis==4.4.4
@@ -215,7 +215,6 @@ requests[security]==2.31.0
     #   -r requirements.in
     #   codecov
     #   notifications-python-client
-    #   requests
     #   requests-mock
     #   requests-oauthlib
     #   zenpy
@@ -238,6 +237,7 @@ six==1.14.0
     #   pyrsistent
     #   python-dateutil
     #   requests-mock
+    #   zenpy
 soupsieve==2.0
     # via beautifulsoup4
 sqlparse==0.4.4
@@ -273,7 +273,7 @@ wcwidth==0.1.9
     # via prompt-toolkit
 whitenoise==6.4.0
     # via -r requirements.in
-zenpy==1.1.10
+zenpy==2.0.46
     # via -r requirements.in
 
 # The following packages are considered to be unsafe in a requirements file:

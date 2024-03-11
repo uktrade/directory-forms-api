@@ -14,6 +14,8 @@ from submission.constants import (
 )
 
 
+# TODO: Add tests for bulk email functionality
+
 class TestAPIView(GenericAPIView):
     authentication_classes = [ClientSenderIdAuthentication]
 

@@ -77,11 +77,6 @@ class GovNotifyBulkEmailSerializer(serializers.Serializer):
     personalisation = serializers.DictField()
     email_reply_to_id = serializers.CharField(required=False)
 
-    @classmethod
-    def from_submission(cls, submission, *args, **kwargs):
-        data = {**submission.meta, 'personalisation': submission.data}
-        return cls(data=data, *args, **kwargs)
-
 
 class GovNotifyLetterSerializer(serializers.Serializer):
     template_id = serializers.CharField()

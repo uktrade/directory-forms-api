@@ -17,6 +17,7 @@ class Ratelimited(Exception):
 
 # API V1 - LEGACY
 
+
 @extend_schema(methods=['POST'], description='Submit forms')
 class SubmissionCreateAPIView(CreateAPIView):
     """

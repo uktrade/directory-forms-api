@@ -491,8 +491,7 @@ class TestBulkGovNotifyEmail:
     """
 
     @pytest.mark.django_db
-    def test_gov_notify_bulk_email_action_success(self, api_client, gov_notify_bulk_email_action_payload
-    ):
+    def test_gov_notify_bulk_email_action_success(self, api_client, gov_notify_bulk_email_action_payload):
         assert models.Submission.objects.count() == 0
 
         response = api_client.post(
@@ -506,8 +505,7 @@ class TestBulkGovNotifyEmail:
         assert response.status_code == 201, response.json()
 
     @pytest.mark.django_db
-    def test_gov_notify_bulk_email_action_fails_on_bad_input(self, api_client, gov_notify_bulk_email_action_payload
-    ):
+    def test_gov_notify_bulk_email_action_fails_on_bad_input(self, api_client, gov_notify_bulk_email_action_payload):
         assert models.Submission.objects.count() == 0
 
         # Malform the data payload

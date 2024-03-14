@@ -123,7 +123,6 @@ def gov_notify_email_action_payload():
     }
 
 
-
 @pytest.fixture
 def gov_notify_bulk_email_action_payload():
     return {
@@ -132,6 +131,7 @@ def gov_notify_bulk_email_action_payload():
             'personalisation': {},
             'email_reply_to_id': '5678',
     }
+
 
 @pytest.fixture
 def gov_notify_letter_action_payload():

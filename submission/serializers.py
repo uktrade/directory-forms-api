@@ -67,6 +67,11 @@ class GovNotifyEmailSerializer(serializers.Serializer):
 
 
 class GovNotifyBulkEmailSerializer(serializers.Serializer):
+    """
+    This serializer accepts a list of email addresses 1>n, in order
+    to send the email to multiple recipients.
+    """
+
     template_id = serializers.CharField()
     email_addresses = serializers.ListField()
     personalisation = serializers.DictField()

@@ -8,6 +8,7 @@ from django.http import Http404
 from submission import constants, helpers, serializers, tasks
 from client.authentication import ClientSenderIdAuthentication
 from django.shortcuts import get_list_or_404
+from django.db import transaction
 from submission.models import Submission
 
 
@@ -63,7 +64,7 @@ class SubmissionDestroyAPIView(SubmissionCreateAPIView, DestroyAPIView):
 
 
 # API V2
-class APIV2Base(APIView):
+class APIBase(APIView):
     """
     Base class for the V2 API.
     """
@@ -82,29 +83,45 @@ class APIV2Base(APIView):
 
 
 @extend_schema(methods=['POST'], description='Gov.notify Bulk Email')
-class GovNotifyBulkEmailAPIView(APIV2Base):
+class GovNotifyBulkEmailAPIView(APIBase):
     """
-    This endpoint accept a bulk email submission for Gov.notify where the same email is to be sent to multiple
-    recipients.
+    This endpoint accepts emails submissions for Gov.notify. It is capable of accepting single or bulk
+    submissions (where the same email is to be sent to multiple recipients).
     """
 
     def post(self, request):
         """
-        Acts as a wrapper for GovNotifyEmailSerializer, taking a list of email addresses and calling the
-        GovNotifyEmailSerializer for each, saving a Submission entry in the DB.
+        Acts as a wrapper for SubmissionModelSerializer, taking a list of email addresses and calling the
+        SubmissionModelSerializer for each, saving a Submission entry in the DB. This is picked up by a scheduled task
+        for email delivery.
+
+        POST request data params:
+        template_id: The gov.notify email template id to be used for the email.
+        email_addresses: List of email addresses (these are the email recipients)
+        personalisation: A dict() of email template personalisation options, See gov.notify docs for more details
+        email_reply_to_id: Reply to email (optional)
         """
 
         serializer = serializers.GovNotifyBulkEmailSerializer(data=request.data)
+
         if serializer.is_valid():
             # Create a submission entry for each email
-            for email_address in serializer.email_addresses:
-                request.data.email_address = email_address
-                submission = serializers.GovNotifyEmailSerializer(data=request.data)
-                submission.is_valid(raise_exception=True)
-                submission.save()
+            with transaction.atomic():
+                for email_address in serializer.data['email_addresses']:
+                    submission_data = {
+                        'data': serializer.data['personalisation'],
+                        'meta': {
+                            'action_name': constants.ACTION_NAME_GOV_NOTIFY_EMAIL,
+                            'template_id': serializer.data['template_id'],
+                            'email_address': email_address,
+                        }
+                    }
 
-            return Response(serializer.data, status=status.HTTP_200_OK)
+                    submission = serializers.SubmissionModelSerializer(data=submission_data,
+                                                                       context={'request': request})
+                    if submission.is_valid(raise_exception=True):
+                        submission.save()
+
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-

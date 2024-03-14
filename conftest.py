@@ -123,6 +123,16 @@ def gov_notify_email_action_payload():
     }
 
 
+
+@pytest.fixture
+def gov_notify_bulk_email_action_payload():
+    return {
+            'template_id': '1234',
+            'email_addresses': ['notify-user1@example.com', 'notify-user2@example.com', 'notify-user3@example.com'],
+            'personalisation': {},
+            'email_reply_to_id': '5678',
+    }
+
 @pytest.fixture
 def gov_notify_letter_action_payload():
     return {

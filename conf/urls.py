@@ -41,7 +41,7 @@ api_urls = [
     ),
 ]
 
-api_v2_ulrs = [
+api_v2_urls = [
     re_path(
         r'^gov-notify-bulk-email$',
         submission.views.GovNotifyBulkEmailAPIView.as_view(),
@@ -75,7 +75,7 @@ urlpatterns = [
     ),
 
     re_path(r'^api/', include((api_urls, 'api'), namespace='api')),
-    re_path(r'^api/v2/', include((api_v2_ulrs, 'api_v2'), namespace='api_v2')),
+    re_path(r'^api/v2/', include((api_v2_urls, 'api_v2'), namespace='api_v2')),
     re_path(r'^admin/', admin.site.urls),
     re_path(r'^testapi/', include((testapi_urls, 'testapi'), namespace='testapi')),
     re_path(r'^activity-stream/v1/', ActivityStreamView.as_view(), name='activity-stream'),

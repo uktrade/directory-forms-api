@@ -23,7 +23,7 @@ def clear_cache():
 
 @pytest.fixture
 def api_client(settings, user):
-    settings.SIGAUTH_URL_NAMES_WHITELIST = ['submission']
+    settings.SIGAUTH_URL_NAMES_WHITELIST = ['submission', 'gov-notify-bulk-email']
     client = APIClient()
     client.force_authenticate(user=user)
     return client
@@ -482,3 +482,40 @@ def test_form_submission_delete_with_non_existing_email(mock_delay, api_client):
 
     assert delete_response.status_code == 204
     assert models.Submission.objects.count() == 1
+
+
+# V2 API tests
+class TestBulkGovNotifyEmail:
+    """
+    Tests for the V2 API for Bulk Email sending to gov.notify (api_v2/gov-notify-bulk-email).
+    """
+
+    @pytest.mark.django_db
+    def test_gov_notify_bulk_email_action_success(self, api_client, gov_notify_bulk_email_action_payload):
+        assert models.Submission.objects.count() == 0
+
+        response = api_client.post(
+            reverse('api_v2:gov-notify-bulk-email'),
+            data=gov_notify_bulk_email_action_payload,
+            format='json'
+        )
+
+        assert models.Submission.objects.count() == 3
+
+        assert response.status_code == 201, response.json()
+
+    @pytest.mark.django_db
+    def test_gov_notify_bulk_email_action_fails_on_bad_input(self, api_client, gov_notify_bulk_email_action_payload):
+        assert models.Submission.objects.count() == 0
+
+        # Malform the data payload
+        del gov_notify_bulk_email_action_payload['email_addresses']
+
+        response = api_client.post(
+            reverse('api_v2:gov-notify-bulk-email'),
+            data=gov_notify_bulk_email_action_payload,
+            format='json'
+        )
+
+        assert models.Submission.objects.count() == 0
+        assert response.status_code == 400, response.json()

@@ -7,6 +7,16 @@ clean:
 pytest:
 	ENV_FILES='secrets-do-not-commit,test,dev' pytest $(ARGUMENTS)
 
+# Usage: make pytest_single <path_to_file>::<method_name>
+pytest_single:
+	ENV_FILES='secrets-do-not-commit,test,dev' \
+	pytest \
+	    $(ARGUMENTS)
+		--junit-xml=./results/pytest_unit_report.xml \
+		--cov-config=.coveragerc \
+		--cov-report=html \
+		--cov=. \
+
 manage:
 	ENV_FILES='secrets-do-not-commit,dev' ./manage.py $(ARGUMENTS)
 

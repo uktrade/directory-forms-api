@@ -5,6 +5,7 @@ from ssl import CERT_NONE
 from django.conf import settings
 
 from celery import Celery
+from celery.schedules import crontab
 
 
 # set the default Django settings module for the 'celery' program.
@@ -17,6 +18,14 @@ app = Celery('forms-api')
 # - namespace='CELERY' means all celery-related configuration keys
 #   should have a `CELERY_` prefix.
 app.config_from_object('django.conf:settings', namespace='CELERY')
+
+
+app.conf.beat_schedule = {
+    'send_gov_notify_bulk_email_every_15_mins': {
+        'task': 'submission.tasks.send_gov_notify_bulk_email',
+        'schedule': crontab(minute='*/15'),
+    },
+}
 
 if settings.FEATURE_REDIS_USE_SSL:
     ssl_conf = {

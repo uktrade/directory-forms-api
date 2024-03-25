@@ -322,34 +322,33 @@ def test_send_pardor(mock_post):
     )
 
 
-def test_get_sender_email_address_email_action(email_action_payload):
-    email = helpers.get_sender_email_address(email_action_payload['meta'])
-    assert email == 'email-user@example.com'
+class TestGetSenderEmailAddresses:
+    @pytest.mark.parametrize("action_payload,expected",
+                             [('email_action_payload', 'email-user@example.com'),
+                              ('zendesk_action_payload', 'zendesk-user@example.com'),
+                              ('gov_notify_email_action_payload', 'erp+testform@jhgk.com'),
+                              ('pardot_action_payload', None)])
+    def test_get_sender_email_addresses(self, action_payload, expected, request):
+        assert helpers.get_sender_email_address(request.getfixturevalue(action_payload)['meta']) == expected
 
+    def test_get_sender_email_address_notify_action(self, gov_notify_email_action_payload):
+        del gov_notify_email_action_payload['meta']['sender']
+        email = helpers.get_sender_email_address(gov_notify_email_action_payload['meta'])
+        assert email == 'notify-user@example.com'
 
-def test_get_sender_email_address_zendesk_action(zendesk_action_payload):
-    email = helpers.get_sender_email_address(zendesk_action_payload['meta'])
-    assert email == 'zendesk-user@example.com'
-
-
-def test_get_sender_email_address_notify_action(gov_notify_email_action_payload):
-    del gov_notify_email_action_payload['meta']['sender']
-    email = helpers.get_sender_email_address(gov_notify_email_action_payload['meta'])
-    assert email == 'notify-user@example.com'
-
-
-def test_get_sender_email_address_pardot_action(pardot_action_payload):
-    email = helpers.get_sender_email_address(pardot_action_payload['meta'])
-    assert email is None
-
-
-def test_get_sender_email_address_sender(gov_notify_email_action_payload):
-    email = helpers.get_sender_email_address(gov_notify_email_action_payload['meta'])
-    assert email == 'erp+testform@jhgk.com'
+    def test_get_sender_gov_notify_bulk_email_action_payload(self, gov_notify_bulk_email_action_payload):
+        email = helpers.get_sender_email_address(gov_notify_bulk_email_action_payload)
+        assert email is None
 
 
 def test_get_recipient_email_address_notify_action(gov_notify_email_action_payload):
     email = helpers.get_recipient_email_address(gov_notify_email_action_payload['meta'])
+    assert email == 'notify-user@example.com'
+
+
+def test_get_recipient_email_address_bulk_notify_action(gov_notify_bulk_email_action_payload):
+    gov_notify_bulk_email_action_payload['email_address'] = 'notify-user@example.com'
+    email = helpers.get_recipient_email_address(gov_notify_bulk_email_action_payload)
     assert email == 'notify-user@example.com'
 
 

@@ -520,7 +520,8 @@ class TestBulkGovNotifyEmail:
         assert response.status_code == 400, response.json()
 
     @pytest.mark.django_db
-    def test_gov_notify_bulk_email_action_fails_on_missing_email(self, api_client, gov_notify_bulk_email_action_payload):
+    def test_gov_notify_bulk_email_action_fails_on_missing_email(self, api_client,
+                                                                 gov_notify_bulk_email_action_payload):
         assert models.Submission.objects.count() == 0
 
         # Malform the data payload by removing a single email entry

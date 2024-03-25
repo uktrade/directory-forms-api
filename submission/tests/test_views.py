@@ -501,7 +501,6 @@ class TestBulkGovNotifyEmail:
         )
 
         assert models.Submission.objects.count() == 3
-
         assert response.status_code == 201, response.json()
 
     @pytest.mark.django_db
@@ -509,7 +508,23 @@ class TestBulkGovNotifyEmail:
         assert models.Submission.objects.count() == 0
 
         # Malform the data payload
-        del gov_notify_bulk_email_action_payload['email_addresses']
+        del gov_notify_bulk_email_action_payload['bulk_email_entries']
+
+        response = api_client.post(
+            reverse('api_v2:gov-notify-bulk-email'),
+            data=gov_notify_bulk_email_action_payload,
+            format='json'
+        )
+
+        assert models.Submission.objects.count() == 0
+        assert response.status_code == 400, response.json()
+
+    @pytest.mark.django_db
+    def test_gov_notify_bulk_email_action_fails_on_missing_email(self, api_client, gov_notify_bulk_email_action_payload):
+        assert models.Submission.objects.count() == 0
+
+        # Malform the data payload by removing a single email entry
+        del gov_notify_bulk_email_action_payload['bulk_email_entries'][0]['email_address']
 
         response = api_client.post(
             reverse('api_v2:gov-notify-bulk-email'),

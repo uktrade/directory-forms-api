@@ -66,15 +66,27 @@ class GovNotifyEmailSerializer(serializers.Serializer):
         return cls(data=data, *args, **kwargs)
 
 
+class GovNotifyBulkEmailEntrySerializer(serializers.Serializer):
+    """
+    Serializer for bulk_email_entries, which is a list of dictionaries submitted to GovNotifyBulkEmailSerializer.
+    These dictionaries are free form as the contain email template data that is unique to each gov.uk email template
+    all we are checking for is the presence of a recipient email address, which is mandatory.
+    """
+
+    email_address = serializers.CharField()
+
+
 class GovNotifyBulkEmailSerializer(serializers.Serializer):
     """
-    This serializer accepts a list of email addresses 1>n, in order
-    to send the email to multiple recipients.
+    This serializer accepts a list of email data 1>n, in order
+    to send email to multiple recipients.
+
+    bulk_email_entries contains a list of dicts of personalised email data. it MUST contain an 'email'
+    key for each entry in order to pass serialisation.
     """
 
     template_id = serializers.CharField()
-    email_addresses = serializers.ListField()
-    personalisation = serializers.DictField()
+    bulk_email_entries = serializers.ListField(child=GovNotifyBulkEmailEntrySerializer())
     email_reply_to_id = serializers.CharField(required=False)
 
 

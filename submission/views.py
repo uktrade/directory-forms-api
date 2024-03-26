@@ -82,29 +82,29 @@ class GovNotifyBulkEmailAPIView(APIBase):
 
     def post(self, request):
         """
-        Acts as a wrapper for SubmissionModelSerializer, taking a list of email addresses and calling the
-        SubmissionModelSerializer for each, saving a Submission entry in the DB. This is picked up by a scheduled task
-        for email delivery.
+        Acts as a wrapper for SubmissionModelSerializer, taking email data is a list of dicts ('bulk_email_entries')
+        and calling the SubmissionModelSerializer for each, saving a Submission entry in the DB. This is picked up by
+        a scheduled task for email delivery.
 
         POST request data params:
         template_id: The gov.notify email template id to be used for the email.
-        email_addresses: List of email addresses (these are the email recipients)
-        personalisation: A dict() of email template personalisation options, See gov.notify docs for more details
-        email_reply_to_id: Reply to email (optional)
+        bulk_email_entries: List of dicts representing email data. MUST have an 'email_address' key.
+        email_reply_to_id: Reply to email (optional).
         """
 
         serializer = serializers.GovNotifyBulkEmailSerializer(data=request.data)
-
         if serializer.is_valid():
-            # Create a submission entry for each email
+            # Create a submission entry for each entry in the bulk_email_entries dict submitted
             with transaction.atomic():
-                for email_address in serializer.data['email_addresses']:
+                # We use request.data rather than serializer.data here to retain unknown dict keys
+                # that would otherwise be removed by the GovNotifyBulkEmailEntrySerializer.
+                for entry in request.data['bulk_email_entries']:
                     submission_data = {
-                        'data': serializer.data['personalisation'],
+                        'data': entry,
                         'meta': {
-                            'action_name': constants.ACTION_NAME_GOV_NOTIFY_EMAIL,
+                            'action_name': constants.ACTION_NAME_GOV_NOTIFY_BULK_EMAIL,
                             'template_id': serializer.data['template_id'],
-                            'email_address': email_address,
+                            'email_address': entry['email_address'],
                         }
                     }
 

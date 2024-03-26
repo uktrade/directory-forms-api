@@ -136,6 +136,8 @@ def get_sender_email_address(submission_meta):
         return submission_meta['reply_to'][0]
     elif action_name == constants.ACTION_NAME_GOV_NOTIFY_EMAIL:
         return submission_meta['email_address']
+    elif action_name == constants.ACTION_NAME_GOV_NOTIFY_BULK_EMAIL:
+        return None
     elif action_name == constants.ACTION_NAME_PARDOT:
         return None
     elif action_name == constants.ACTION_NAME_GOV_NOTIFY_LETTER:
@@ -149,6 +151,8 @@ def get_recipient_email_address(submission_meta):
         service_name = submission_meta.get('service_name')
         return f'{sub_domain}:{service_name}'
     elif action_name == constants.ACTION_NAME_GOV_NOTIFY_EMAIL:
+        return submission_meta['email_address']
+    elif action_name == constants.ACTION_NAME_GOV_NOTIFY_BULK_EMAIL:
         return submission_meta['email_address']
     elif action_name == constants.ACTION_NAME_EMAIL:
         return ','.join(submission_meta['recipients'])

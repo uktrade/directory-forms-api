@@ -127,8 +127,12 @@ def gov_notify_email_action_payload():
 def gov_notify_bulk_email_action_payload():
     return {
             'template_id': '1234',
-            'email_addresses': ['notify-user1@example.com', 'notify-user2@example.com', 'notify-user3@example.com'],
-            'personalisation': {},
+            'action_name': constants.ACTION_NAME_GOV_NOTIFY_BULK_EMAIL,
+            'bulk_email_entries': [
+                {'name': 'one', 'email_address': 'one@example.com'},
+                {'name': 'two', 'email_address': 'two@example.com'},
+                {'name': 'three', 'email_address': 'three@example.com'}
+            ],
             'email_reply_to_id': '5678',
     }
 

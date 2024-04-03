@@ -43,11 +43,10 @@ api_urls = [
 
 api_v2_urls = [
     re_path(
-        r'^gov-notify-bulk-email$',
+        r'^gov-notify-bulk-email/$',
         submission.views.GovNotifyBulkEmailAPIView.as_view(),
         name='gov-notify-bulk-email'
     ),
-
 ]
 
 testapi_urls = [

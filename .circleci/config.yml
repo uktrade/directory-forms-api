@@ -29,7 +29,7 @@ jobs:
       - run:
           name: Create virtualenv and install dependencies
           command: |
-            python3 -m venv venv
+            python -m venv venv
             source ./venv/bin/activate
             pip install --upgrade pip
             make install_requirements

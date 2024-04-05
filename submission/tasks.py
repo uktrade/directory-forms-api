@@ -1,5 +1,10 @@
-import celery
 from requests.exceptions import RequestException
+from datetime import timedelta
+
+import celery
+import sentry_sdk
+from django.conf import settings
+from django.utils import timezone
 
 from conf.celery import app
 from submission import constants, helpers, models, serializers
@@ -111,16 +116,27 @@ def send_gov_notify_bulk_email():
     send an email for them.
     """
 
-    submissions = Submission.objects.filter(is_sent=False)
+    # Get submissions to process - filter any that are older than the SUBMISSION_FILTER_HOURS setting.
+    time_delay = timezone.now() - timedelta(hours=settings.SUBMISSION_FILTER_HOURS)
+    submissions = Submission.objects.filter(is_sent=False, created__gte=time_delay)
+
     # We have to do a secondary filter here as Django ORM does not support filtering on @property methods.
     submissions = [x for x in submissions if x.action_name == constants.ACTION_NAME_GOV_NOTIFY_BULK_EMAIL]
 
     for submission in submissions:
-        helpers.send_gov_notify_email(
-            template_id=submission.meta['template_id'],
-            email_address=submission.recipient_email,
-            personalisation=submission.data
-        )
-        # Mark email as sent
-        submission.is_sent = True
-        submission.save()
+        try:
+            helpers.send_gov_notify_email(
+                template_id=submission.meta['template_id'],
+                email_address=submission.recipient_email,
+                personalisation=submission.data
+            )
+            # Mark email as sent
+            submission.is_sent = True
+            submission.save()
+
+        except Exception as e:
+            sentry_sdk.capture_message(
+                f'Sending gov.notify bulk email notification failed for {submission.id}: {e}', 'fatal'
+            )
+
+

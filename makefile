@@ -33,4 +33,7 @@ secrets:
 worker:
 	ENV_FILES='secrets-do-not-commit,dev' celery -A conf worker -l info
 
+beat:
+	ENV_FILES='secrets-do-not-commit,dev' celery -A conf beat -l info -S django
+
 .PHONY: clean pytest manage webserver requirements install_requirements css worker beat

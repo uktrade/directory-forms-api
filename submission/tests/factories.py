@@ -1,6 +1,7 @@
 import factory
 import factory.fuzzy
 from client.tests.factories import ClientFactory
+from django.utils import timezone
 from submission import constants, models
 
 

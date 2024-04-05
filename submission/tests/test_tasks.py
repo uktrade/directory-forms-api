@@ -1,5 +1,9 @@
 import pytest
 from unittest import mock
+from datetime import timedelta
+
+from django.conf import settings
+from django.utils import timezone
 
 from submission import tasks
 from submission.models import Submission
@@ -53,7 +57,8 @@ def test_task_send_gov_notify_email(mock_send_gov_notify_email):
 @pytest.mark.django_db
 @mock.patch('submission.helpers.send_gov_notify_email')
 def test_task_send_gov_notify_bulk_email(mock_send_gov_notify_email):
-    # create 3x fake submissions - one already marked as sent
+    # create 5x fake submissions - one already marked as sent, one expired, one with the wrong action and two active.
+    # We expect only the action active submissions to be called
     meta = {
         'action_name': ACTION_NAME_GOV_NOTIFY_BULK_EMAIL,
         'recipients': ['foo@bar.com'],
@@ -63,9 +68,23 @@ def test_task_send_gov_notify_bulk_email(mock_send_gov_notify_email):
         'template_id': '123456'
     }
 
+    # Valid Submissions
+    SubmissionFactory(meta=meta, is_sent=False)
+    SubmissionFactory(meta=meta, is_sent=False)
+
+    # Submissions already marked as sent
     SubmissionFactory(meta=meta)
-    SubmissionFactory(meta=meta, is_sent=False)
-    SubmissionFactory(meta=meta, is_sent=False)
+
+    # Expired submission
+    time_delay = (timezone.now() - timedelta(hours=settings.SUBMISSION_FILTER_HOURS + 1))
+    expired_submission = SubmissionFactory(meta=meta, created=time_delay, is_sent=False)
+    expired_submission.created = time_delay
+    expired_submission.save()
+
+    # Submissions with a different action
+    meta_with_different_action = meta
+    meta_with_different_action['action_name'] = 'A_DIFFERENT_ACTION'
+    SubmissionFactory(meta=meta_with_different_action, is_sent=False)
 
     # Run the task
     tasks.send_gov_notify_bulk_email()

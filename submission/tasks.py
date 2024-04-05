@@ -138,5 +138,3 @@ def send_gov_notify_bulk_email():
             sentry_sdk.capture_message(
                 f'Sending gov.notify bulk email notification failed for {submission.id}: {e}', 'fatal'
             )
-
-

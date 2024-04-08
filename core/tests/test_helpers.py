@@ -14,7 +14,7 @@ def test_generate_csv():
     helpers.generate_csv(
         file_object=file_object,
         queryset=Submission.objects.all(),
-        excluded_fields=['modified', 'created', 'sender', 'client', 'id', 'form_url', 'is_send']
+        excluded_fields=['modified', 'created', 'sender', 'client', 'id', 'form_url', 'is_send', 'template_id']
     )
     file_object.seek(0)
 
@@ -32,7 +32,7 @@ def test_generate_csv_no_body():
     helpers.generate_csv(
         file_object=file_object,
         queryset=Submission.objects.all(),
-        excluded_fields=['modified', 'created', 'sender', 'client', 'id', 'form_url', 'is_send']
+        excluded_fields=['modified', 'created', 'sender', 'client', 'id', 'form_url', 'is_send', 'template_id']
     )
     file_object.seek(0)
     assert file_object.read() == (

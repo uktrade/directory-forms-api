@@ -65,6 +65,7 @@ def test_task_send_gov_notify_bulk_email(mock_send_gov_notify_email):
         'form_url': '/the/form/tests',
         'funnel_steps': ['one', 'two', 'three'],
         'reply_to': 'test@testsubmission.com',
+        'email_address': 'hello@acme.com',
         'template_id': '123456'
     }
 

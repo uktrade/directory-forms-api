@@ -90,7 +90,7 @@ def test_task_send_gov_notify_bulk_email(mock_send_gov_notify_email):
     tasks.send_gov_notify_bulk_email()
 
     # Assert call count = 2
-    # assert mock_send_gov_notify_email.call_count == 2
+    assert mock_send_gov_notify_email.call_count == 2
 
     # Assert all submissions are now marked as sent
     submissions = Submission.objects.all()

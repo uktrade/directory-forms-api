@@ -62,6 +62,10 @@ class ActionFilter(SimpleListFilter):
                 'Send Email via Gov Notify'
             ),
             (
+                constants.ACTION_NAME_GOV_NOTIFY_BULK_EMAIL,
+                'Bulk Send Email via Gov Notify'
+            ),
+            (
                 constants.ACTION_NAME_GOV_NOTIFY_LETTER,
                 'Send letter via Gov Notify'
             ),

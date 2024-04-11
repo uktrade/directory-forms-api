@@ -133,7 +133,7 @@ freezegun==0.3.12
     # via -r requirements_test.in
 gunicorn==20.0.4
     # via -r requirements.in
-idna==2.8
+idna==3.7
     # via requests
 inflection==0.5.1
     # via drf-spectacular

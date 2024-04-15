@@ -331,7 +331,7 @@ CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TIMEZONE = 'UTC'
 CELERY_BROKER_POOL_LIMIT = None
 FEATURE_REDIS_USE_SSL = env.bool('FEATURE_REDIS_USE_SSL', False)
-CELERY_TASK_ALWAYS_EAGER = env.bool('CELERY_ALWAYS_EAGER', False)
+CELERY_TASK_ALWAYS_EAGER = env.bool('CELERY_ALWAYS_EAGER', True)
 
 # Gov UK Notify
 GOV_NOTIFY_API_KEY = env.str('GOV_NOTIFY_API_KEY')
@@ -355,3 +355,7 @@ ACTIVITY_STREAM_SECRET_ACCESS_KEY = env.str('ACTIVITY_STREAM_SECRET_ACCESS_KEY')
 # Set RATELIMIT_ENABLE to enable/disable
 # the number of requests per unit time allowed in (s/m/h/d)
 RATELIMIT_RATE = env.str('RATELIMIT_RATE', '15/h')
+
+# When filtering submissions to action (i.e. send email, send letter, send to gov.notify), how many hours
+# should we filter?
+SUBMISSION_FILTER_HOURS = env.int('GOV_NOTIFY_BULK_EMAIL_FILTER_HOURS', 72)

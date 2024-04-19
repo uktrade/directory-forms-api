@@ -230,6 +230,6 @@ def send_buy_from_uk_enquiries_as_csv(form_url='/international/trade/contact/'):
         send_gov_notify_email(
             template_id=settings.BUY_FROM_UK_ENQUIRY_TEMPLATE_ID,
             email_address=settings.BUY_FROM_UK_EMAIL_ADDRESS,
-            personalisation={'link_to_file': prepare_upload(f, is_csv=True)},
+            personalisation={'link_to_file': prepare_upload(f)},
             email_reply_to_id=settings.BUY_FROM_UK_REPLY_TO_EMAIL_ADDRESS
         )

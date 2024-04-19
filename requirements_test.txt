@@ -58,11 +58,11 @@ cryptography==42.0.5
     # via
     #   -r requirements.in
     #   django-cryptography
-directory-components==40.2.2
+directory-components==40.2.3
     # via -r requirements.in
 directory-constants==24.1.1
     # via directory-components
-directory-healthcheck==3.4
+directory-healthcheck==3.5
     # via -r requirements.in
 dj-database-url==2.1.0
     # via -r requirements.in
@@ -131,7 +131,7 @@ flake8==3.7.9
     # via -r requirements_test.in
 freezegun==0.3.12
     # via -r requirements_test.in
-gunicorn==20.0.4
+gunicorn==22.0.0
     # via -r requirements.in
 idna==3.7
     # via requests
@@ -149,12 +149,13 @@ mccabe==0.6.1
     # via flake8
 mohawk==0.3.4
     # via sigauth
-notifications-python-client==8.0.0
+notifications-python-client==9.0.0
     # via -r requirements.in
 oauthlib==3.1.0
     # via requests-oauthlib
 packaging==20.3
     # via
+    #   gunicorn
     #   pytest
     #   pytest-sugar
 pluggy==0.13.1
@@ -241,7 +242,7 @@ six==1.14.0
     #   zenpy
 soupsieve==2.0
     # via beautifulsoup4
-sqlparse==0.4.4
+sqlparse==0.5.0
     # via
     #   -r requirements.in
     #   django

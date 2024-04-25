@@ -20,6 +20,6 @@ class ClientSenderIdAuthentication(authentication.BaseAuthentication):
     def authenticate_credentials(self, client_identifier):
         try:
             client = lookup_client(client_identifier)
-        except LookupError:
-            raise exceptions.AuthenticationFailed()
+        except LookupError as error:
+            raise exceptions.AuthenticationFailed(error.args[0])
         return (client, None)

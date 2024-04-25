@@ -9,6 +9,7 @@ from client.helpers import RequestSignatureChecker, lookup_client
 
 logger = logging.getLogger(__name__)
 
+
 class ClientSenderIdAuthentication(authentication.BaseAuthentication):
 
     def authenticate(self, request):

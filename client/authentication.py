@@ -1,9 +1,13 @@
+import logging
+
 from rest_framework import authentication, exceptions
 
 from mohawk.util import parse_authorization_header
 
 from client.helpers import RequestSignatureChecker, lookup_client
 
+
+logger = logging.getLogger(__name__)
 
 class ClientSenderIdAuthentication(authentication.BaseAuthentication):
 
@@ -21,5 +25,6 @@ class ClientSenderIdAuthentication(authentication.BaseAuthentication):
         try:
             client = lookup_client(client_identifier)
         except LookupError as error:
-            raise exceptions.AuthenticationFailed(error)
+            logger.error(exceptions.AuthenticationFailed(error))
+            raise exceptions.AuthenticationFailed()
         return (client, None)

@@ -137,7 +137,7 @@ class SubmissionAdmin(core.helpers.DownloadCSVMixin, admin.ModelAdmin):
     get_pretty_funnel.short_description = 'Funnel'
 
 
-class SubmissionsInline(admin.options.TabularInline):
+class SubmissionsInline(admin.TabularInline):
     model = models.Submission
 
     readonly_fields = (
@@ -154,7 +154,7 @@ class SubmissionsInline(admin.options.TabularInline):
     exclude = ('data', 'meta',)
     can_delete = False
 
-    def has_add_permission(self, request):
+    def has_add_permission(self, request, obj):
         return False
 
     def get_pretty_data(self, obj):
@@ -169,7 +169,7 @@ class SubmissionsInline(admin.options.TabularInline):
 
 @admin.register(models.Sender)
 class SenderAdmin(core.helpers.DownloadCSVMixin, admin.ModelAdmin):
-    inlines = (SubmissionsInline,)
+    inlines = [SubmissionsInline,]
 
     search_fields = ('email_address',)
     readonly_fields = ('created',)

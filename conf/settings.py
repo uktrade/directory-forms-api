@@ -1,8 +1,10 @@
 import os
+from typing import Any, Dict
 
 import dj_database_url
 import environ
 import sentry_sdk
+from django_log_formatter_asim import ASIMFormatter
 from sentry_sdk.integrations.celery import CeleryIntegration
 from sentry_sdk.integrations.django import DjangoIntegration
 
@@ -201,7 +203,7 @@ REST_FRAMEWORK = {
 
 # Logging for development
 if DEBUG:
-    LOGGING = {
+    LOGGING: Dict[str, Any] = {
         'version': 1,
         'disable_existing_loggers': False,
         'filters': {
@@ -243,6 +245,43 @@ if DEBUG:
             },
         }
     }
+else:
+    LOGGING: Dict[str, Any] = {
+        'version': 1,
+        'disable_existing_loggers': True,
+        'formatters': {
+            'asim_formatter': {
+                '()': ASIMFormatter,
+            },
+            'simple': {
+                'style': '{',
+                'format': '{asctime} {levelname} {message}',
+            },
+        },
+        'handlers': {
+            'asim': {
+                'class': 'logging.StreamHandler',
+                'formatter': 'asim_formatter',
+            },
+            'console': {
+                'class': 'logging.StreamHandler',
+                'formatter': 'simple',
+            },
+        },
+        'root': {
+            'handlers': ['console'],
+            'level': 'INFO',
+        },
+        'loggers': {
+            'django': {
+                'handlers': ['asim'],
+                'level': 'INFO',
+                'propagate': False,
+            },
+            'sentry_sdk': {'level': 'ERROR', 'handlers': ['asim'], 'propagate': False},
+        },
+    }
+
 # Sentry
 if env.str('SENTRY_DSN', ''):
     sentry_sdk.init(

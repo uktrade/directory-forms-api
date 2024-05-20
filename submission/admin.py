@@ -169,7 +169,7 @@ class SubmissionsInline(admin.TabularInline):
 
 @admin.register(models.Sender)
 class SenderAdmin(core.helpers.DownloadCSVMixin, admin.ModelAdmin):
-    inlines = [SubmissionsInline,]
+    inlines = [SubmissionsInline, ]
 
     search_fields = ('email_address',)
     readonly_fields = ('created',)

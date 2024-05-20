@@ -14,7 +14,7 @@ logger = logging.getLogger(__name__)
 
 HEALTH_CHECK_STATUS = 0
 HEALTH_CHECK_EXCEPTION = 1
-    
+
 
 class PingDomView(TemplateView):
     template_name = 'directory_healthcheck/pingdom.xml'

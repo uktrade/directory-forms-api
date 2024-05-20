@@ -28,7 +28,6 @@ def api_client(user):
     return client
 
 
-
 def reload_urlconf(urlconf=None):
     clear_url_caches()
     if urlconf is None:
@@ -64,15 +63,15 @@ def test_pingdom_database_healthcheck_ok(api_client):
     )
     assert response.status_code == 200
 
-    
+
 @pytest.mark.django_db
 @mock.patch.object(DatabaseHealthCheck, 'check')
 def test_pingdom_database_healthcheck_false(mock_database_check, api_client):
     mock_database_check.return_value = (
-        False, 
+        False,
         'Database Error',
     )
-    
+
     response = api_client.get(
         URL,
     )

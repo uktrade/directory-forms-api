@@ -10,7 +10,7 @@ from drf_spectacular.views import SpectacularRedocView, SpectacularSwaggerView, 
 import submission.views
 from activitystream.views import ActivityStreamView
 import testapi.views
-from  core.views import PingDomView
+from core.views import PingDomView
 
 
 admin.autodiscover()

@@ -1,7 +1,6 @@
-from django.urls import re_path
-
-from django.views import View
 from django.http.response import HttpResponse
+from django.urls import re_path
+from django.views import View
 
 
 class TestView(View):

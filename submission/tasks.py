@@ -1,10 +1,10 @@
-from requests.exceptions import RequestException
 from datetime import timedelta
 
 import celery
 import sentry_sdk
 from django.conf import settings
 from django.utils import timezone
+from requests.exceptions import RequestException
 
 from conf.celery import app
 from submission import constants, helpers, models, serializers

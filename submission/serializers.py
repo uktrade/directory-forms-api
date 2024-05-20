@@ -1,10 +1,9 @@
 import logging
 
+from django.conf import settings
 from rest_framework import serializers
 
-from django.conf import settings
-
-from submission import helpers, models, constants
+from submission import constants, helpers, models
 
 logger = logging.getLogger(__name__)
 

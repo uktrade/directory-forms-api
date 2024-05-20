@@ -1,9 +1,7 @@
+from django.core.exceptions import ValidationError
 from sigauth.helpers import RequestSignatureChecker
 
-from django.core.exceptions import ValidationError
-
 from client import models
-
 
 MESSAGE_UNKNOWN_SENDER = 'Unknown sender'
 MESSAGE_INVALID_SENDER = 'Invalid sender'

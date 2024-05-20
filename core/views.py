@@ -8,7 +8,6 @@ from django.views.generic import TemplateView
 
 from core.pingdom.services import health_check_services
 
-
 logger = logging.getLogger(__name__)
 
 

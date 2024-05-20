@@ -1,5 +1,6 @@
-from . import factories
 import sigauth
+
+from . import factories
 
 
 def sign_valid_client_hawk_header(url):

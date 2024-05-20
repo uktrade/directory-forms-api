@@ -3,15 +3,14 @@ import re
 
 from django.contrib import admin, messages
 from django.contrib.admin import SimpleListFilter
+from django.contrib.postgres import fields
 from django.db.models import Count
 from django.shortcuts import redirect
 from django.urls import reverse
 from django_json_widget.widgets import JSONEditorWidget
-from django.contrib.postgres import fields
 
 import core.helpers
-from submission import constants, models, tasks, helpers
-
+from submission import constants, helpers, models, tasks
 
 QUERYSTRING = re.compile(r'\?.*$')
 

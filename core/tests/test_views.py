@@ -1,16 +1,14 @@
-import pytest
 import sys
 from importlib import import_module, reload
-
-from django.conf import settings
-from django.urls import clear_url_caches
-from django.urls import reverse
 from unittest import mock
+
+import pytest
+from django.conf import settings
+from django.urls import clear_url_caches, reverse
 from rest_framework.test import APIClient
 
-from core.pingdom.services import DatabaseHealthCheck
 from client.tests.factories import ClientFactory
-
+from core.pingdom.services import DatabaseHealthCheck
 
 URL = 'http://testserver' + reverse('pingdom')
 

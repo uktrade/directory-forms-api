@@ -1,17 +1,16 @@
 import directory_healthcheck.views
-from django.contrib.auth.decorators import login_required
-
-from django.urls import re_path, include, reverse_lazy, path
-from django.contrib import admin
-from django.views.generic import RedirectView
 from django.conf import settings
-from drf_spectacular.views import SpectacularRedocView, SpectacularSwaggerView, SpectacularAPIView
+from django.contrib import admin
+from django.contrib.auth.decorators import login_required
+from django.urls import include, path, re_path, reverse_lazy
+from django.views.generic import RedirectView
+from drf_spectacular.views import (SpectacularAPIView, SpectacularRedocView,
+                                   SpectacularSwaggerView)
 
 import submission.views
-from activitystream.views import ActivityStreamView
 import testapi.views
+from activitystream.views import ActivityStreamView
 from core.views import PingDomView
-
 
 admin.autodiscover()
 

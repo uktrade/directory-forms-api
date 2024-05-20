@@ -1,17 +1,15 @@
-from django.http import Http404
 from django.conf import settings
+from django.http import Http404
 from django.shortcuts import get_list_or_404
-from rest_framework.generics import RetrieveAPIView, DestroyAPIView, GenericAPIView
+from rest_framework.generics import (DestroyAPIView, GenericAPIView,
+                                     RetrieveAPIView)
 from rest_framework.response import Response
 
 from client.authentication import ClientSenderIdAuthentication
-from submission.models import Submission, Sender
-from submission.constants import (
-    ACTION_NAME_EMAIL,
-    ACTION_NAME_GOV_NOTIFY_EMAIL,
-    ACTION_NAME_PARDOT,
-    ACTION_NAME_ZENDESK,
-)
+from submission.constants import (ACTION_NAME_EMAIL,
+                                  ACTION_NAME_GOV_NOTIFY_EMAIL,
+                                  ACTION_NAME_PARDOT, ACTION_NAME_ZENDESK)
+from submission.models import Sender, Submission
 
 
 class TestAPIView(GenericAPIView):

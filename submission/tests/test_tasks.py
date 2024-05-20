@@ -1,14 +1,14 @@
-import pytest
-from unittest import mock
 from datetime import timedelta
+from unittest import mock
 
+import pytest
 from django.conf import settings
 from django.utils import timezone
 
 from submission import tasks
+from submission.constants import ACTION_NAME_GOV_NOTIFY_BULK_EMAIL
 from submission.models import Submission
 from submission.tests.factories import SubmissionFactory
-from submission.constants import ACTION_NAME_GOV_NOTIFY_BULK_EMAIL
 
 
 @mock.patch('submission.helpers.send_email')

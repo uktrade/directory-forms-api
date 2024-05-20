@@ -1,6 +1,5 @@
 from rest_framework import serializers
 
-
 DIT_NAMESPACE = 'dit:directoryFormsApi'
 DIT_SUBMISSION_NAMESPACE = f'{DIT_NAMESPACE}:Submission'
 

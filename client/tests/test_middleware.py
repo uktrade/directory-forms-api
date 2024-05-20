@@ -1,11 +1,10 @@
 import pytest
 import sigauth.helpers
-
 from django.urls import reverse
+from rest_framework.exceptions import AuthenticationFailed
 
 from client.tests import factories
 from core.tests.test_views import reload_urlconf
-from rest_framework.exceptions import AuthenticationFailed
 
 SIGNATURE_CHECK_REQUIRED_MIDDLEWARE = [
     'django.contrib.sessions.middleware.SessionMiddleware',

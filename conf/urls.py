@@ -1,16 +1,16 @@
 import directory_healthcheck.views
-from django.contrib.auth.decorators import login_required
-
-from django.urls import re_path, include, reverse_lazy, path
-from django.contrib import admin
-from django.views.generic import RedirectView
 from django.conf import settings
-from drf_spectacular.views import SpectacularRedocView, SpectacularSwaggerView, SpectacularAPIView
+from django.contrib import admin
+from django.contrib.auth.decorators import login_required
+from django.urls import include, path, re_path, reverse_lazy
+from django.views.generic import RedirectView
+from drf_spectacular.views import (SpectacularAPIView, SpectacularRedocView,
+                                   SpectacularSwaggerView)
 
 import submission.views
-from activitystream.views import ActivityStreamView
 import testapi.views
-
+from activitystream.views import ActivityStreamView
+from core.views import PingDomView
 
 admin.autodiscover()
 
@@ -72,7 +72,7 @@ urlpatterns = [
         r'^api/healthcheck/',
         include((healthcheck_urls, 'healthcheck'), namespace='healthcheck')
     ),
-
+    path('pingdom/ping.xml', PingDomView.as_view(), name='pingdom'),
     re_path(r'^api/', include((api_urls, 'api'), namespace='api')),
     re_path(r'^api/v2/', include((api_v2_urls, 'api_v2'), namespace='api_v2')),
     re_path(r'^admin/', admin.site.urls),

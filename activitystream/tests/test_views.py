@@ -2,16 +2,16 @@ import datetime
 
 import mohawk
 import pytest
+from django.conf import settings
+from django.utils import timezone
 from freezegun import freeze_time
 from rest_framework import status
 from rest_framework.reverse import reverse
 from rest_framework.test import APIClient
-from django.conf import settings
-from django.utils import timezone
 
+from activitystream.serializers import SubmissionSerializer
 from submission.models import Submission
 from submission.tests.factories import SubmissionFactory
-from activitystream.serializers import SubmissionSerializer
 
 URL = 'http://testserver' + reverse('activity-stream')
 URL_INCORRECT_DOMAIN = 'http://incorrect' + reverse('activity-stream')

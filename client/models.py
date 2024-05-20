@@ -1,10 +1,9 @@
-from functools import partial
 import uuid
-
-from django_cryptography.fields import encrypt
+from functools import partial
 
 from django.db import models
 from django.utils.crypto import get_random_string
+from django_cryptography.fields import encrypt
 
 import core.helpers
 

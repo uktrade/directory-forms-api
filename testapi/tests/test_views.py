@@ -1,15 +1,14 @@
 import pytest
-from rest_framework.test import APIClient
-
 from django.urls import reverse
 from factory import Sequence
 from rest_framework import status
+from rest_framework.test import APIClient
 
 from client.tests.factories import ClientFactory
+from client.tests.utils import sign_invalid_client_hawk_header
 from submission import constants, models
 from submission.models import Sender, Submission
-from submission.tests.factories import SubmissionFactory, SenderFactory
-from client.tests.utils import sign_invalid_client_hawk_header
+from submission.tests.factories import SenderFactory, SubmissionFactory
 
 API_TEST_NAMES_WHITELIST = [
     'delete_test_senders',

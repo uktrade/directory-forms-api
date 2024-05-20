@@ -1,15 +1,16 @@
 from django.utils.decorators import decorator_from_middleware
 from drf_spectacular.types import OpenApiTypes
-from drf_spectacular.utils import extend_schema, OpenApiExample, OpenApiParameter
-
+from drf_spectacular.utils import (OpenApiExample, OpenApiParameter,
+                                   extend_schema)
+from rest_framework.generics import ListAPIView
 from rest_framework.response import Response
 from rest_framework.reverse import reverse
-from rest_framework.generics import ListAPIView
 
-from submission.models import Submission
-from activitystream.authentication import ActivityStreamAuthentication, ActivityStreamHawkResponseMiddleware
+from activitystream.authentication import (
+    ActivityStreamAuthentication, ActivityStreamHawkResponseMiddleware)
 from activitystream.filters import SubmissionFilter
 from activitystream.serializers import SubmissionSerializer
+from submission.models import Submission
 
 MAX_PER_PAGE = 25
 

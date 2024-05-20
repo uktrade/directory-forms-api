@@ -322,6 +322,7 @@ DIRECTORY_HEALTHCHECK_BACKENDS = [
 SIGAUTH_URL_NAMES_WHITELIST = [
     'database',  # health check
     'ping',  # health check
+    'pingdom',  # health check
     'activity-stream',  # activity stream
     'schema',
     'swagger-ui',

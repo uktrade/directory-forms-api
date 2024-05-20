@@ -1,14 +1,13 @@
 from unittest import mock
 
 import pytest
-from rest_framework.test import APIClient
+from django.core.cache import cache
 from django.urls import reverse
+from rest_framework.test import APIClient
 
 from client.tests.factories import ClientFactory
-from submission.tests import factories
 from submission import models
-
-from django.core.cache import cache
+from submission.tests import factories
 
 
 @pytest.fixture

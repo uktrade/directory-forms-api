@@ -1,5 +1,5 @@
-import sigauth.middleware
 import sigauth.helpers
+import sigauth.middleware
 
 from client import helpers
 

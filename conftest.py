@@ -1,9 +1,9 @@
-import pytest
+from unittest import mock
 
+import pytest
 from django import db
 from django.core.management import call_command
 from django.db.migrations.executor import MigrationExecutor
-from unittest import mock
 
 from submission import constants
 

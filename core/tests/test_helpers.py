@@ -1,10 +1,10 @@
 from io import StringIO
-from core import helpers
 
 import pytest
 
-from submission.tests.factories import SubmissionFactory
+from core import helpers
 from submission.models import Submission
+from submission.tests.factories import SubmissionFactory
 
 
 @pytest.mark.django_db

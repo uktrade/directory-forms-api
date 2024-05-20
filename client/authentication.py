@@ -1,6 +1,5 @@
-from rest_framework import authentication, exceptions
-
 from mohawk.util import parse_authorization_header
+from rest_framework import authentication, exceptions
 
 from client.helpers import RequestSignatureChecker, lookup_client
 

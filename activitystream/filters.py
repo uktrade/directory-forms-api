@@ -1,7 +1,7 @@
 from datetime import datetime
 
 from django.db.models import Q
-from django_filters import FilterSet, CharFilter
+from django_filters import CharFilter, FilterSet
 
 from submission.models import Submission
 

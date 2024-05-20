@@ -3,7 +3,6 @@ import logging
 from django.conf import settings
 from django.core.cache import cache
 from django.utils.crypto import constant_time_compare
-
 from mohawk import Receiver
 from mohawk.exc import HawkFail
 

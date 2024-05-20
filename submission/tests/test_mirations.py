@@ -1,5 +1,6 @@
-import pytest
 from copy import deepcopy
+
+import pytest
 
 
 @pytest.mark.django_db

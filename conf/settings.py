@@ -4,11 +4,10 @@ from typing import Any, Dict
 import dj_database_url
 import environ
 import sentry_sdk
+from django.urls import reverse_lazy
 from django_log_formatter_asim import ASIMFormatter
 from sentry_sdk.integrations.celery import CeleryIntegration
 from sentry_sdk.integrations.django import DjangoIntegration
-
-from django.urls import reverse_lazy
 
 env = environ.Env()
 for env_file in env.list('ENV_FILES', default=[]):

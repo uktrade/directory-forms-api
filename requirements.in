@@ -1,3 +1,4 @@
+dbt-copilot-python==0.2.0
 django==4.2.11
 dj-database-url==2.1.*
 django-environ==0.4.5
@@ -16,7 +17,7 @@ sigauth==5.2.6
 directory-healthcheck==3.7
 django-cryptography==1.1
 zenpy==2.0.46
-celery[redis]>=5.2.2
+celery[redis]>=5.4.0
 cryptography>=42.0.4
 notifications-python-client==9.0.0
 directory-components==40.2.3

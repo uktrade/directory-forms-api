@@ -12,15 +12,21 @@ async-timeout==4.0.2
     # via redis
 attrs==22.2.0
     # via jsonschema
+backoff==2.2.1
+    # via
+    #   opentelemetry-exporter-otlp-proto-common
+    #   opentelemetry-exporter-otlp-proto-grpc
+    #   opentelemetry-exporter-otlp-proto-http
 beautifulsoup4==4.12.2
     # via directory-components
-billiard==3.6.4.0
+billiard==4.2.0
     # via celery
 cachetools==5.3.0
     # via zenpy
-celery[redis]==5.2.7
+celery[redis]==5.4.0
     # via
     #   -r requirements.in
+    #   dbt-copilot-python
     #   django-celery-beat
 certifi==2023.7.22
     # via
@@ -52,6 +58,13 @@ cryptography==42.0.5
     # via
     #   -r requirements.in
     #   django-cryptography
+dbt-copilot-python==0.2.0
+    # via -r requirements.in
+deprecated==1.2.14
+    # via
+    #   opentelemetry-api
+    #   opentelemetry-exporter-otlp-proto-grpc
+    #   opentelemetry-exporter-otlp-proto-http
 directory-components==40.2.3
     # via -r requirements.in
 directory-constants==24.1.1
@@ -122,19 +135,27 @@ elastic-apm==6.1.3
     # via -r requirements.in
 filelock==3.14.0
     # via virtualenv
+googleapis-common-protos==1.63.1
+    # via
+    #   opentelemetry-exporter-otlp-proto-grpc
+    #   opentelemetry-exporter-otlp-proto-http
+grpcio==1.64.1
+    # via opentelemetry-exporter-otlp-proto-grpc
 gunicorn==22.0.0
     # via -r requirements.in
 identify==2.5.36
     # via pre-commit
 idna==3.7
     # via requests
+importlib-metadata==6.11.0
+    # via opentelemetry-api
 inflection==0.5.1
     # via drf-spectacular
 jsonschema==3.2.0
     # via
     #   directory-components
     #   drf-spectacular
-kombu==5.2.4
+kombu==5.3.7
     # via celery
 mohawk==1.1.0
     # via sigauth
@@ -144,6 +165,54 @@ notifications-python-client==9.0.0
     # via -r requirements.in
 oauthlib==3.2.2
     # via requests-oauthlib
+opentelemetry-api==1.22.0
+    # via
+    #   opentelemetry-distro
+    #   opentelemetry-exporter-otlp-proto-grpc
+    #   opentelemetry-exporter-otlp-proto-http
+    #   opentelemetry-instrumentation
+    #   opentelemetry-instrumentation-wsgi
+    #   opentelemetry-propagator-aws-xray
+    #   opentelemetry-sdk
+opentelemetry-distro==0.43b0
+    # via dbt-copilot-python
+opentelemetry-exporter-otlp==1.22.0
+    # via dbt-copilot-python
+opentelemetry-exporter-otlp-proto-common==1.22.0
+    # via
+    #   opentelemetry-exporter-otlp-proto-grpc
+    #   opentelemetry-exporter-otlp-proto-http
+opentelemetry-exporter-otlp-proto-grpc==1.22.0
+    # via opentelemetry-exporter-otlp
+opentelemetry-exporter-otlp-proto-http==1.22.0
+    # via opentelemetry-exporter-otlp
+opentelemetry-instrumentation==0.43b0
+    # via
+    #   opentelemetry-distro
+    #   opentelemetry-instrumentation-wsgi
+opentelemetry-instrumentation-wsgi==0.43b0
+    # via dbt-copilot-python
+opentelemetry-propagator-aws-xray==1.0.1
+    # via dbt-copilot-python
+opentelemetry-proto==1.22.0
+    # via
+    #   opentelemetry-exporter-otlp-proto-common
+    #   opentelemetry-exporter-otlp-proto-grpc
+    #   opentelemetry-exporter-otlp-proto-http
+opentelemetry-sdk==1.22.0
+    # via
+    #   opentelemetry-distro
+    #   opentelemetry-exporter-otlp-proto-grpc
+    #   opentelemetry-exporter-otlp-proto-http
+    #   opentelemetry-sdk-extension-aws
+opentelemetry-sdk-extension-aws==2.0.1
+    # via dbt-copilot-python
+opentelemetry-semantic-conventions==0.43b0
+    # via
+    #   opentelemetry-instrumentation-wsgi
+    #   opentelemetry-sdk
+opentelemetry-util-http==0.43b0
+    # via opentelemetry-instrumentation-wsgi
 packaging==24.0
     # via gunicorn
 platformdirs==4.2.1
@@ -152,6 +221,10 @@ pre-commit==3.7.0
     # via django-log-formatter-asim
 prompt-toolkit==3.0.38
     # via click-repl
+protobuf==4.25.3
+    # via
+    #   googleapis-common-protos
+    #   opentelemetry-proto
 psycopg2==2.8.4
     # via -r requirements.in
 pycparser==2.21
@@ -166,11 +239,11 @@ python-crontab==2.7.1
     # via django-celery-beat
 python-dateutil==2.8.2
     # via
+    #   celery
     #   python-crontab
     #   zenpy
 pytz==2023.3
     # via
-    #   celery
     #   django-timezone-field
     #   djangorestframework
     #   zenpy
@@ -178,14 +251,16 @@ pyyaml==6.0
     # via
     #   drf-spectacular
     #   pre-commit
-redis==4.4.4
+redis==5.0.1
     # via
     #   celery
     #   django-redis
 requests[security]==2.31.0
     # via
     #   -r requirements.in
+    #   dbt-copilot-python
     #   notifications-python-client
+    #   opentelemetry-exporter-otlp-proto-http
     #   requests-oauthlib
     #   zenpy
 requests-oauthlib==1.3.1
@@ -209,9 +284,14 @@ sqlparse==0.5.0
     #   -r requirements.in
     #   django
 typing-extensions==4.10.0
-    # via dj-database-url
+    # via
+    #   dj-database-url
+    #   kombu
+    #   opentelemetry-sdk
 tzdata==2023.3
-    # via django-celery-beat
+    # via
+    #   celery
+    #   django-celery-beat
 uritemplate==4.1.1
     # via drf-spectacular
 urllib3==2.0.7
@@ -220,7 +300,7 @@ urllib3==2.0.7
     #   elastic-apm
     #   requests
     #   sentry-sdk
-vine==5.0.0
+vine==5.1.0
     # via
     #   amqp
     #   celery
@@ -233,8 +313,14 @@ wcwidth==0.2.6
     # via prompt-toolkit
 whitenoise==6.4.0
     # via -r requirements.in
+wrapt==1.16.0
+    # via
+    #   deprecated
+    #   opentelemetry-instrumentation
 zenpy==2.0.46
     # via -r requirements.in
+zipp==3.19.1
+    # via importlib-metadata
 
 # The following packages are considered to be unsafe in a requirements file:
 # setuptools

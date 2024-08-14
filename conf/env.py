@@ -45,12 +45,11 @@ class BaseSettings(PydanticBaseSettings):
 
     session_cookie_domain: str = "great.gov.uk"
     session_cookie_secure: bool = True
-    sso_session_cookie: str
     csrf_cookie_secure: bool = True
 
     health_check_token: str
 
-    zendesk_subdomain_default: str
+    zendesk_subdomain: str
     zendesk_subdomain_euexit: str
     zendesk_token: str
     zendesk_email: str

@@ -322,7 +322,7 @@ SIGAUTH_URL_NAMES_WHITELIST = [
 ]
 
 # Zendesk
-ZENDESK_SUBDOMAIN_DEFAULT = env.zendesk_subdomain_default
+ZENDESK_SUBDOMAIN_DEFAULT = env.zendesk_subdomain
 ZENDESK_SUBDOMAIN_EUEXIT = env.zendesk_subdomain_euexit
 ZENDESK_CREDENTIALS = {
     ZENDESK_SUBDOMAIN_DEFAULT: {

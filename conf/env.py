@@ -52,7 +52,6 @@ class BaseSettings(PydanticBaseSettings):
 
     zendesk_subdomain_default: str
     zendesk_subdomain_euexit: str
-
     zendesk_token: str
     zendesk_email: str
     zendesk_custom_field_id: str
@@ -70,7 +69,7 @@ class BaseSettings(PydanticBaseSettings):
     email_use_tls: bool = True
     default_from_email: str
 
-    feature_redis_use_ssl: bool = True
+    feature_redis_use_ssl: bool = False
     celery_always_eager: bool = True
 
     gov_notify_api_key: str

@@ -2,7 +2,7 @@ from typing import Any, Optional
 
 from dbt_copilot_python.database import database_url_from_env
 from dbt_copilot_python.utility import is_copilot
-from pydantic import BaseModel, ConfigDict, computed_field, Field
+from pydantic import BaseModel, ConfigDict, computed_field
 from pydantic_settings import BaseSettings as PydanticBaseSettings
 from pydantic_settings import SettingsConfigDict
 
@@ -38,7 +38,7 @@ class BaseSettings(PydanticBaseSettings):
     service_name: str = "directory-forms-api"
     secret_token: str
     SERVER_URL: str
-    environment:str = app_environment
+    environment: str = app_environment
     server_timeout: str = "20s"
 
     feature_openapi_enabled: bool = False
@@ -88,6 +88,7 @@ class BaseSettings(PydanticBaseSettings):
     ratelimit_rate: str = "15/h"
 
     submission_filter_hours: int = 72
+
 
 class CIEnvironment(BaseSettings):
 

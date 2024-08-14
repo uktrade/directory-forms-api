@@ -2,12 +2,14 @@ import os
 
 
 def is_local():
-    return os.getenv('APP_ENVIRONMENT') is None
+    return os.getenv("APP_ENVIRONMENT") is None
 
 
 def is_circleci():
-    return 'IS_CIRCLECI' in os.environ
+    return "IS_CIRCLECI" in os.environ
 
 
 def get_env_files():
-    return ['conf/env/' + filename for filename in os.getenv('ENV_FILES', '').split(',')]
+    return [
+        "conf/env/" + filename for filename in os.getenv("ENV_FILES", "").split(",")
+    ]

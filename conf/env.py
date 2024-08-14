@@ -36,15 +36,14 @@ class BaseSettings(PydanticBaseSettings):
     elastic_apm_enabled: bool = False
 
     service_name: str = "directory-forms-api"
-    secret_token: str
-    SERVER_URL: str
     environment: str = app_environment
-    server_timeout: str = "20s"
+    elastic_apm_secret_token: str
+    elastic_apm_url: str
+    elastic_apm_server_timeout: str = "20s"
 
     feature_openapi_enabled: bool = False
 
     session_cookie_domain: str = "great.gov.uk"
-    session_cookie_name: str = ""
     session_cookie_secure: bool = True
     sso_session_cookie: str
     csrf_cookie_secure: bool = True
@@ -93,7 +92,7 @@ class BaseSettings(PydanticBaseSettings):
 class CIEnvironment(BaseSettings):
 
     database_url: str
-    redis_url: str
+    redis_url: str = ""
 
 
 class DBTPlatformEnvironment(BaseSettings):

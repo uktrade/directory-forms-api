@@ -297,7 +297,7 @@ if ELASTIC_APM_ENABLED:
 USE_X_FORWARDED_HOST = True
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 SESSION_COOKIE_DOMAIN = env.session_cookie_domain
-SESSION_COOKIE_NAME = env.session_cookie_name
+SESSION_COOKIE_NAME = 'directory_forms_api_admin_session_id'
 SESSION_COOKIE_SECURE = env.session_cookie_secure
 SESSION_COOKIE_HTTPONLY = True
 CSRF_COOKIE_SECURE = env.csrf_cookie_secure

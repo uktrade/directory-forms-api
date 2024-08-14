@@ -287,7 +287,7 @@ if ELASTIC_APM_ENABLED:
     ELASTIC_APM = {
         'SERVICE_NAME': env.service_name,
         'SECRET_TOKEN': env.elastic_apm_secret_token,
-        'SERVER_URL': env.elastic_apm_urL,
+        'SERVER_URL': env.elastic_apm_url,
         'ENVIRONMENT': env.environment,
         'SERVER_TIMEOUT': env.elastic_apm_server_timeout,
     }

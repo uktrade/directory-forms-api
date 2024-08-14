@@ -2,7 +2,6 @@ import os
 from typing import Any, Dict
 
 import dj_database_url
-import environ
 import sentry_sdk
 from django.urls import reverse_lazy
 from django_log_formatter_asim import ASIMFormatter
@@ -11,11 +10,7 @@ from sentry_sdk.integrations.django import DjangoIntegration
 from sentry_sdk.integrations.redis import RedisIntegration
 
 from .utils import strip_password_data
-
-env = environ.Env()
-for env_file in env.list('ENV_FILES', default=[]):
-    env.read_env(f'conf/env/{env_file}')
-
+from conf.env import env
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
@@ -25,7 +20,7 @@ BASE_DIR = os.path.dirname(PROJECT_ROOT)
 # See https://docs.djangoproject.com/en/1.9/howto/deployment/checklist/
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = env.bool('DEBUG', False)
+DEBUG = env.debug
 
 # As app is running behind a host-based router supplied by Heroku or other
 # PaaS, we can open ALLOWED_HOSTS
@@ -91,13 +86,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'conf.wsgi.application'
 
-VCAP_SERVICES = env.json('VCAP_SERVICES', {})
-
-if 'redis' in VCAP_SERVICES:
-    REDIS_URL = VCAP_SERVICES['redis'][0]['credentials']['uri']
-else:
-    REDIS_URL = env.str('REDIS_URL', '')
-
+REDIS_URL = env.redis_url
 
 # Database
 # https://docs.djangoproject.com/en/1.9/ref/settings/#databases
@@ -138,12 +127,9 @@ MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 if not os.path.exists(STATIC_ROOT):
     os.makedirs(STATIC_ROOT)
-STATIC_HOST = env.str('STATIC_HOST', '')
+STATIC_HOST = env.static_host
 STATIC_URL = STATIC_HOST + '/api-static/'
-STATICFILES_STORAGE = env.str(
-    'STATICFILES_STORAGE',
-    'whitenoise.storage.CompressedStaticFilesStorage'
-)
+STATICFILES_STORAGE = env.staticfiles_storage
 
 # S3 storage does not use these settings, needed only for dev local storage
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
@@ -164,7 +150,7 @@ for static_dir in STATICFILES_DIRS:
 
 
 # SSO config
-FEATURE_ENFORCE_STAFF_SSO_ENABLED = env.bool('FEATURE_ENFORCE_STAFF_SSO_ENABLED', False)
+FEATURE_ENFORCE_STAFF_SSO_ENABLED = env.feature_enforce_staff_sso_enabled
 if FEATURE_ENFORCE_STAFF_SSO_ENABLED:
     AUTHENTICATION_BACKENDS = [
         'django.contrib.auth.backends.ModelBackend',
@@ -175,16 +161,16 @@ if FEATURE_ENFORCE_STAFF_SSO_ENABLED:
     LOGIN_REDIRECT_URL = reverse_lazy('admin:index')
 
 # authbroker config
-AUTHBROKER_URL = env.str('STAFF_SSO_AUTHBROKER_URL')
-AUTHBROKER_CLIENT_ID = env.str('AUTHBROKER_CLIENT_ID')
-AUTHBROKER_CLIENT_SECRET = env.str('AUTHBROKER_CLIENT_SECRET')
+AUTHBROKER_URL = env.staff_sso_authbroker_url
+AUTHBROKER_CLIENT_ID = env.authbroker_client_id
+AUTHBROKER_CLIENT_SECRET = env.authbroker_client_secret
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = env.str('SECRET_KEY')
+SECRET_KEY = env.secret_key
 
 # OpenAPI
 
-FEATURE_OPENAPI_ENABLED = env.bool("FEATURE_OPENAPI_ENABLED", False)
+FEATURE_OPENAPI_ENABLED = env.feature_openapi_enabled
 SPECTACULAR_SETTINGS = {
     'TITLE': 'Directory Forms API spec',
     'DESCRIPTION': 'Directory Forms API - the Department for Business and Trade (DBT)',
@@ -286,39 +272,39 @@ else:
     }
 
 # Sentry
-if env.str('SENTRY_DSN', ''):
+if env.sentry_dsn:
     sentry_sdk.init(
-        dsn=env.str('SENTRY_DSN'),
-        environment=env.str('SENTRY_ENVIRONMENT'),
+        dsn=env.sentry_dsn,
+        environment=env.sentry_environment,
         integrations=[DjangoIntegration(), CeleryIntegration(), RedisIntegration()],
         before_send=strip_password_data,
-        enable_tracing=env.bool('SENTRY_ENABLE_TRACING', False),
-        traces_sample_rate=env.float('SENTRY_TRACES_SAMPLE_RATE', 1.0),
+        enable_tracing=env.sentry_enable_tracing,
+        traces_sample_rate=env.sentry_traces_sample_rate,
     )
 
 # Elastic APM logging
-ELASTIC_APM_ENABLED = env('ELASTIC_APM_ENABLED', default=False)
+ELASTIC_APM_ENABLED = env.elastic_apm_enabled
 if ELASTIC_APM_ENABLED:
     ELASTIC_APM = {
-        'SERVICE_NAME': env('SERVICE_NAME', default='directory-forms-api'),
-        'SECRET_TOKEN': env('ELASTIC_APM_SECRET_TOKEN'),
-        'SERVER_URL': env('ELASTIC_APM_URL'),
-        'ENVIRONMENT': env('APP_ENVIRONMENT', default='dev'),
-        'SERVER_TIMEOUT': env('ELASTIC_APM_SERVER_TIMEOUT', default='20s'),
+        'SERVICE_NAME': env.service_name,
+        'SECRET_TOKEN': env.elastic_apm_secret_token,
+        'SERVER_URL': env.elastic_apm_urL,
+        'ENVIRONMENT': env.environment,
+        'SERVER_TIMEOUT': env.elastic_apm_server_timeout,
     }
     INSTALLED_APPS.append('elasticapm.contrib.django')
 
 # Admin proxy
 USE_X_FORWARDED_HOST = True
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-SESSION_COOKIE_DOMAIN = env.str('SESSION_COOKIE_DOMAIN', 'great.gov.uk')
-SESSION_COOKIE_NAME = 'directory_forms_api_admin_session_id'
-SESSION_COOKIE_SECURE = env.bool('SESSION_COOKIE_SECURE', True)
+SESSION_COOKIE_DOMAIN = env.session_cookie_domain
+SESSION_COOKIE_NAME = env.session_cookie_name
+SESSION_COOKIE_SECURE = env.session_cookie_secure
 SESSION_COOKIE_HTTPONLY = True
-CSRF_COOKIE_SECURE = env.bool('CSRF_COOKIE_SECURE', True)
+CSRF_COOKIE_SECURE = env.csrf_cookie_secure
 
 # health check
-DIRECTORY_HEALTHCHECK_TOKEN = env.str('HEALTH_CHECK_TOKEN')
+DIRECTORY_HEALTHCHECK_TOKEN = env.health_check_token
 DIRECTORY_HEALTHCHECK_BACKENDS = [
     # health_check.db.backends.DatabaseBackend and
     # health_check.cache.backends.CacheBackend are also registered in
@@ -337,18 +323,18 @@ SIGAUTH_URL_NAMES_WHITELIST = [
 ]
 
 # Zendesk
-ZENDESK_SUBDOMAIN_DEFAULT = env.str('ZENDESK_SUBDOMAIN')
-ZENDESK_SUBDOMAIN_EUEXIT = env.str('ZENDESK_SUBDOMAIN_EUEXIT')
+ZENDESK_SUBDOMAIN_DEFAULT = env.zendesk_subdomain_default
+ZENDESK_SUBDOMAIN_EUEXIT = env.zendesk_subdomain_euexit
 ZENDESK_CREDENTIALS = {
     ZENDESK_SUBDOMAIN_DEFAULT: {
-        'token': env.str('ZENDESK_TOKEN'),
-        'email': env.str('ZENDESK_EMAIL'),
-        'custom_field_id': env.str('ZENDESK_CUSTOM_FIELD_ID')
+        'token': env.zendesk_token,
+        'email': env.zendesk_email,
+        'custom_field_id': env.zendesk_custom_field_id,
     },
     ZENDESK_SUBDOMAIN_EUEXIT: {
-        'token': env.str('ZENDESK_TOKEN_EUEXIT'),
-        'email': env.str('ZENDESK_EMAIL_EUEXIT'),
-        'custom_field_id': env.str('ZENDESK_CUSTOM_FIELD_ID_EUEXIT')
+        'token': env.zendesk_token_euexit,
+        'email': env.zendesk_email_euexit,
+        'custom_field_id': env.zendesk_custom_field_id_euexit,
     },
 }
 
@@ -357,14 +343,14 @@ EMAIL_BACKED_CLASSES = {
     'default': 'django.core.mail.backends.smtp.EmailBackend',
     'console': 'django.core.mail.backends.console.EmailBackend'
 }
-EMAIL_BACKED_CLASS_NAME = env.str('EMAIL_BACKEND_CLASS_NAME', 'default')
+EMAIL_BACKED_CLASS_NAME = env.email_backend_class_name
 EMAIL_BACKEND = EMAIL_BACKED_CLASSES[EMAIL_BACKED_CLASS_NAME]
-EMAIL_HOST = env.str('EMAIL_HOST')
-EMAIL_PORT = env.int('EMAIL_PORT', 587)
-EMAIL_HOST_USER = env.str('EMAIL_HOST_USER')
-EMAIL_HOST_PASSWORD = env.str('EMAIL_HOST_PASSWORD')
-EMAIL_USE_TLS = env.bool('EMAIL_USE_TLS', True)
-DEFAULT_FROM_EMAIL = env.str('DEFAULT_FROM_EMAIL')
+EMAIL_HOST = env.email_host
+EMAIL_PORT = env.email_port
+EMAIL_HOST_USER = env.email_host_user
+EMAIL_HOST_PASSWORD = env.email_host_password
+EMAIL_USE_TLS = env.email_use_tls
+DEFAULT_FROM_EMAIL = env.default_from_email
 
 # Celery
 # separate to REDIS_URL as needs to start with 'redis' and SSL conf
@@ -376,32 +362,31 @@ CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TIMEZONE = 'UTC'
 CELERY_BROKER_POOL_LIMIT = None
-FEATURE_REDIS_USE_SSL = env.bool('FEATURE_REDIS_USE_SSL', False)
-CELERY_TASK_ALWAYS_EAGER = env.bool('CELERY_ALWAYS_EAGER', True)
+FEATURE_REDIS_USE_SSL = env.feature_redis_use_ssl
+CELERY_TASK_ALWAYS_EAGER = env.celery_always_eager
 
 # Gov UK Notify
-GOV_NOTIFY_API_KEY = env.str('GOV_NOTIFY_API_KEY')
-BUY_FROM_UK_ENQUIRY_TEMPLATE_ID = env.str('BUY_FROM_UK_ENQUIRY_TEMPLATE_ID', 'b3212b30-6321-46e7-9dba-ad37bd92df89')
-BUY_FROM_UK_EMAIL_ADDRESS = env.str('BUY_FROM_UK_EMAIL_ADDRESS', 'enquiries@invest-trade.uk')
+GOV_NOTIFY_API_KEY = env.gov_notify_api_key
+BUY_FROM_UK_ENQUIRY_TEMPLATE_ID = env.buy_from_uk_enquiry_template_id
+BUY_FROM_UK_EMAIL_ADDRESS = env.buy_from_uk_email_address
 # default UUID value is id of email listed on notification service
-BUY_FROM_UK_REPLY_TO_EMAIL_ADDRESS = env.str(
-    'BUY_FROM_UK_REPLY_TO_EMAIL_ADDRESS', 'c071d4f6-94a7-4afd-9acb-6b164737731c')
+BUY_FROM_UK_REPLY_TO_EMAIL_ADDRESS = env.buy_from_uk_reply_to_email_address
 # Separate key to allow PDF viewing. In prod this can be live key
-GOV_NOTIFY_LETTER_API_KEY = env.str('GOV_NOTIFY_LETTER_API_KEY')
+GOV_NOTIFY_LETTER_API_KEY = env.gov_notify_letter_api_key
 
 
 # Test API
-FEATURE_TEST_API_ENABLED = env.bool('FEATURE_TEST_API_ENABLED', False)
+FEATURE_TEST_API_ENABLED = env.feature_test_api_enabled
 
 # Activity Stream API
-ACTIVITY_STREAM_ACCESS_KEY_ID = env.str('ACTIVITY_STREAM_ACCESS_KEY_ID')
-ACTIVITY_STREAM_SECRET_ACCESS_KEY = env.str('ACTIVITY_STREAM_SECRET_ACCESS_KEY')
+ACTIVITY_STREAM_ACCESS_KEY_ID = env.activity_stream_access_key_id
+ACTIVITY_STREAM_SECRET_ACCESS_KEY = env.activity_stream_secret_access_key
 
 # Ratelimit config
 # Set RATELIMIT_ENABLE to enable/disable
 # the number of requests per unit time allowed in (s/m/h/d)
-RATELIMIT_RATE = env.str('RATELIMIT_RATE', '15/h')
+RATELIMIT_RATE = env.ratelimit_rate
 
 # When filtering submissions to action (i.e. send email, send letter, send to gov.notify), how many hours
 # should we filter?
-SUBMISSION_FILTER_HOURS = env.int('GOV_NOTIFY_BULK_EMAIL_FILTER_HOURS', 72)
+SUBMISSION_FILTER_HOURS = env.submission_filter_hours

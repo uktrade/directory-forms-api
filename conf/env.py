@@ -24,6 +24,7 @@ class BaseSettings(PydanticBaseSettings):
     staticfiles_storage: str = "whitenoise.storage.CompressedStaticFilesStorage"
     sentry_dsn: str = ""
     secret_key: str
+
     sentry_environment: str = ""
     sentry_enable_tracing: bool = False
     sentry_traces_sample_rate: float = 1.0
@@ -62,7 +63,7 @@ class BaseSettings(PydanticBaseSettings):
     email_backend_class_name: str = "default"
 
     email_host: str
-    email_port: str
+    email_port: int = 587
     email_host_user: str
     email_host_password: str
     email_use_tls: bool = True

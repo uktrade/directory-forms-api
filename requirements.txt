@@ -6,6 +6,8 @@
 #
 amqp==5.1.1
     # via kombu
+annotated-types==0.7.0
+    # via pydantic
 asgiref==3.6.0
     # via django
 async-timeout==4.0.2
@@ -75,7 +77,7 @@ distlib==0.3.8
     # via virtualenv
 dj-database-url==2.1.0
     # via -r requirements.in
-django==4.2.14
+django==4.2.15
     # via
     #   -r requirements.in
     #   directory-components
@@ -229,6 +231,14 @@ psycopg2==2.8.4
     # via -r requirements.in
 pycparser==2.21
     # via cffi
+pydantic==2.7.3
+    # via
+    #   -r requirements.in
+    #   pydantic-settings
+pydantic-core==2.18.4
+    # via pydantic
+pydantic-settings==2.3.1
+    # via -r requirements.in
 pyjwt==2.4.0
     # via
     #   -r requirements.in
@@ -242,6 +252,8 @@ python-dateutil==2.8.2
     #   celery
     #   python-crontab
     #   zenpy
+python-dotenv==1.0.1
+    # via pydantic-settings
 pytz==2023.3
     # via
     #   django-timezone-field
@@ -287,6 +299,8 @@ typing-extensions==4.10.0
     #   dj-database-url
     #   kombu
     #   opentelemetry-sdk
+    #   pydantic
+    #   pydantic-core
 tzdata==2023.3
     # via
     #   celery

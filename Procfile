@@ -1,3 +1,3 @@
-web: python manage.py collectstatic --noinput && python manage.py distributed_migrate --noinput && gunicorn conf.wsgi:application --config conf/gunicorn.py --bind 0.0.0.0:$PORT --worker-class gevent --worker-connections 1000 --log-file -
+web: python manage.py collectstatic --noinput && python manage.py distributed_migrate --noinput && waitress-serve --port=$PORT conf.wsgi:application
 celery_worker: celery -A conf worker -l info
 celery_beat: celery -A conf beat -l info -S django

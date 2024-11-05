@@ -33,4 +33,3 @@ elastic-apm==6.1.*
 django-log-formatter-asim==0.0.4
 pydantic==2.7.3
 pydantic-settings==2.3.1
-psycogreen==1.0.2

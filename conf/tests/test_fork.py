@@ -1,10 +1,11 @@
 import pytest
 import logging
+from unittest import mock
 from unittest.mock import patch
 from gevent.server import StreamServer
 from conf.gunicorn import post_fork
 from gunicorn.workers.ggevent import GeventWorker
-import gunicorn.util
+from gunicorn.workers.workertmp import WorkerTmp
 
 logger = logging.getLogger(__name__)
 
@@ -24,8 +25,9 @@ def worker():
         "max_requests_jitter": 10,
         "umask": 22,
         "worker_tmp_dir": "/tmp",
-        "uid": 503,
-        "gid": 20,
+        "uid": 999,
+        "gid": 999,
+        'worker_connections': 1000,
     }
     cfg_dict = dotdict(my_dict)
 
@@ -53,8 +55,8 @@ def server():
     return server
 
 
-@patch("conf.gunicorn.patch_with_psycogreen_gevent")
-@patch.object(gunicorn.util, "chown")
-def test_post_fork(mock_chown, mock_patch_with_psycogreen_gevent, worker, server):
-    post_fork(server, worker)
-    mock_patch_with_psycogreen_gevent.assert_called_once()
+@patch('conf.gunicorn.patch_with_psycogreen_gevent')
+def test_post_fork(mock_patch_with_psycogreen_gevent, worker, server):
+    with patch.object(WorkerTmp, "__init__", lambda x: worker.cfg):
+        post_fork(server, worker)
+        mock_patch_with_psycogreen_gevent.assert_called_once()

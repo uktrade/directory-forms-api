@@ -1,12 +1,10 @@
 import pytest
 import os
 import logging
-from unittest import mock
 from unittest.mock import patch
 from gevent.server import StreamServer
 from conf.gunicorn import post_fork
 from gunicorn.workers.ggevent import GeventWorker
-from gunicorn.workers.workertmp import WorkerTmp
 
 logger = logging.getLogger(__name__)
 
@@ -28,7 +26,7 @@ def worker():
         "worker_tmp_dir": "/tmp",
         "uid": os.geteuid(),
         "gid": os.getegid(),
-        'worker_connections': 1000,
+        "worker_connections": 1000,
     }
     cfg_dict = dotdict(my_dict)
 
@@ -56,7 +54,7 @@ def server():
     return server
 
 
-@patch('conf.gunicorn.patch_with_psycogreen_gevent')
+@patch("conf.gunicorn.patch_with_psycogreen_gevent")
 def test_post_fork(mock_patch_with_psycogreen_gevent, worker, server):
     post_fork(server, worker)
     mock_patch_with_psycogreen_gevent.assert_called_once()

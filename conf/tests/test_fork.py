@@ -1,4 +1,5 @@
 import pytest
+import os
 import logging
 from unittest import mock
 from unittest.mock import patch
@@ -25,8 +26,8 @@ def worker():
         "max_requests_jitter": 10,
         "umask": 22,
         "worker_tmp_dir": "/tmp",
-        "uid": 999,
-        "gid": 999,
+        "uid": os.geteuid(),
+        "gid": os.getegid(),
         'worker_connections': 1000,
     }
     cfg_dict = dotdict(my_dict)
@@ -57,6 +58,5 @@ def server():
 
 @patch('conf.gunicorn.patch_with_psycogreen_gevent')
 def test_post_fork(mock_patch_with_psycogreen_gevent, worker, server):
-    with patch.object(WorkerTmp, "__init__", lambda x: worker.cfg):
-        post_fork(server, worker)
-        mock_patch_with_psycogreen_gevent.assert_called_once()
+    post_fork(server, worker)
+    mock_patch_with_psycogreen_gevent.assert_called_once()

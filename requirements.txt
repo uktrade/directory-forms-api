@@ -227,6 +227,8 @@ protobuf==4.25.3
     # via
     #   googleapis-common-protos
     #   opentelemetry-proto
+psycogreen==1.0.2
+    # via -r requirements.in
 psycopg2==2.8.4
     # via -r requirements.in
 pycparser==2.21

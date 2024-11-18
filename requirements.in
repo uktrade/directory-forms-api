@@ -1,5 +1,5 @@
 dbt-copilot-python==0.2.0
-django==4.2.15
+django==4.2.16
 dj-database-url==2.1.*
 django-environ==0.4.5
 django_extensions==3.2.1
@@ -13,7 +13,7 @@ gunicorn==22.0.0
 sentry-sdk>=1.20.0.a,<3.0.0
 django-staff-sso-client==4.2.1
 requests[security]>=2.32.0
-sigauth==5.2.6
+sigauth==5.3.0
 directory-healthcheck==3.7
 django-cryptography==1.1
 zenpy==2.0.46
@@ -24,7 +24,6 @@ directory-components==40.2.3
 urllib3==2.2.2
 django-ratelimit==2.0.0
 django-redis==5.4.*
-waitress==2.1.2
 django-celery-beat==2.5.0
 pyjwt==2.4.0
 certifi==2024.07.04
@@ -34,3 +33,5 @@ elastic-apm==6.1.*
 django-log-formatter-asim==0.0.4
 pydantic==2.7.3
 pydantic-settings==2.3.1
+psycogreen==1.0.2
+gevent==23.9.1

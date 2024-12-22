@@ -6,6 +6,7 @@ from django.urls import reverse
 from rest_framework.test import APIClient
 
 from client.tests.factories import ClientFactory
+from client.tests.utils import sign_invalid_client_hawk_header
 from submission import models
 from submission.tests import factories
 
@@ -443,6 +444,22 @@ def test_email_action_rate_limit_exceeded(mock_email, api_client, gov_notify_ema
     )
     assert black_listed_sender.is_blacklisted
     assert black_listed_sender.blacklisted_reason == 'IP'
+
+
+@pytest.mark.django_db
+@mock.patch('submission.tasks.send_gov_notify_email.delay')
+def test_invalid_credential_unauthorized_error_on_submission(api_client, gov_notify_email_action_payload, settings):
+
+    settings.SIGAUTH_URL_NAMES_WHITELIST = ['submission']
+    client = APIClient()
+
+    response = client.post(
+        reverse('api:submission'),
+        data=gov_notify_email_action_payload,
+        HTTP_X_SIGNATURE=sign_invalid_client_hawk_header(),
+        format='json'
+    )
+    assert response.status_code in (401, 403)
 
 
 @pytest.mark.django_db

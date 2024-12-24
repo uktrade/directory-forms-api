@@ -6,6 +6,7 @@ from rest_framework import status
 from rest_framework.generics import CreateAPIView, DestroyAPIView
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework.exceptions import AuthenticationFailed
 
 from client.authentication import ClientSenderIdAuthentication
 from submission import constants, helpers, serializers, tasks
@@ -42,6 +43,8 @@ class SubmissionCreateAPIView(CreateAPIView):
     def handle_exception(self, exc):
         if isinstance(exc, Ratelimited):
             return Response(status=429)
+        if isinstance(exc, AuthenticationFailed):
+            return Response(status=exc.status_code)
         return super().handle_exception(exc)
 
 

@@ -120,7 +120,7 @@ django-health-check==3.18.2
     # via directory-healthcheck
 django-json-widget==0.2.0
     # via -r requirements.in
-django-log-formatter-asim==0.0.4
+django-log-formatter-asim==0.0.6
     # via -r requirements.in
 django-pglocks==1.0.4
     # via -r requirements.in
@@ -388,7 +388,7 @@ vine==5.1.0
     #   amqp
     #   celery
     #   kombu
-virtualenv==20.26.1
+virtualenv==20.26.6
     # via pre-commit
 wcwidth==0.1.9
     # via prompt-toolkit

@@ -19,15 +19,13 @@ from submission import constants, models
 
 def pprint_json(data):
     dumped = json.dumps(data, indent=4, sort_keys=True)
-    return mark_safe(f'<pre>{dumped}</pre>')
+    return mark_safe(f"<pre>{dumped}</pre>")
 
 
 class ZendeskClient:
 
     def __init__(self, email, token, subdomain, custom_field_id):
-        self.client = Zenpy(
-            timeout=5, email=email, token=token, subdomain=subdomain
-        )
+        self.client = Zenpy(timeout=5, email=email, token=token, subdomain=subdomain)
         self.custom_field_id = custom_field_id
 
     def get_or_create_user(self, full_name, email_address):
@@ -35,21 +33,23 @@ class ZendeskClient:
         return self.client.users.create_or_update(zendesk_user)
 
     def create_ticket(self, subject, payload, zendesk_user, service_name):
-        sort_fields_alphabetically = payload.get('_sort_fields_alphabetically', True)
-        items = sorted(payload.items()) if sort_fields_alphabetically else payload.items()
+        sort_fields_alphabetically = payload.get("_sort_fields_alphabetically", True)
+        items = (
+            sorted(payload.items()) if sort_fields_alphabetically else payload.items()
+        )
         description = [
-            '{0}: {1}'.format(key.title().replace('_', ' '), value)
+            "{0}: {1}".format(key.title().replace("_", " "), value)
             for key, value in items
-            if not key.title().startswith('_')
+            if not key.title().startswith("_")
         ]
         ticket = Ticket(
             subject=subject,
-            description='\n'.join(description),
+            description="\n".join(description),
             submitter_id=zendesk_user.id,
             requester_id=zendesk_user.id,
-            tags=payload.get('_tags') or None,
-            custom_fields=[{'id': self.custom_field_id, 'value': service_name}]
-            + (payload.get('_custom_fields') or []),
+            tags=payload.get("_tags") or None,
+            custom_fields=[{"id": self.custom_field_id, "value": service_name}]
+            + (payload.get("_custom_fields") or []),
         )
         return self.client.tickets.create(ticket)
 
@@ -60,13 +60,13 @@ def create_zendesk_ticket(
     try:
         credentials = settings.ZENDESK_CREDENTIALS[subdomain]
     except KeyError:
-        raise NotImplementedError(f'subdomain {subdomain} not supported')
+        raise NotImplementedError(f"subdomain {subdomain} not supported")
 
     client = ZendeskClient(
-        email=credentials['email'],
-        token=credentials['token'],
+        email=credentials["email"],
+        token=credentials["token"],
         subdomain=subdomain,
-        custom_field_id=credentials['custom_field_id'],
+        custom_field_id=credentials["custom_field_id"],
     )
 
     zendesk_user = client.get_or_create_user(
@@ -127,15 +127,15 @@ def send_pardot(pardot_url, payload):
 
 
 def get_sender_email_address(submission_meta):
-    if submission_meta.get('sender'):
-        return submission_meta['sender']['email_address']
-    action_name = submission_meta['action_name']
+    if submission_meta.get("sender"):
+        return submission_meta["sender"]["email_address"]
+    action_name = submission_meta["action_name"]
     if action_name == constants.ACTION_NAME_ZENDESK:
-        return submission_meta['email_address']
+        return submission_meta["email_address"]
     elif action_name == constants.ACTION_NAME_EMAIL:
-        return submission_meta['reply_to'][0]
+        return submission_meta["reply_to"][0]
     elif action_name == constants.ACTION_NAME_GOV_NOTIFY_EMAIL:
-        return submission_meta['email_address']
+        return submission_meta["email_address"]
     elif action_name == constants.ACTION_NAME_GOV_NOTIFY_BULK_EMAIL:
         return None
     elif action_name == constants.ACTION_NAME_PARDOT:
@@ -145,17 +145,17 @@ def get_sender_email_address(submission_meta):
 
 
 def get_recipient_email_address(submission_meta):
-    action_name = submission_meta['action_name']
+    action_name = submission_meta["action_name"]
     if action_name == constants.ACTION_NAME_ZENDESK:
-        sub_domain = submission_meta.get('subdomain')
-        service_name = submission_meta.get('service_name')
-        return f'{sub_domain}:{service_name}'
+        sub_domain = submission_meta.get("subdomain")
+        service_name = submission_meta.get("service_name")
+        return f"{sub_domain}:{service_name}"
     elif action_name == constants.ACTION_NAME_GOV_NOTIFY_EMAIL:
-        return submission_meta['email_address']
+        return submission_meta["email_address"]
     elif action_name == constants.ACTION_NAME_GOV_NOTIFY_BULK_EMAIL:
-        return submission_meta['email_address']
+        return submission_meta["email_address"]
     elif action_name == constants.ACTION_NAME_EMAIL:
-        return ','.join(submission_meta['recipients'])
+        return ",".join(submission_meta["recipients"])
     elif action_name == constants.ACTION_NAME_PARDOT:
         return None
     elif action_name == constants.ACTION_NAME_GOV_NOTIFY_LETTER:
@@ -167,69 +167,76 @@ def is_ratelimited(ip_address):
     # we need to let the request through to maintain backward compatibility
     if not ip_address:
         return False
-    request = RequestFactory().get('/', REMOTE_ADDR=ip_address)
+    request = RequestFactory().get("/", REMOTE_ADDR=ip_address)
     return ratelimit.utils.is_ratelimited(
-        request=request, group='submission', key='ip', rate=settings.RATELIMIT_RATE, increment=True
+        request=request,
+        group="submission",
+        key="ip",
+        rate=settings.RATELIMIT_RATE,
+        increment=True,
     )
 
 
-def send_buy_from_uk_enquiries_as_csv(form_url='/international/trade/contact/'):
+def send_buy_from_uk_enquiries_as_csv(form_url="/international/trade/contact/"):
     """A method to create last seven days data for buy from uk contact details"""
     today = timezone.now()
     week_ago = today - timedelta(days=7)
     submissions = models.Submission.objects.filter(
-        created__gte=week_ago,
-        form_url=form_url
+        created__gte=week_ago, form_url=form_url
     )
 
-    with open('email.csv', 'w+') as csvfile:
+    with open("email.csv", "w+") as csvfile:
         filewriter = csv.writer(csvfile)
-        filewriter.writerow([
-            'Sender',
-            'body',
-            'sector',
-            'source',
-            'country',
-            'given_name',
-            'family_name',
-            'country_name',
-            'phone_number',
-            'source_other',
-            'email_address',
-            'organisation_name',
-            'organisation_size',
-            'email_contact_consent',
-            'telephone_contact_consent',
-            'Form',
-            'Created'
-        ])
+        filewriter.writerow(
+            [
+                "Sender",
+                "body",
+                "sector",
+                "source",
+                "country",
+                "given_name",
+                "family_name",
+                "country_name",
+                "phone_number",
+                "source_other",
+                "email_address",
+                "organisation_name",
+                "organisation_size",
+                "email_contact_consent",
+                "telephone_contact_consent",
+                "Form",
+                "Created",
+            ]
+        )
 
         for submission in submissions:
-            filewriter.writerow([
-                submission.sender,
-                submission.data['body'],
-                submission.data['sector'],
-                submission.data['source'],
-                submission.data['country'],
-                submission.data['given_name'],
-                submission.data['family_name'],
-                submission.data['country_name'],
-                submission.data['phone_number'],
-                submission.data['source_other'],
-                submission.data['email_address'],
-                submission.data['organisation_name'],
-                submission.data['organisation_size'],
-                submission.data['email_contact_consent'],
-                submission.data['telephone_contact_consent'],
-                submission.form_url,
-                submission.created,
-            ])
+            filewriter.writerow(
+                [
+                    submission.sender,
+                    submission.data["body"],
+                    submission.data["sector"],
+                    submission.data["source"],
+                    submission.data["country"],
+                    submission.data["given_name"],
+                    submission.data["family_name"],
+                    submission.data["country_name"],
+                    submission.data["phone_number"],
+                    submission.data["source_other"],
+                    submission.data["email_address"],
+                    submission.data["organisation_name"],
+                    submission.data["organisation_size"],
+                    submission.data["email_contact_consent"],
+                    submission.data["telephone_contact_consent"],
+                    submission.form_url,
+                    submission.created,
+                ]
+            )
 
-    with open('email.csv', 'rb') as f:
+    with open("email.csv", "rb") as f:
 
         send_gov_notify_email(
             template_id=settings.BUY_FROM_UK_ENQUIRY_TEMPLATE_ID,
             email_address=settings.BUY_FROM_UK_EMAIL_ADDRESS,
-            personalisation={'link_to_file': prepare_upload(f)},
-            email_reply_to_id=settings.BUY_FROM_UK_REPLY_TO_EMAIL_ADDRESS
+            personalisation={"link_to_file": prepare_upload(f)},
+            email_reply_to_id=settings.BUY_FROM_UK_REPLY_TO_EMAIL_ADDRESS,
         )

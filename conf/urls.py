@@ -9,7 +9,7 @@ from drf_spectacular.views import (SpectacularAPIView, SpectacularRedocView,
 
 import submission.views
 import testapi.views
-from activitystream.views import ActivityStreamView
+from activitystream.views import ActivityStreamView, ActivityStreamDomesticHCSATFeedbackDataView
 from core.views import PingDomView
 
 admin.autodiscover()
@@ -78,6 +78,7 @@ urlpatterns = [
     re_path(r'^admin/', admin.site.urls),
     re_path(r'^testapi/', include((testapi_urls, 'testapi'), namespace='testapi')),
     re_path(r'^activity-stream/v1/', ActivityStreamView.as_view(), name='activity-stream'),
+    re_path(r'^domestic-hcsats/', ActivityStreamDomesticHCSATFeedbackDataView.as_view(), name='domestic-hcsats'),
 ]
 
 authbroker_urls = [

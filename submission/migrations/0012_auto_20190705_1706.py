@@ -6,22 +6,18 @@ from django.db import migrations
 
 
 def change_gov_notify_action(apps, schema_editor):
-    Submission = apps.get_model('submission', 'Submission')
-    for submission in Submission.objects.filter(
-            meta__action_name='gov-notify'
-    ):
-        submission.meta['action_name'] = 'gov-notify-email'
+    Submission = apps.get_model("submission", "Submission")
+    for submission in Submission.objects.filter(meta__action_name="gov-notify"):
+        submission.meta["action_name"] = "gov-notify-email"
         submission.save()
 
 
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('submission', '0011_auto_20190110_1403'),
+        ("submission", "0011_auto_20190110_1403"),
     ]
 
     operations = [
-        migrations.RunPython(
-            change_gov_notify_action, migrations.RunPython.noop
-        ),
+        migrations.RunPython(change_gov_notify_action, migrations.RunPython.noop),
     ]

@@ -26,7 +26,7 @@ export zendesk_subdomain_euexit=""
 export zendesk_token=""
 export zendesk_email=""
 export zendesk_custom_field_id=""
-export secret_key=""
+export secret_key="-"
 export staff_sso_authbroker_url=""
 
 # Add commands below to run inside the container after all the other buildpacks have been applied

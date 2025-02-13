@@ -11,79 +11,81 @@ from submission import constants
 @pytest.fixture
 def erp_zendesk_payload():
     return {
-        'meta': {
-                'action_name': constants.ACTION_NAME_ZENDESK,
-                'email_address': 'erp+testform+testform@gmail.com',
-                'full_name': 'test test',
-                'funnel_steps': [],
-                'ingress_url': 'https://erp.service.dev.uktrade.io/triage/',
-                'sender': {'country_code': None,
-                           'email_address': 'erp+testform@jhgk.com'},
-                'service_name': 'erp',
-                'spam_control': {},
-                'subject': 'ERP form was submitted'
+        "meta": {
+            "action_name": constants.ACTION_NAME_ZENDESK,
+            "email_address": "erp+testform+testform@gmail.com",  # /PS-IGNORE
+            "full_name": "test test",
+            "funnel_steps": [],
+            "ingress_url": "https://erp.service.dev.uktrade.io/triage/",
+            "sender": {
+                "country_code": None,
+                "email_address": "erp+testform@jhgk.com",  # /PS-IGNORE
+            },  # /PS-IGNORE
+            "service_name": "erp",
+            "spam_control": {},
+            "subject": "ERP form was submitted",
         },
-        'data': {
-                'commodities': '190300 - Other',
-                'company_name': 'TASTE OF FOOD',
-                'company_number': '2387892',
-                'company_type': 'LIMITED',
-                'email': 'erp+testform@gmail.com',
-                'employees': '1-10',
-                'employment_regions': ['NORTH_EAST'],
-                'family_name': 'test',
-                'given_name': 'test',
-                'has_market_price_changed': False,
-                'has_market_size_changed': False,
-                'has_other_changes': False,
-                'has_price_changed': False,
-                'has_volume_changed': False,
-                'market_size_known': False,
-                'other_information': 'test',
-                'quarter_four_2018': '0',
-                'quarter_one_2019': '0',
-                'quarter_three_2019': '0',
-                'quarter_two_2019': '0',
-                'sales_volume_unit': 'KILOGRAM',
-                'sector': 'AEROSPACE',
-                'tariff_quota': 'N/A',
-                'tariff_rate': 'N/A',
-                'turnover': '0-25k'
-            },
+        "data": {
+            "commodities": "190300 - Other",
+            "company_name": "TASTE OF FOOD",
+            "company_number": "2387892",
+            "company_type": "LIMITED",
+            "email": "erp+testform@gmail.com",  # /PS-IGNORE
+            "employees": "1-10",
+            "employment_regions": ["NORTH_EAST"],
+            "family_name": "test",
+            "given_name": "test",
+            "has_market_price_changed": False,
+            "has_market_size_changed": False,
+            "has_other_changes": False,
+            "has_price_changed": False,
+            "has_volume_changed": False,
+            "market_size_known": False,
+            "other_information": "test",
+            "quarter_four_2018": "0",
+            "quarter_one_2019": "0",
+            "quarter_three_2019": "0",
+            "quarter_two_2019": "0",
+            "sales_volume_unit": "KILOGRAM",
+            "sector": "AEROSPACE",
+            "tariff_quota": "N/A",
+            "tariff_rate": "N/A",
+            "turnover": "0-25k",
+        },
     }
 
 
 @pytest.fixture
 def email_action_payload():
     return {
-        'data': {
-            'text_body': 'hello there',
-            'html_body': '<a>Hello there</a>',
+        "data": {
+            "text_body": "hello there",
+            "html_body": "<a>Hello there</a>",
         },
-        'meta': {
-            'action_name': constants.ACTION_NAME_EMAIL,
-            'recipients': ['foo@bar.com', 'foo2@bar.com'],
-            'subject': 'Hello',
-            'reply_to': ['email-user@example.com'],
-        }
+        "meta": {
+            "action_name": constants.ACTION_NAME_EMAIL,
+            "recipients": ["foo@bar.com", "foo2@bar.com"],  # /PS-IGNORE
+            "subject": "Hello",
+            "reply_to": ["email-user@example.com"],  # /PS-IGNORE
+        },
     }
 
 
 @pytest.fixture
 def zendesk_action_payload():
     return {
-        'data': {
-            'title': 'hello',
+        "data": {
+            "title": "hello",
         },
-        'meta': {
-            'action_name': constants.ACTION_NAME_ZENDESK,
-            'subject': 'Hello',
-            'full_name': 'Jim Example',
-            'email_address': 'zendesk-user@example.com',
-            'service_name': 'Market Access',
-            'form_url': '/some/form/',
-            'ingress_url': 'https://www.example.com',
-            'sort_fields_alphabetically': True
+        "meta": {
+            "action_name": constants.ACTION_NAME_ZENDESK,
+            "subject": "Hello",
+            "full_name": "Jim Example",
+            "email_address": "zendesk-user@example.com",  # /PS-IGNORE
+            "service_name": "Market Access",
+            "form_url": "/some/form/",
+            "ingress_url": "https://www.example.com",
+            "sort_fields_alphabetically": True,
         },
     }
 
@@ -93,76 +95,76 @@ def zendesk_action_payload():
 @pytest.fixture
 def gov_notify_action_payload_old():
     return {
-        'data': {
-            'title': 'hello',
+        "data": {
+            "title": "hello",
         },
-        'meta': {
-            'action_name': 'gov-notify',
-            'template_id': '213123',
-            'email_address': 'notify-user@example.com',
-        }
+        "meta": {
+            "action_name": "gov-notify",
+            "template_id": "213123",
+            "email_address": "notify-user@example.com",  # /PS-IGNORE
+        },
     }
 
 
 @pytest.fixture
 def gov_notify_email_action_payload():
     return {
-        'data': {
-            'title': 'hello',
+        "data": {
+            "title": "hello",
         },
-        'meta': {
-            'action_name': constants.ACTION_NAME_GOV_NOTIFY_EMAIL,
-            'template_id': '213123',
-            'email_address': 'notify-user@example.com',
-            'sender': {
-                'country_code': None,
-                'email_address': 'erp+testform@jhgk.com',
-                'ip_address': '252.252.928.233'
+        "meta": {
+            "action_name": constants.ACTION_NAME_GOV_NOTIFY_EMAIL,
+            "template_id": "213123",
+            "email_address": "notify-user@example.com",  # /PS-IGNORE
+            "sender": {
+                "country_code": None,
+                "email_address": "erp+testform@jhgk.com",  # /PS-IGNORE
+                "ip_address": "252.252.928.233",
             },
-        }
+        },
     }
 
 
 @pytest.fixture
 def gov_notify_bulk_email_action_payload():
     return {
-            'template_id': '1234',
-            'action_name': constants.ACTION_NAME_GOV_NOTIFY_BULK_EMAIL,
-            'bulk_email_entries': [
-                {'name': 'one', 'email_address': 'one@example.com'},
-                {'name': 'two', 'email_address': 'two@example.com'},
-                {'name': 'three', 'email_address': 'three@example.com'}
-            ],
-            'email_reply_to_id': '5678',
+        "template_id": "1234",
+        "action_name": constants.ACTION_NAME_GOV_NOTIFY_BULK_EMAIL,
+        "bulk_email_entries": [
+            {"name": "one", "email_address": "one@example.com"},  # /PS-IGNORE
+            {"name": "two", "email_address": "two@example.com"},  # /PS-IGNORE
+            {"name": "three", "email_address": "three@example.com"},  # /PS-IGNORE
+        ],
+        "email_reply_to_id": "5678",
     }
 
 
 @pytest.fixture
 def gov_notify_letter_action_payload():
     return {
-        'data': {
-            'address_line_1': 'The Occupier',
-            'address_line_2': '123 High Street',
-            'postcode': 'SW14 6BF',
-            'name': 'John Smith',
+        "data": {
+            "address_line_1": "The Occupier",
+            "address_line_2": "123 High Street",
+            "postcode": "SW14 6BF",  # /PS-IGNORE
+            "name": "John Smith",
         },
-        'meta': {
-            'action_name': constants.ACTION_NAME_GOV_NOTIFY_LETTER,
-            'template_id': '21312345',
-        }
+        "meta": {
+            "action_name": constants.ACTION_NAME_GOV_NOTIFY_LETTER,
+            "template_id": "21312345",
+        },
     }
 
 
 @pytest.fixture
 def pardot_action_payload():
     return {
-        'data': {
-            'title': 'hello',
+        "data": {
+            "title": "hello",
         },
-        'meta': {
-            'action_name': constants.ACTION_NAME_PARDOT,
-            'pardot_url': 'http://www.example.com/some/submission/path/',
-        }
+        "meta": {
+            "action_name": constants.ACTION_NAME_PARDOT,
+            "pardot_url": "http://www.example.com/some/submission/path/",
+        },
     }
 
 
@@ -187,37 +189,71 @@ def migration(transactional_db):
             Foo = new_apps.get_model('my_app', 'foo')
             assert Foo.objects.filter(bar=False).count() == 0
             assert Foo.objects.filter(bar=True).count() == Foo.objects.count()
-    From: https://gist.github.com/asfaltboy/b3e6f9b5d95af8ba2cc46f2ba6eae5e2
+    From: https://gist.github.com/asfaltboy/b3e6f9b5d95af8ba2cc46f2ba6eae5e2  # /PS-IGNORE
     """
+
     class Migrator:
         def before(self, migrate_from):
-            """ Specify app and starting migration name as in:
-                before(['app', '0001_before']) => app/migrations/0001_before.py
+            """Specify app and starting migration name as in:
+            before(['app', '0001_before']) => app/migrations/0001_before.py
             """
 
             self.migrate_from = migrate_from
             self.executor = MigrationExecutor(db.connection)
             self.executor.migrate(self.migrate_from)
-            self._old_apps = self.executor.loader.project_state(
-                self.migrate_from).apps
+            self._old_apps = self.executor.loader.project_state(self.migrate_from).apps
             return self._old_apps
 
         def apply(self, app, migrate_to):
-            """ Migrate forwards to the "migrate_to" migration """
+            """Migrate forwards to the 'migrate_to' migration"""
             self.migrate_to = [(app, migrate_to)]
             self.executor.loader.build_graph()  # reload.
             self.executor.migrate(self.migrate_to)
-            self._new_apps = self.executor.loader.project_state(
-                self.migrate_to).apps
+            self._new_apps = self.executor.loader.project_state(self.migrate_to).apps
             return self._new_apps
 
     yield Migrator()
-    call_command('migrate')
+    call_command("migrate")
 
 
 @pytest.fixture(autouse=False)
 def mock_middleware_test_sig():
     yield mock.patch(
-        'client.helpers.RequestSignatureChecker.test_signature',
+        "client.helpers.RequestSignatureChecker.test_signature",
         return_value=True,
     ).start()
+
+
+@pytest.fixture(autouse=False)
+def hcsat_instance():
+
+    return {
+        "service-name": "export-academy",
+        "action_name": constants.ACTION_NAME_HCSAT_SUBMISSION,
+        "hcsat_feedback_entries": [
+            {
+                "id": "1",
+                "url": "https://great.gov.uk/export-academy",
+                "user_journey": "",
+                "satisfaction_rating": "",
+                "experienced_issues": "",
+                "other_detail": "",
+                "service_improvements_feedback": "",
+                "likelihood_of_return": "",
+                "service_specific_feedback": "",
+                "service_specific_feedback_other": "",
+            },
+            {
+                "id": "2",
+                "url": "https://great.gov.uk/export-academy",
+                "user_journey": "",
+                "satisfaction_rating": "",
+                "experienced_issues": "",
+                "other_detail": "",
+                "service_improvements_feedback": "",
+                "likelihood_of_return": "",
+                "service_specific_feedback": "",
+                "service_specific_feedback_other": "",
+            },
+        ],
+    }

@@ -5,6 +5,6 @@ ACTION_NAME_GOV_NOTIFY_BULK_EMAIL = "gov-notify-bulk-email"
 ACTION_NAME_GOV_NOTIFY_LETTER = "gov-notify-letter"
 ACTION_NAME_PARDOT = "pardot"
 ACTION_NAME_SAVE_ONLY_IN_DB = "save-only-in-db"
-ACTION_NAME_HCSAT_SUBMISSION = "hcsat-submission"
+ACTION_NAME_HCSAT_SUBMISSION = "hcsat-feedback-submission"
 IP_RESTRICTED = "IP"
 BLACKLISTED_REASON_CHOICES = [("MA", "Manual"), (IP_RESTRICTED, "IP Restricted")]

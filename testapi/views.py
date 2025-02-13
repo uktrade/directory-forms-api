@@ -23,40 +23,44 @@ class TestAPIView(GenericAPIView):
 
 class SubmissionsTestAPIView(TestAPIView, DestroyAPIView, RetrieveAPIView):
     queryset = Submission.objects.all()
-    http_method_names = ('delete', 'get',)
+    http_method_names = (
+        "delete",
+        "get",
+    )
 
     @staticmethod
     def data_and_meta(submission: Submission):
         return {
-            'data': dict(submission.data),
-            'meta': dict(submission.meta),
-            'is_sent': submission.is_sent,
-            'form_url': submission.form_url,
+            "data": dict(submission.data),
+            "meta": dict(submission.meta),
+            "is_sent": submission.is_sent,
+            "form_url": submission.form_url,
         }
 
     def get_submissions(self, email_address):
         results = []
         for submission in self.queryset.all():
-            if submission.meta['action_name'] == ACTION_NAME_PARDOT:
-                if submission.data['email'] == email_address:
+            if submission.meta["action_name"] == ACTION_NAME_PARDOT:
+                if submission.data["email"] == email_address:
                     results.append(self.data_and_meta(submission))
-            if submission.meta['action_name'] in [
-                ACTION_NAME_GOV_NOTIFY_EMAIL, ACTION_NAME_ZENDESK
+            if submission.meta["action_name"] in [
+                ACTION_NAME_GOV_NOTIFY_EMAIL,
+                ACTION_NAME_ZENDESK,
             ]:
-                if submission.meta['email_address'] == email_address:
+                if submission.meta["email_address"] == email_address:
                     results.append(self.data_and_meta(submission))
-            if submission.meta['action_name'] == ACTION_NAME_EMAIL:
-                if email_address in submission.meta['recipients']:
+            if submission.meta["action_name"] == ACTION_NAME_EMAIL:
+                if email_address in submission.meta["recipients"]:
                     results.append(self.data_and_meta(submission))
         return results
 
     def get(self, request, *args, **kwargs):
-        email_address = kwargs['email_address']
+        email_address = kwargs["email_address"]
         meta = self.get_submissions(email_address)
         return Response(meta) if meta else Response(status=404)
 
     def delete(self, request, **kwargs):
-        test_email_pattern = r'^test\+(.*)@directory\.uktrade\.io'
+        test_email_pattern = r"^test\+(.*)@directory\.uktrade\.io"
         try:
             test_submissions = get_list_or_404(
                 Submission,
@@ -93,10 +97,10 @@ class SubmissionsTestAPIView(TestAPIView, DestroyAPIView, RetrieveAPIView):
 
 class SendersTestAPIView(TestAPIView, DestroyAPIView):
     queryset = Sender.objects.all()
-    http_method_names = 'delete'
+    http_method_names = "delete"
 
     def delete(self, request, **kwargs):
-        test_email_pattern = r'^test\+(.*)@directory\.uktrade\.io'
+        test_email_pattern = r"^test\+(.*)@directory\.uktrade\.io"
         test_senders = get_list_or_404(
             Sender,
             email_address__regex=test_email_pattern,

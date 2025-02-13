@@ -143,3 +143,34 @@ class SubmissionModelSerializer(serializers.ModelSerializer):
         if data["meta"]["action_name"] == "gov-notify":
             data["meta"]["action_name"] = constants.ACTION_NAME_GOV_NOTIFY_EMAIL
         return data
+
+
+class HCSatEntrySerializer(serializers.Serializer):
+    """ """
+
+    id = (serializers.IntegerField(),)
+    feedback_submission_date = serializers.CharField()
+    url = serializers.CharField()
+    user_journey = serializers.CharField(allow_null=True, allow_blank=True)
+    satisfaction_rating = serializers.CharField()
+    experienced_issues = serializers.ListField(
+        child=serializers.CharField(allow_null=True, allow_blank=True), allow_null=True
+    )
+    other_detail = serializers.CharField(allow_null=True, allow_blank=True)
+    service_improvements_feedback = serializers.CharField(
+        allow_null=True, allow_blank=True
+    )
+    likelihood_of_return = serializers.CharField(allow_null=True, allow_blank=True)
+    service_name = serializers.CharField(allow_null=True, allow_blank=True)
+    service_specific_feedback = serializers.ListField(
+        child=serializers.CharField(allow_null=True, allow_blank=True), allow_null=True
+    )
+    service_specific_feedback_other = serializers.CharField(
+        allow_null=True, allow_blank=True
+    )
+
+
+class HCSatSerializer(serializers.Serializer):
+    """ """
+
+    hcsat_feedback_entries = serializers.ListField(child=HCSatEntrySerializer())

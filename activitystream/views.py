@@ -1,22 +1,21 @@
-from django.utils.decorators import decorator_from_middleware
 import django_filters.rest_framework
+from django.utils.decorators import decorator_from_middleware
 from drf_spectacular.types import OpenApiTypes
-from drf_spectacular.utils import OpenApiExample, OpenApiParameter, extend_schema
+from drf_spectacular.utils import (OpenApiExample, OpenApiParameter,
+                                   extend_schema)
 from rest_framework.generics import ListAPIView
 from rest_framework.response import Response
 from rest_framework.reverse import reverse
 
 from activitystream.authentication import (
-    ActivityStreamAuthentication,
-    ActivityStreamHawkResponseMiddleware,
-)
-from activitystream.filters import SubmissionFilter, ActivityStreamHCSATFilter
-from activitystream.serializers import (
-    SubmissionSerializer,
-    ActivityStreamDomesticHCSATUserFeedbackDataSerializer,
-)
-from submission.models import Submission
+    ActivityStreamAuthentication, ActivityStreamHawkResponseMiddleware)
+from activitystream.filters import ActivityStreamHCSATFilter, SubmissionFilter
 from activitystream.pagination import ActivityStreamHCSATPagination
+from activitystream.serializers import (
+    ActivityStreamDomesticHCSATUserFeedbackDataSerializer,
+    SubmissionSerializer)
+from submission import constants
+from submission.models import Submission
 
 MAX_PER_PAGE = 25
 
@@ -59,7 +58,12 @@ class ActivityStreamView(ListAPIView):
     )
     def list(self, request):
         """A single page of activities"""
-        filter = SubmissionFilter(request.GET, queryset=Submission.objects.all())
+        filter = SubmissionFilter(
+            request.GET,
+            queryset=Submission.objects.exclude(
+                meta__action_name=constants.ACTION_NAME_HCSAT_SUBMISSION
+            ),
+        )
 
         page_qs = filter.qs.order_by("created", "id")[:MAX_PER_PAGE]
         items = {
@@ -68,6 +72,9 @@ class ActivityStreamView(ListAPIView):
             "orderedItems": SubmissionSerializer(page_qs, many=True).data,
         }
 
+        return self.return_response(request, page_qs, items)
+
+    def return_response(self, request, page_qs, items):
         if not page_qs:
             next_page = {}
         else:
@@ -108,5 +115,7 @@ class ActivityStreamHCSATBaseView(ActivityStreamBaseView):
 class ActivityStreamDomesticHCSATFeedbackDataView(ActivityStreamHCSATBaseView):
     """View to list domestic HCSAT feedback data for the activity stream"""
 
-    # queryset = HCSAT.objects.all()
+    queryset = Submission.objects.filter(
+        meta__action_name=constants.ACTION_NAME_HCSAT_SUBMISSION
+    )
     serializer_class = ActivityStreamDomesticHCSATUserFeedbackDataSerializer

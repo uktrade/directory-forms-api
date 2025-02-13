@@ -81,9 +81,9 @@ def test_form_submission_serializer(user, rf):
         "data": {"title": "hello"},
         "meta": {
             "action_name": "email",
-            "recipients": ["foo@bar.com"],
+            "recipients": ["foo@bar.com"],  # /PS-IGNORE
             "form_url": "/the/form/",
-            "reply_to": "test@testsubmission.com",
+            "reply_to": "test@testsubmission.com",  # /PS-IGNORE
         },
     }
     serializer = serializers.SubmissionModelSerializer(
@@ -95,8 +95,8 @@ def test_form_submission_serializer(user, rf):
         "data": {"title": "hello"},
         "meta": {
             "action_name": "email",
-            "recipients": ["foo@bar.com"],
-            "reply_to": "test@testsubmission.com",
+            "recipients": ["foo@bar.com"],  # /PS-IGNORE
+            "reply_to": "test@testsubmission.com",  # /PS-IGNORE
         },
         "form_url": "/the/form/",
         "client": user,
@@ -110,7 +110,7 @@ def test_form_submission_serializer_no_form_url(rf, user):
 
     input_data = {
         "data": {"title": "hello"},
-        "meta": {"action_name": "email", "recipients": ["foo@bar.com"]},
+        "meta": {"action_name": "email", "recipients": ["foo@bar.com"]},  # /PS-IGNORE
     }
     serializer = serializers.SubmissionModelSerializer(
         data=input_data, context={"request": request}
@@ -119,7 +119,7 @@ def test_form_submission_serializer_no_form_url(rf, user):
     assert serializer.is_valid()
     assert serializer.validated_data == {
         "data": {"title": "hello"},
-        "meta": {"action_name": "email", "recipients": ["foo@bar.com"]},
+        "meta": {"action_name": "email", "recipients": ["foo@bar.com"]},  # /PS-IGNORE
         "form_url": "",
         "client": user,
     }
@@ -138,7 +138,7 @@ def test_form_submission_serializer_old_gov_notify_email(user, rf):
         "meta": {
             "action_name": "gov-notify",
             "template_id": "213123",
-            "email_address": "notify-user@example.com",
+            "email_address": "notify-user@example.com",  # /PS-IGNORE
         },
     }
     serializer = serializers.SubmissionModelSerializer(
@@ -153,7 +153,7 @@ def test_form_submission_serializer_old_gov_notify_email(user, rf):
         "meta": {
             "action_name": "gov-notify-email",
             "template_id": "213123",
-            "email_address": "notify-user@example.com",
+            "email_address": "notify-user@example.com",  # /PS-IGNORE
         },
         "form_url": "",
         "client": user,
@@ -271,3 +271,40 @@ def test_gov_notify_letter_action_serializer_from_submission(
             "name": gov_notify_letter_submission.data["name"],
         },
     }
+
+
+@pytest.mark.django_db
+def test_domestic_hcsat_feedback_serializer(hcsat_instance):
+
+    serializer = serializers.ActivityStreamDomesticHCSATUserFeedbackDataSerializer()
+    output = serializer.to_representation(hcsat_instance)
+
+    # Remove date due to timezone mismatch
+
+    del output["object"]["feedback_submission_date"]
+    expected = {
+        "id": f"dit:domestic:HCSATFeedbackData:{hcsat_instance.id}:Update",
+        "type": "Update",
+        "object": {
+            "id": hcsat_instance.data["id"],
+            "type": "dit:domestic:HCSATFeedbackData",
+            "url": hcsat_instance.data["url"],
+            "user_journey": hcsat_instance.data["user_journey"],
+            "satisfaction_rating": hcsat_instance.data["satisfaction_rating"],
+            "experienced_issues": hcsat_instance.data["experienced_issues"],
+            "other_detail": hcsat_instance.data["other_detail"],
+            "service_improvements_feedback": hcsat_instance.data[
+                "service_improvements_feedback"
+            ],
+            "likelihood_of_return": hcsat_instance.data["likelihood_of_return"],
+            "service_name": hcsat_instance.data["service_name"],
+            "service_specific_feedback": hcsat_instance.data[
+                "service_specific_feedback"
+            ],
+            "service_specific_feedback_other": hcsat_instance.data[
+                "service_specific_feedback_other"
+            ],
+        },
+    }
+
+    assert output == expected

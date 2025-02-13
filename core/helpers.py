@@ -11,7 +11,7 @@ from submission.constants import ACTION_NAME_EMAIL
 
 
 class DownloadCSVMixin:
-    actions = ['download_csv']
+    actions = ["download_csv"]
 
     csv_excluded_fields = []
 
@@ -19,21 +19,17 @@ class DownloadCSVMixin:
         return generate_csv_response(
             queryset=queryset,
             filename=self.csv_filename,
-            excluded_fields=self.csv_excluded_fields
+            excluded_fields=self.csv_excluded_fields,
         )
 
-    download_csv.short_description = (
-        "Download CSV report for selected records"
-    )
+    download_csv.short_description = "Download CSV report for selected records"
 
 
 def generate_csv_response(queryset, filename, excluded_fields):
-    response = HttpResponse(content_type='text/csv')
-    response['Content-Disposition'] = f'attachment; filename="{filename}"'
+    response = HttpResponse(content_type="text/csv")
+    response["Content-Disposition"] = f'attachment; filename="{filename}"'
     generate_csv(
-        file_object=response,
-        queryset=queryset,
-        excluded_fields=excluded_fields
+        file_object=response, queryset=queryset, excluded_fields=excluded_fields
     )
     return response
 
@@ -41,19 +37,22 @@ def generate_csv_response(queryset, filename, excluded_fields):
 def generate_csv(file_object, queryset, excluded_fields):
     model = queryset.model
     fieldnames = sorted(
-        [field.name for field in model._meta.get_fields()
-         if field.name not in excluded_fields]
+        [
+            field.name
+            for field in model._meta.get_fields()
+            if field.name not in excluded_fields
+        ]
     )
 
     objects = queryset.all().values(*fieldnames)
     for item in objects:
-        if item['meta']['action_name'] == ACTION_NAME_EMAIL:
-            if 'html_body' in item['data']:
-                soup = BeautifulSoup(item['data']['html_body'], 'html.parser')
+        if item["meta"]["action_name"] == ACTION_NAME_EMAIL:
+            if "html_body" in item["data"]:
+                soup = BeautifulSoup(item["data"]["html_body"], "html.parser")
                 if soup.body:
-                    item['data'] = soup.body.text.strip()
+                    item["data"] = soup.body.text.strip()
                 else:
-                    item['data'] = soup.text.strip()
+                    item["data"] = soup.text.strip()
 
     writer = csv.DictWriter(file_object, fieldnames=fieldnames)
     writer.writeheader()
@@ -69,15 +68,20 @@ class TimeStampedModel(models.Model):
     modified fields, inheritance causes issues with field clash.
 
     """
-    created = CreationDateTimeField(_('created'), null=True)
-    modified = ModificationDateTimeField(_('modified'), null=True)
+
+    created = CreationDateTimeField(_("created"), null=True)
+    modified = ModificationDateTimeField(_("modified"), null=True)
 
     def save(self, **kwargs):
         self.update_modified = kwargs.pop(
-            'update_modified', getattr(self, 'update_modified', True))
+            "update_modified", getattr(self, "update_modified", True)
+        )
         super(TimeStampedModel, self).save(**kwargs)
 
     class Meta:
-        get_latest_by = 'modified'
-        ordering = ('-modified', '-created',)
+        get_latest_by = "modified"
+        ordering = (
+            "-modified",
+            "-created",
+        )
         abstract = True

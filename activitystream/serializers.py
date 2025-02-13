@@ -40,32 +40,10 @@ class SenderSerializer(serializers.Serializer):
         }
 
 
-class ActivityStreamDomesticHCSATUserFeedbackDataSerializer(
-    serializers.ModelSerializer
-):
+class ActivityStreamDomesticHCSATUserFeedbackDataSerializer(serializers.Serializer):
     """
     Domestic HCSAT Feedback Data serializer for activity stream.
     """
-
-    feedback_submission_date = serializers.DateTimeField(source="created")  # noqa: N815
-    url = serializers.CharField(source="URL")  # noqa: N815
-
-    # class Meta:
-    #     model = SubmissionSerializer
-    #     fields = [
-    #         'id',
-    #         'feedback_submission_date',
-    #         'url',
-    #         'user_journey',
-    #         'satisfaction_rating',
-    #         'experienced_issues',
-    #         'other_detail',
-    #         'service_improvements_feedback',
-    #         'likelihood_of_return',
-    #         'service_name',
-    #         'service_specific_feedback',
-    #         'service_specific_feedback_other',
-    #     ]
 
     def to_representation(self, instance):
         """
@@ -78,8 +56,22 @@ class ActivityStreamDomesticHCSATUserFeedbackDataSerializer(
             "id": f"{prefix}:{instance.id}:{type}",
             "type": f"{type}",
             "object": {
-                "id": f"{prefix}:{instance.id}",
+                "id": f"{prefix}:{instance.data['id']}",
                 "type": prefix,
-                **{f"{k}": v for k, v in super().to_representation(instance).items()},
+                "feedback_submission_date": instance.created,
+                "url": instance.data["URL"],
+                "user_journey": instance.data["user_journey"],
+                "satisfaction_rating": instance.data["satisfaction_rating"],
+                "experienced_issues": instance.data["experienced_issues"],
+                "other_detail": instance.data["other_detail"],
+                "service_improvements_feedback": instance.data[
+                    "service_improvements_feedback"
+                ],
+                "likelihood_of_return": instance.data["likelihood_of_return"],
+                "service_name": instance.data["service_name"],
+                "service_specific_feedback": instance.data["service_specific_feedback"],
+                "service_specific_feedback_other": instance.data[
+                    "service_specific_feedback_other"
+                ],
             },
         }

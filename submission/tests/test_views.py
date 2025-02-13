@@ -66,9 +66,9 @@ def test_generic_form_submission_submit(mock_delay, api_client):
         },
         "meta": {
             "action_name": "email",
-            "recipients": ["foo@bar.com"],
+            "recipients": ["foo@bar.com"],  # /PS-IGNORE
             "subject": "Hello",
-            "reply_to": ["reply@example.com"],
+            "reply_to": ["reply@example.com"],  # /PS-IGNORE
             "sender_ip_address": "252.252.928.233",
         },
     }
@@ -88,7 +88,7 @@ def test_generic_form_submission_submit(mock_delay, api_client):
 def test_generic_form_submission_submit_new_sender(mock_delay, api_client):
     assert models.Submission.objects.count() == 0
 
-    email_address = "test@testsubmission.com"
+    email_address = "test@testsubmission.com"  # /PS-IGNORE
     payload = {
         "data": {
             "text_body": "hello there",
@@ -96,7 +96,7 @@ def test_generic_form_submission_submit_new_sender(mock_delay, api_client):
         },
         "meta": {
             "action_name": "email",
-            "recipients": ["foo@bar.com"],
+            "recipients": ["foo@bar.com"],  # /PS-IGNORE
             "subject": "Hello",
             "reply_to": [email_address],
         },
@@ -118,7 +118,7 @@ def test_generic_form_submission_submit_new_sender(mock_delay, api_client):
 @mock.patch("submission.helpers.send_email")
 def test_generic_form_submission_submit_no_recipient_error(mock_delay, api_client):
 
-    email_address = "test@testsubmission.com"
+    email_address = "test@testsubmission.com"  # /PS-IGNORE
     payload = {
         "data": {
             "text_body": "hello there",
@@ -143,7 +143,7 @@ def test_generic_form_submission_submit_blacklisted(mock_delay, api_client):
     assert models.Submission.objects.count() == 0
 
     sender = factories.SenderFactory(
-        email_address="test@testsubmission.com", is_blacklisted=True
+        email_address="test@testsubmission.com", is_blacklisted=True  # /PS-IGNORE
     )
 
     payload = {
@@ -153,7 +153,7 @@ def test_generic_form_submission_submit_blacklisted(mock_delay, api_client):
         },
         "meta": {
             "action_name": "email",
-            "recipients": ["foo@bar.com"],
+            "recipients": ["foo@bar.com"],  # /PS-IGNORE
             "subject": "Hello",
             "reply_to": [sender.email_address],
         },
@@ -176,7 +176,7 @@ def test_generic_form_submission_submit_whitelisted(mock_send, api_client):
     assert models.Submission.objects.count() == 0
 
     sender = factories.SenderFactory(
-        email_address="test@testsubmission.com", is_whitelisted=True
+        email_address="test@testsubmission.com", is_whitelisted=True  # /PS-IGNORE
     )
 
     payload = {
@@ -186,7 +186,7 @@ def test_generic_form_submission_submit_whitelisted(mock_send, api_client):
         },
         "meta": {
             "action_name": "email",
-            "recipients": ["foo@bar.com"],
+            "recipients": ["foo@bar.com"],  # /PS-IGNORE
             "subject": "Hello",
             "reply_to": [sender.email_address],
             "ip_address": ["192.168.999.1234"],
@@ -210,7 +210,7 @@ def test_form_submission_blacklisted_whitelisted(mock_delay, api_client):
     assert models.Submission.objects.count() == 0
 
     sender = factories.SenderFactory(
-        email_address="test@testsubmission.com",
+        email_address="test@testsubmission.com",  # /PS-IGNORE
         is_blacklisted=True,
         is_whitelisted=True,
     )
@@ -222,7 +222,7 @@ def test_form_submission_blacklisted_whitelisted(mock_delay, api_client):
         },
         "meta": {
             "action_name": "email",
-            "recipients": ["foo@bar.com"],
+            "recipients": ["foo@bar.com"],  # /PS-IGNORE
             "subject": "Hello",
             "reply_to": [sender.email_address],
         },
@@ -379,7 +379,7 @@ def test_email_action_rate_limit_not_exceeded(
 
     assert submissions.count() == 25
     non_black_listed_sender = models.Sender.objects.get(
-        email_address="notify-user@example.com"
+        email_address="notify-user@example.com"  # /PS-IGNORE
     )
     assert non_black_listed_sender.is_blacklisted is False
     assert non_black_listed_sender.blacklisted_reason is None
@@ -467,7 +467,8 @@ def test_form_submission_delete_with_non_existing_email(mock_delay, api_client):
 
     delete_response = api_client.delete(
         reverse(
-            "api:delete_submission", kwargs={"email_address": "no-existing@email.com"}
+            "api:delete_submission",
+            kwargs={"email_address": "no-existing@email.com"},  # /PS-IGNORE
         ),
         data=None,
         format="json",
@@ -535,3 +536,35 @@ class TestBulkGovNotifyEmail:
 
         assert models.Submission.objects.count() == 0
         assert response.status_code == 400, response.json()
+
+
+@pytest.mark.django_db
+def test_hcsat_submmission_success(api_client, hcsat_instance):
+    assert models.Submission.objects.count() == 0
+
+    response = api_client.post(
+        reverse("api_v2:hcsat-feedback-submission"), data=hcsat_instance, format="json"
+    )
+
+    assert response.status_code == 201
+    assert models.Submission.objects.count() == 1
+
+    instance = models.Submission.objects.last()
+
+    assert instance.data == hcsat_instance["data"]
+    assert instance.meta == hcsat_instance["meta"]
+
+
+@pytest.mark.django_db
+def test_hcsat_submmission_bad_input_failure(api_client, hcsat_instance):
+    assert models.Submission.objects.count() == 0
+
+    # Malform the data payload
+    del hcsat_instance["meta"]
+
+    response = api_client.post(
+        reverse("api_v2:hcsat-feedback-submission"), data=hcsat_instance, format="json"
+    )
+
+    assert response.status_code == 400
+    assert models.Submission.objects.count() == 0

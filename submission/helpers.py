@@ -142,6 +142,8 @@ def get_sender_email_address(submission_meta):
         return None
     elif action_name == constants.ACTION_NAME_GOV_NOTIFY_LETTER:
         return None
+    elif action_name == constants.ACTION_NAME_HCSAT_SUBMISSION:
+        return None
 
 
 def get_recipient_email_address(submission_meta):
@@ -159,6 +161,8 @@ def get_recipient_email_address(submission_meta):
     elif action_name == constants.ACTION_NAME_PARDOT:
         return None
     elif action_name == constants.ACTION_NAME_GOV_NOTIFY_LETTER:
+        return None
+    elif action_name == constants.ACTION_NAME_HCSAT_SUBMISSION:
         return None
 
 

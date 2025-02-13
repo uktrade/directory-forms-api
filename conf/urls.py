@@ -9,7 +9,8 @@ from drf_spectacular.views import (SpectacularAPIView, SpectacularRedocView,
 
 import submission.views
 import testapi.views
-from activitystream.views import ActivityStreamView, ActivityStreamDomesticHCSATFeedbackDataView
+from activitystream.views import (ActivityStreamDomesticHCSATFeedbackDataView,
+                                  ActivityStreamView)
 from core.views import PingDomView
 
 admin.autodiscover()
@@ -17,92 +18,105 @@ admin.autodiscover()
 
 healthcheck_urls = [
     re_path(
-        r'^$',
-        directory_healthcheck.views.HealthcheckView.as_view(),
-        name='healthcheck'
+        r"^$", directory_healthcheck.views.HealthcheckView.as_view(), name="healthcheck"
     ),
-    re_path(
-        r'^ping/$',
-        directory_healthcheck.views.PingView.as_view(),
-        name='ping'
-    ),
+    re_path(r"^ping/$", directory_healthcheck.views.PingView.as_view(), name="ping"),
 ]
 
 api_urls = [
     re_path(
-        r'^submission/$',
+        r"^submission/$",
         submission.views.SubmissionCreateAPIView.as_view(),
-        name='submission'
+        name="submission",
     ),
     re_path(
-        r'^delete-submissions/(?P<email_address>.*)$',
+        r"^delete-submissions/(?P<email_address>.*)$",
         submission.views.SubmissionDestroyAPIView.as_view(),
-        name='delete_submission',
+        name="delete_submission",
     ),
 ]
 
 api_v2_urls = [
     re_path(
-        r'^gov-notify-bulk-email/$',
+        r"^gov-notify-bulk-email/$",
         submission.views.GovNotifyBulkEmailAPIView.as_view(),
-        name='gov-notify-bulk-email'
+        name="gov-notify-bulk-email",
+    ),
+    re_path(
+        r"^hcsat-feedback-submission/$",
+        submission.views.HCSatAPIView.as_view(),
+        name="hcsat-feedback-submission",
     ),
 ]
 
 testapi_urls = [
     re_path(
-        r'^submissions-by-email/(?P<email_address>.*)/$',
+        r"^submissions-by-email/(?P<email_address>.*)/$",
         testapi.views.SubmissionsTestAPIView.as_view(),
-        name='submissions_by_email',
+        name="submissions_by_email",
     ),
     re_path(
-        r'^test-senders/$',
+        r"^test-senders/$",
         testapi.views.SendersTestAPIView.as_view(),
-        name='delete_test_senders',
+        name="delete_test_senders",
     ),
     re_path(
-        r'^test-submissions/$',
+        r"^test-submissions/$",
         testapi.views.SubmissionsTestAPIView.as_view(),
-        name='delete_test_submissions',
+        name="delete_test_submissions",
     ),
 ]
 
 urlpatterns = [
     re_path(
-        r'^api/healthcheck/',
-        include((healthcheck_urls, 'healthcheck'), namespace='healthcheck')
+        r"^api/healthcheck/",
+        include((healthcheck_urls, "healthcheck"), namespace="healthcheck"),
     ),
-    path('pingdom/ping.xml', PingDomView.as_view(), name='pingdom'),
-    re_path(r'^api/', include((api_urls, 'api'), namespace='api')),
-    re_path(r'^api/v2/', include((api_v2_urls, 'api_v2'), namespace='api_v2')),
-    re_path(r'^admin/', admin.site.urls),
-    re_path(r'^testapi/', include((testapi_urls, 'testapi'), namespace='testapi')),
-    re_path(r'^activity-stream/v1/', ActivityStreamView.as_view(), name='activity-stream'),
-    re_path(r'^domestic-hcsats/', ActivityStreamDomesticHCSATFeedbackDataView.as_view(), name='domestic-hcsats'),
+    path("pingdom/ping.xml", PingDomView.as_view(), name="pingdom"),
+    re_path(r"^api/", include((api_urls, "api"), namespace="api")),
+    re_path(r"^api/v2/", include((api_v2_urls, "api_v2"), namespace="api_v2")),
+    re_path(r"^admin/", admin.site.urls),
+    re_path(r"^testapi/", include((testapi_urls, "testapi"), namespace="testapi")),
+    re_path(
+        r"^activity-stream/v1/", ActivityStreamView.as_view(), name="activity-stream"
+    ),
+    re_path(
+        r"^activity-stream/v2/",
+        ActivityStreamDomesticHCSATFeedbackDataView.as_view(),
+        name="activity-stream-hcsat",
+    ),
 ]
 
 authbroker_urls = [
     re_path(
-        r'^admin/login/$',
-        RedirectView.as_view(url=reverse_lazy('authbroker_client:login'), query_string=True, )
+        r"^admin/login/$",
+        RedirectView.as_view(
+            url=reverse_lazy("authbroker_client:login"),
+            query_string=True,
+        ),
     ),
-    re_path('^auth/', include('authbroker_client.urls')),
+    re_path("^auth/", include("authbroker_client.urls")),
 ]
 
 if settings.FEATURE_ENFORCE_STAFF_SSO_ENABLED:
-    urlpatterns = [re_path('^', include(authbroker_urls))] + urlpatterns
+    urlpatterns = [re_path("^", include(authbroker_urls))] + urlpatterns
 
 if settings.FEATURE_OPENAPI_ENABLED:
     urlpatterns += [
-        path('openapi/', SpectacularAPIView.as_view(), name='schema'),
+        path("openapi/", SpectacularAPIView.as_view(), name="schema"),
         path(
-            'openapi/ui/',
-            login_required(SpectacularSwaggerView.as_view(url_name='schema'), login_url='admin:login'),
-            name='swagger-ui'
+            "openapi/ui/",
+            login_required(
+                SpectacularSwaggerView.as_view(url_name="schema"),
+                login_url="admin:login",
+            ),
+            name="swagger-ui",
         ),
         path(
-            'openapi/ui/redoc/',
-            login_required(SpectacularRedocView.as_view(url_name='schema'), login_url='admin:login'),
-            name='redoc'
+            "openapi/ui/redoc/",
+            login_required(
+                SpectacularRedocView.as_view(url_name="schema"), login_url="admin:login"
+            ),
+            name="redoc",
         ),
     ]

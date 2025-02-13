@@ -4,7 +4,7 @@ from submission.models import Submission
 
 
 class DatabaseHealthCheck:
-    name = 'database'
+    name = "database"
 
     def check(self):
         try:
@@ -12,7 +12,7 @@ class DatabaseHealthCheck:
         except DatabaseError as de:
             return False, de
         else:
-            return True, ''
+            return True, ""
 
 
 health_check_services = (DatabaseHealthCheck,)

@@ -23,7 +23,7 @@ def clear_cache():
 
 @pytest.fixture
 def api_client(settings, user):
-    settings.SIGAUTH_URL_NAMES_WHITELIST = ["submission", "gov-notify-bulk-email"]
+    settings.SIGAUTH_URL_NAMES_WHITELIST = ["submission", "gov-notify-bulk-email", "hcsat-feedback-submission"]
     client = APIClient()
     client.force_authenticate(user=user)
     return client
@@ -560,7 +560,8 @@ def test_hcsat_submmission_bad_input_failure(api_client, hcsat_instance):
     assert models.Submission.objects.count() == 0
 
     # Malform the data payload
-    del hcsat_instance["meta"]
+    for entry in hcsat_instance["hcsat_feedback_entries"]:
+        del entry["meta"]
 
     response = api_client.post(
         reverse("api_v2:hcsat-feedback-submission"), data=hcsat_instance, format="json"

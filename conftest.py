@@ -1,3 +1,4 @@
+from  datetime import datetime
 from unittest import mock
 
 import pytest
@@ -226,40 +227,38 @@ def mock_middleware_test_sig():
 
 @pytest.fixture(autouse=False)
 def hcsat_instance():
-
+    dtm = datetime.now()
     return {
-        "service-name": "export-academy",
         "action_name": constants.ACTION_NAME_HCSAT_SUBMISSION,
         "hcsat_feedback_entries": [
             {
-                'data': {
-                    "id": "1",
-                    "url": "https://great.gov.uk/export-academy",
-                    "user_journey": "",
-                    "satisfaction_rating": "",
-                    "experienced_issues": "",
-                    "other_detail": "",
-                    "service_improvements_feedback": "",
-                    "likelihood_of_return": "",
-                    "service_specific_feedback": "",
-                    "service_specific_feedback_other": "",
-                },
-                'meta': {},
+                "id": "1",
+                "feedback_submission_date": dtm,
+                "url": "https://great.gov.uk/export-academy",
+                "user_journey": "xxxx",
+                "satisfaction_rating": "xxxx",
+                "experienced_issues": ["xxxx"],
+                "other_detail": "xxxx",
+                "service_improvements_feedback": "xxxx",
+                "likelihood_of_return": "xxxx",
+                "service_name": "export-academy",
+                "service_specific_feedback": ["xxxx"],
+                "service_specific_feedback_other": "xxxx",
             },
             {
-                'data': {
-                    "id": "2",
-                    "url": "https://great.gov.uk/export-academy",
-                    "user_journey": "",
-                    "satisfaction_rating": "",
-                    "experienced_issues": "",
-                    "other_detail": "",
-                    "service_improvements_feedback": "",
-                    "likelihood_of_return": "",
-                    "service_specific_feedback": "",
-                    "service_specific_feedback_other": "",
-                },
-                'meta': {},
+                "id": "2",
+                "feedback_submission_date": dtm,
+                "url": "https://great.gov.uk/export-academy",
+                "user_journey": "xxxx",
+                "satisfaction_rating": "xxx",
+                "experienced_issues": ["xxxx"],
+                "other_detail": "xxxx",
+                "service_improvements_feedback": "xxxx",
+                "likelihood_of_return": "xxxx",
+                "service_name": "export-academy",
+                "service_specific_feedback": ["xxxx"],
+                "service_specific_feedback_other": "xxxx",
             },
         ],
+        'meta': {},
     }

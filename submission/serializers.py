@@ -146,8 +146,6 @@ class SubmissionModelSerializer(serializers.ModelSerializer):
 
 
 class HCSatEntrySerializer(serializers.Serializer):
-    """ """
-
     id = (serializers.IntegerField(),)
     feedback_submission_date = serializers.CharField()
     url = serializers.CharField()
@@ -171,6 +169,5 @@ class HCSatEntrySerializer(serializers.Serializer):
 
 
 class HCSatSerializer(serializers.Serializer):
-    """ """
-
     hcsat_feedback_entries = serializers.ListField(child=HCSatEntrySerializer())
+

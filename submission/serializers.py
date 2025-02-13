@@ -170,4 +170,3 @@ class HCSatEntrySerializer(serializers.Serializer):
 
 class HCSatSerializer(serializers.Serializer):
     hcsat_feedback_entries = serializers.ListField(child=HCSatEntrySerializer())
-

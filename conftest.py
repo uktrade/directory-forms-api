@@ -1,4 +1,4 @@
-from  datetime import datetime
+from datetime import datetime
 from unittest import mock
 
 import pytest

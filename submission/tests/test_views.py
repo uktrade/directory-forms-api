@@ -542,7 +542,6 @@ class TestBulkGovNotifyEmail:
 def test_hcsat_submmission_success(api_client, hcsat_instance):
     assert models.Submission.objects.count() == 0
 
-
     response = api_client.post(
         reverse("api_v2:hcsat-feedback-submission"), data=hcsat_instance, format="json"
     )

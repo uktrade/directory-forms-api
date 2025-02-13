@@ -1,19 +1,21 @@
 import django_filters.rest_framework
 from django.utils.decorators import decorator_from_middleware
 from drf_spectacular.types import OpenApiTypes
-from drf_spectacular.utils import (OpenApiExample, OpenApiParameter,
-                                   extend_schema)
+from drf_spectacular.utils import OpenApiExample, OpenApiParameter, extend_schema
 from rest_framework.generics import ListAPIView
 from rest_framework.response import Response
 from rest_framework.reverse import reverse
 
 from activitystream.authentication import (
-    ActivityStreamAuthentication, ActivityStreamHawkResponseMiddleware)
+    ActivityStreamAuthentication,
+    ActivityStreamHawkResponseMiddleware,
+)
 from activitystream.filters import ActivityStreamHCSATFilter, SubmissionFilter
 from activitystream.pagination import ActivityStreamHCSATPagination
 from activitystream.serializers import (
     ActivityStreamDomesticHCSATUserFeedbackDataSerializer,
-    SubmissionSerializer)
+    SubmissionSerializer,
+)
 from submission import constants
 from submission.models import Submission
 

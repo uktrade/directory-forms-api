@@ -271,4 +271,3 @@ def test_gov_notify_letter_action_serializer_from_submission(
             "name": gov_notify_letter_submission.data["name"],
         },
     }
-

@@ -53,24 +53,24 @@ class ActivityStreamDomesticHCSATUserFeedbackDataSerializer(serializers.Serializ
         type = "Update"
 
         return {
-            "id": f"{prefix}:{instance.id}:{type}",
+            "id": f"{prefix}:{instance['id']}:{type}",
             "type": f"{type}",
             "object": {
-                "id": f"{prefix}:{instance.data['id']}",
+                "id": f"{prefix}:{instance['id']}",
                 "type": prefix,
-                "feedback_submission_date": instance.created,
-                "url": instance.data["URL"],
-                "user_journey": instance.data["user_journey"],
-                "satisfaction_rating": instance.data["satisfaction_rating"],
-                "experienced_issues": instance.data["experienced_issues"],
-                "other_detail": instance.data["other_detail"],
-                "service_improvements_feedback": instance.data[
+                "feedback_submission_date": instance["feedback_submission_date"],
+                "url": instance["url"],
+                "user_journey": instance["user_journey"],
+                "satisfaction_rating": instance["satisfaction_rating"],
+                "experienced_issues": instance["experienced_issues"],
+                "other_detail": instance["other_detail"],
+                "service_improvements_feedback": instance[
                     "service_improvements_feedback"
                 ],
-                "likelihood_of_return": instance.data["likelihood_of_return"],
-                "service_name": instance.data["service_name"],
-                "service_specific_feedback": instance.data["service_specific_feedback"],
-                "service_specific_feedback_other": instance.data[
+                "likelihood_of_return": instance["likelihood_of_return"],
+                "service_name": instance["service_name"],
+                "service_specific_feedback": instance["service_specific_feedback"],
+                "service_specific_feedback_other": instance[
                     "service_specific_feedback_other"
                 ],
             },

@@ -23,7 +23,11 @@ def clear_cache():
 
 @pytest.fixture
 def api_client(settings, user):
-    settings.SIGAUTH_URL_NAMES_WHITELIST = ["submission", "gov-notify-bulk-email", "hcsat-feedback-submission"]
+    settings.SIGAUTH_URL_NAMES_WHITELIST = [
+        "submission",
+        "gov-notify-bulk-email",
+        "hcsat-feedback-submission",
+    ]
     client = APIClient()
     client.force_authenticate(user=user)
     return client

@@ -1,10 +1,11 @@
-from freezegun import freeze_time
 import pytest
+from freezegun import freeze_time
 
 from activitystream.serializers import (
     ActivityStreamDomesticHCSATUserFeedbackDataSerializer,
 )
 from submission.tests.factories import SubmissionFactory
+
 
 @pytest.mark.django_db
 def test_domestic_hcsat_feedback_serializer(submission_instance):

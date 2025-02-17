@@ -1,4 +1,3 @@
-from datetime import datetime
 from unittest import mock
 
 import pytest
@@ -226,14 +225,12 @@ def mock_middleware_test_sig():
 
 
 @pytest.fixture(autouse=False)
-def hcsat_instance():
-    dtm = datetime.now()
+def hcsat_bulk_instance():
     return {
-        "action_name": constants.ACTION_NAME_HCSAT_SUBMISSION,
         "hcsat_feedback_entries": [
             {
                 "id": "1",
-                "feedback_submission_date": dtm,
+                "feedback_submission_date": "2012-01-14 12:00:02",
                 "url": "https://great.gov.uk/export-academy",
                 "user_journey": "xxxx",
                 "satisfaction_rating": "xxxx",
@@ -247,7 +244,7 @@ def hcsat_instance():
             },
             {
                 "id": "2",
-                "feedback_submission_date": dtm,
+                "feedback_submission_date": "2012-01-14 12:00:02",
                 "url": "https://great.gov.uk/export-academy",
                 "user_journey": "xxxx",
                 "satisfaction_rating": "xxx",
@@ -260,5 +257,31 @@ def hcsat_instance():
                 "service_specific_feedback_other": "xxxx",
             },
         ],
-        'meta': {},
+        'meta': {
+            'action_name': constants.ACTION_NAME_HCSAT_SUBMISSION,
+        },
     }
+
+
+@pytest.fixture(autouse=False)
+def submission_instance():
+
+    return {
+        'data': {
+            "id": "1",
+            "feedback_submission_date": "2012-01-14 12:00:02",
+            "url": "https://great.gov.uk/export-academy",
+            "user_journey": "xxxx",
+            "satisfaction_rating": "xxxx",
+            "experienced_issues": ["xxxx"],
+            "other_detail": "xxxx",
+            "service_improvements_feedback": "xxxx",
+            "likelihood_of_return": "xxxx",
+            "service_name": "export-academy",
+            "service_specific_feedback": ["xxxx"],
+            "service_specific_feedback_other": "xxxx",
+        },
+        'meta': {
+            'action_name': constants.ACTION_NAME_HCSAT_SUBMISSION,
+        },
+     }

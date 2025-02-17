@@ -309,6 +309,7 @@ SIGAUTH_URL_NAMES_WHITELIST = [
     "ping",  # health check
     "pingdom",  # health check
     "activity-stream",  # activity stream
+    "activity-stream-hcsat",  # hcsat activity stream
     "schema",
     "swagger-ui",
     "redoc",

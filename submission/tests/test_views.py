@@ -543,11 +543,13 @@ class TestBulkGovNotifyEmail:
 
 
 @pytest.mark.django_db
-def test_hcsat_submmission_success(api_client, hcsat_instance):
+def test_hcsat_submmission_success(api_client, hcsat_bulk_instance):
     assert models.Submission.objects.count() == 0
 
     response = api_client.post(
-        reverse("api_v2:hcsat-feedback-submission"), data=hcsat_instance, format="json"
+        reverse("api_v2:hcsat-feedback-submission"),
+        data=hcsat_bulk_instance,
+        format="json",
     )
 
     assert response.status_code == 201
@@ -558,14 +560,16 @@ def test_hcsat_submmission_success(api_client, hcsat_instance):
 
 
 @pytest.mark.django_db
-def test_hcsat_submmission_bad_input_failure(api_client, hcsat_instance):
+def test_hcsat_submmission_bad_input_failure(api_client, hcsat_bulk_instance):
     assert models.Submission.objects.count() == 0
 
     # Malform the data payload
-    del hcsat_instance["hcsat_feedback_entries"]
+    del hcsat_bulk_instance["hcsat_feedback_entries"]
 
     response = api_client.post(
-        reverse("api_v2:hcsat-feedback-submission"), data=hcsat_instance, format="json"
+        reverse("api_v2:hcsat-feedback-submission"),
+        data=hcsat_bulk_instance,
+        format="json",
     )
 
     assert response.status_code == 400

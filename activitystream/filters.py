@@ -23,14 +23,3 @@ class SubmissionFilter(FilterSet):
     class Meta:
         model = Submission
         fields = ["after"]
-
-
-class ActivityStreamHCSATFilter(FilterSet):
-    after = CharFilter(method="filter_after")
-
-    def filter_after(self, queryset, name, value):
-        value = value or "0.000000"
-        after_ts = datetime.datetime.fromtimestamp(
-            float(value), tz=datetime.timezone.utc
-        )
-        return queryset.filter(modified__gt=after_ts)

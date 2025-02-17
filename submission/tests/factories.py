@@ -1,3 +1,5 @@
+from datetime import datetime
+
 import factory
 import factory.fuzzy
 
@@ -28,6 +30,17 @@ class SubmissionFactory(factory.django.DjangoModelFactory):
     sender = factory.SubFactory(SenderFactory)
 
     is_sent = True
+
+    class Meta:
+        model = models.Submission
+
+
+class HCSatFactory(factory.django.DjangoModelFactory):
+    data = {}
+    meta = {}
+
+    client = factory.SubFactory(ClientFactory)
+    sender = factory.SubFactory(SenderFactory)
 
     class Meta:
         model = models.Submission

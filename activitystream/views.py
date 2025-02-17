@@ -1,4 +1,3 @@
-import django_filters.rest_framework
 from django.utils.decorators import decorator_from_middleware
 from drf_spectacular.types import OpenApiTypes
 from drf_spectacular.utils import OpenApiExample, OpenApiParameter, extend_schema
@@ -10,12 +9,8 @@ from activitystream.authentication import (
     ActivityStreamAuthentication,
     ActivityStreamHawkResponseMiddleware,
 )
-from activitystream.filters import ActivityStreamHCSATFilter, SubmissionFilter
-from activitystream.pagination import ActivityStreamHCSATPagination
-from activitystream.serializers import (
-    ActivityStreamDomesticHCSATUserFeedbackDataSerializer,
-    SubmissionSerializer,
-)
+from activitystream.filters import SubmissionFilter
+from activitystream.serializers import SubmissionSerializer
 from submission import constants
 from submission.models import Submission
 
@@ -62,7 +57,7 @@ class ActivityStreamView(ListAPIView):
         """A single page of activities"""
         filter = SubmissionFilter(
             request.GET,
-            queryset=Submission.objects.exclude(
+            queryset=Submission.objects.all().exclude(
                 meta__action_name=constants.ACTION_NAME_HCSAT_SUBMISSION
             ),
         )
@@ -74,9 +69,6 @@ class ActivityStreamView(ListAPIView):
             "orderedItems": SubmissionSerializer(page_qs, many=True).data,
         }
 
-        return self.return_response(request, page_qs, items)
-
-    def return_response(self, request, page_qs, items):
         if not page_qs:
             next_page = {}
         else:
@@ -95,29 +87,37 @@ class ActivityStreamView(ListAPIView):
         )
 
 
-class ActivityStreamBaseView(ListAPIView):
-    authentication_classes = (ActivityStreamAuthentication,)
-    permission_classes = ()
-    filter_backends = [django_filters.rest_framework.DjangoFilterBackend]
+class ActivityStreamDomesticHCSATFeedbackDataView(ActivityStreamView):
 
-    @decorator_from_middleware(ActivityStreamHawkResponseMiddleware)
-    def list(self, request, *args, **kwargs):
-        """A single page of activities to be consumed by activity stream."""
-        return super().list(request, *args, **kwargs)
+    def list(self, request):
+        """A single page of activities"""
+        filter = SubmissionFilter(
+            request.GET,
+            queryset=Submission.objects.all().filter(
+                meta__action_name=constants.ACTION_NAME_HCSAT_SUBMISSION
+            ),
+        )
 
+        page_qs = filter.qs.order_by("created", "id")[:MAX_PER_PAGE]
+        items = {
+            "@context": "https://www.w3.org/ns/activitystreams",
+            "type": "Collection",
+            "orderedItems": SubmissionSerializer(page_qs, many=True).data,
+        }
 
-class ActivityStreamHCSATBaseView(ActivityStreamBaseView):
-    filterset_class = ActivityStreamHCSATFilter
-    pagination_class = ActivityStreamHCSATPagination
+        if not page_qs:
+            next_page = {}
+        else:
+            last_submission = page_qs[len(page_qs) - 1]
+            next_page = {
+                "next": self._build_after(
+                    request, last_submission.created, last_submission.id
+                )
+            }
 
-    def get_queryset(self):
-        return self.queryset.order_by('id')
-
-
-class ActivityStreamDomesticHCSATFeedbackDataView(ActivityStreamHCSATBaseView):
-    """View to list domestic HCSAT feedback data for the activity stream"""
-
-    queryset = Submission.objects.filter(
-        meta__action_name=constants.ACTION_NAME_HCSAT_SUBMISSION
-    )
-    serializer_class = ActivityStreamDomesticHCSATUserFeedbackDataSerializer
+        return Response(
+            {
+                **items,
+                **next_page,
+            }
+        )

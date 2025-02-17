@@ -272,3 +272,92 @@ def test_pagination(
     assert len(items) == 50
     assert len(set([item["id"] for item in items])) == 50  # All unique
     assert submission_attribute(items[49], "url") == "submission_24"
+
+
+@pytest.mark.django_db
+def test_hcsat_if_61_seconds_in_past_401_returned(api_client):
+    """If the Authorization header is generated 61 seconds in the past, then a
+    401 is returned
+    """
+    past = timezone.now() - datetime.timedelta(seconds=61)
+    with freeze_time(past):
+        auth = auth_sender().request_header
+    response = api_client.get(
+        reverse("activity-stream-hcsat"),
+        content_type="",
+        HTTP_AUTHORIZATION=auth,
+        HTTP_X_FORWARDED_FOR="1.2.3.4, 123.123.123.123",
+    )
+
+    assert response.status_code == status.HTTP_401_UNAUTHORIZED
+    error = {"detail": "Incorrect authentication credentials."}
+    assert response.json() == error
+
+
+@pytest.mark.django_db
+def test_hcsat_success(api_client, submission_instance):
+
+    with freeze_time("2012-01-14 12:00:01"):
+        for i in range(0, 2):
+            SubmissionFactory(
+                form_url="submission_{}".format(i),
+                data=submission_instance["data"],
+                meta=submission_instance["meta"],
+            )
+
+        sender = auth_sender(url=URL2)
+
+        response = api_client.get(
+            URL2,
+            content_type="",
+            HTTP_AUTHORIZATION=sender.request_header,
+            HTTP_X_FORWARDED_FOR="1.2.3.4, 123.123.123.123",
+        )
+
+    expected = {
+        "@context": "https://www.w3.org/ns/activitystreams",
+        "type": "Collection",
+        "orderedItems": [
+            {
+                "id": "dit:domestic:HCSATFeedbackData:1:Update",
+                "type": "Update",
+                "object": {
+                    "id": "dit:domestic:HCSATFeedbackData:1",
+                    "type": "dit:domestic:HCSATFeedbackData",
+                    "feedback_submission_date": "2012-01-14 12:00:02",
+                    "url": "https://great.gov.uk/export-academy",
+                    "user_journey": "xxxx",
+                    "satisfaction_rating": "xxxx",
+                    "experienced_issues": ["xxxx"],
+                    "other_detail": "xxxx",
+                    "service_improvements_feedback": "xxxx",
+                    "likelihood_of_return": "xxxx",
+                    "service_name": "export-academy",
+                    "service_specific_feedback": ["xxxx"],
+                    "service_specific_feedback_other": "xxxx",
+                },
+            },
+            {
+                "id": "dit:domestic:HCSATFeedbackData:2:Update",
+                "type": "Update",
+                "object": {
+                    "id": "dit:domestic:HCSATFeedbackData:1",
+                    "type": "dit:domestic:HCSATFeedbackData",
+                    "feedback_submission_date": "2012-01-14 12:00:02",
+                    "url": "https://great.gov.uk/export-academy",
+                    "user_journey": "xxxx",
+                    "satisfaction_rating": "xxxx",
+                    "experienced_issues": ["xxxx"],
+                    "other_detail": "xxxx",
+                    "service_improvements_feedback": "xxxx",
+                    "likelihood_of_return": "xxxx",
+                    "service_name": "export-academy",
+                    "service_specific_feedback": ["xxxx"],
+                    "service_specific_feedback_other": "xxxx",
+                },
+            },
+        ],
+        "next": "http://testserver/activity-stream/v1/?after=1326542401.0_2",
+    }
+    assert response.status_code == status.HTTP_200_OK
+    assert response.json() == expected

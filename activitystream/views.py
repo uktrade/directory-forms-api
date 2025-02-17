@@ -10,7 +10,10 @@ from activitystream.authentication import (
     ActivityStreamHawkResponseMiddleware,
 )
 from activitystream.filters import SubmissionFilter
-from activitystream.serializers import SubmissionSerializer
+from activitystream.serializers import (
+    ActivityStreamDomesticHCSATUserFeedbackDataSerializer,
+    SubmissionSerializer,
+)
 from submission import constants
 from submission.models import Submission
 
@@ -102,7 +105,9 @@ class ActivityStreamDomesticHCSATFeedbackDataView(ActivityStreamView):
         items = {
             "@context": "https://www.w3.org/ns/activitystreams",
             "type": "Collection",
-            "orderedItems": SubmissionSerializer(page_qs, many=True).data,
+            "orderedItems": ActivityStreamDomesticHCSATUserFeedbackDataSerializer(
+                page_qs, many=True
+            ).data,
         }
 
         if not page_qs:

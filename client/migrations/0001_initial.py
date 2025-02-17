@@ -15,24 +15,61 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='Client',
+            name="Client",
             fields=[
-                ('created', django_extensions.db.fields.CreationDateTimeField(auto_now_add=True, null=True, verbose_name='created')),
-                ('modified', django_extensions.db.fields.ModificationDateTimeField(auto_now=True, null=True, verbose_name='modified')),
-                ('identifier', models.UUIDField(default=uuid.uuid4, primary_key=True, serialize=False, unique=True)),
-                ('access_key', django_cryptography.fields.encrypt(models.CharField(default=functools.partial(django.utils.crypto.get_random_string, *(), **{'length': 64}), help_text='Value is plain text during create. Hashed on edit.', max_length=128))),
-                ('name', models.CharField(help_text='Human friendly name to help identify the record.', max_length=150, unique=True)),
-                ('is_active', models.BooleanField(default=True)),
+                (
+                    "created",
+                    django_extensions.db.fields.CreationDateTimeField(
+                        auto_now_add=True, null=True, verbose_name="created"
+                    ),
+                ),
+                (
+                    "modified",
+                    django_extensions.db.fields.ModificationDateTimeField(
+                        auto_now=True, null=True, verbose_name="modified"
+                    ),
+                ),
+                (
+                    "identifier",
+                    models.UUIDField(
+                        default=uuid.uuid4,
+                        primary_key=True,
+                        serialize=False,
+                        unique=True,
+                    ),
+                ),
+                (
+                    "access_key",
+                    django_cryptography.fields.encrypt(
+                        models.CharField(
+                            default=functools.partial(
+                                django.utils.crypto.get_random_string,
+                                *(),
+                                **{"length": 64}
+                            ),
+                            help_text="Value is plain text during create. Hashed on edit.",
+                            max_length=128,
+                        )
+                    ),
+                ),
+                (
+                    "name",
+                    models.CharField(
+                        help_text="Human friendly name to help identify the record.",
+                        max_length=150,
+                        unique=True,
+                    ),
+                ),
+                ("is_active", models.BooleanField(default=True)),
             ],
             options={
-                'ordering': ('-modified', '-created'),
-                'get_latest_by': 'modified',
-                'abstract': False,
+                "ordering": ("-modified", "-created"),
+                "get_latest_by": "modified",
+                "abstract": False,
             },
         ),
     ]

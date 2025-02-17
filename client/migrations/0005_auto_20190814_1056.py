@@ -13,18 +13,32 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('client', '0004_remove_client_zendesk_service_name'),
+        ("client", "0004_remove_client_zendesk_service_name"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='client',
-            name='access_key',
-            field=django_cryptography.fields.encrypt(models.CharField(default=functools.partial(django.utils.crypto.get_random_string, *(), **{'length': 64}), max_length=128, verbose_name='API key')),
+            model_name="client",
+            name="access_key",
+            field=django_cryptography.fields.encrypt(
+                models.CharField(
+                    default=functools.partial(
+                        django.utils.crypto.get_random_string, *(), **{"length": 64}
+                    ),
+                    max_length=128,
+                    verbose_name="API key",
+                )
+            ),
         ),
         migrations.AlterField(
-            model_name='client',
-            name='identifier',
-            field=models.UUIDField(default=uuid.uuid4, primary_key=True, serialize=False, unique=True, verbose_name='Sender ID'),
+            model_name="client",
+            name="identifier",
+            field=models.UUIDField(
+                default=uuid.uuid4,
+                primary_key=True,
+                serialize=False,
+                unique=True,
+                verbose_name="Sender ID",
+            ),
         ),
     ]

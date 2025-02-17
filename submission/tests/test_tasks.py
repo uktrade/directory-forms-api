@@ -11,13 +11,13 @@ from submission.models import Submission
 from submission.tests.factories import SubmissionFactory
 
 
-@mock.patch('submission.helpers.send_email')
+@mock.patch("submission.helpers.send_email")
 def test_task_send_email(mock_send_email):
     kwargs = {
-        'subject': 'this thing',
-        'reply_to': ['reply@example.com'],
-        'recipients': ['to@example.com'],
-        'text_body': 'Hello',
+        "subject": "this thing",
+        "reply_to": ["reply@example.com"],
+        "recipients": ["to@example.com"],
+        "text_body": "Hello",
     }
     tasks.send_email(submission_id=1, **kwargs)
 
@@ -25,14 +25,14 @@ def test_task_send_email(mock_send_email):
     assert mock_send_email.call_args == mock.call(**kwargs)
 
 
-@mock.patch('submission.helpers.create_zendesk_ticket')
+@mock.patch("submission.helpers.create_zendesk_ticket")
 def test_create_zendesk_ticket(mock_create_zendesk_ticket):
     kwargs = {
-        'subject': 'subject123',
-        'full_name': 'jim example',
-        'email_address': 'test@example.com',
-        'payload': {'field': 'value'},
-        'service_name': 'some-service',
+        "subject": "subject123",
+        "full_name": "jim example",
+        "email_address": "test@example.com",
+        "payload": {"field": "value"},
+        "service_name": "some-service",
     }
     tasks.create_zendesk_ticket(submission_id=1, **kwargs)
 
@@ -40,13 +40,13 @@ def test_create_zendesk_ticket(mock_create_zendesk_ticket):
     assert mock_create_zendesk_ticket.call_args == mock.call(**kwargs)
 
 
-@mock.patch('submission.helpers.send_gov_notify_email')
+@mock.patch("submission.helpers.send_gov_notify_email")
 def test_task_send_gov_notify_email(mock_send_gov_notify_email):
     kwargs = {
-        'subject': 'this thing',
-        'reply_to': ['reply@example.com'],
-        'recipients': ['to@example.com'],
-        'text_body': 'Hello',
+        "subject": "this thing",
+        "reply_to": ["reply@example.com"],
+        "recipients": ["to@example.com"],
+        "text_body": "Hello",
     }
     tasks.send_gov_notify_email(submission_id=1, **kwargs)
 
@@ -55,18 +55,18 @@ def test_task_send_gov_notify_email(mock_send_gov_notify_email):
 
 
 @pytest.mark.django_db
-@mock.patch('submission.helpers.send_gov_notify_email')
+@mock.patch("submission.helpers.send_gov_notify_email")
 def test_task_send_gov_notify_bulk_email(mock_send_gov_notify_email):
     # create 5x fake submissions - one already marked as sent, one expired, one with the wrong action and two active.
     # We expect only the action active submissions to be called
     meta = {
-        'action_name': ACTION_NAME_GOV_NOTIFY_BULK_EMAIL,
-        'recipients': ['foo@bar.com'],
-        'form_url': '/the/form/tests',
-        'funnel_steps': ['one', 'two', 'three'],
-        'reply_to': 'test@testsubmission.com',
-        'email_address': 'hello@acme.com',
-        'template_id': '123456'
+        "action_name": ACTION_NAME_GOV_NOTIFY_BULK_EMAIL,
+        "recipients": ["foo@bar.com"],
+        "form_url": "/the/form/tests",
+        "funnel_steps": ["one", "two", "three"],
+        "reply_to": "test@testsubmission.com",
+        "email_address": "hello@acme.com",
+        "template_id": "123456",
     }
 
     # Valid Submissions
@@ -77,14 +77,14 @@ def test_task_send_gov_notify_bulk_email(mock_send_gov_notify_email):
     SubmissionFactory(meta=meta)
 
     # Expired submission
-    time_delay = (timezone.now() - timedelta(hours=settings.SUBMISSION_FILTER_HOURS + 1))
+    time_delay = timezone.now() - timedelta(hours=settings.SUBMISSION_FILTER_HOURS + 1)
     expired_submission = SubmissionFactory(meta=meta, created=time_delay, is_sent=False)
     expired_submission.created = time_delay
     expired_submission.save()
 
     # Submissions with a different action
     meta_with_different_action = meta
-    meta_with_different_action['action_name'] = 'A_DIFFERENT_ACTION'
+    meta_with_different_action["action_name"] = "A_DIFFERENT_ACTION"
     SubmissionFactory(meta=meta_with_different_action, is_sent=False)
 
     # Run the task
@@ -95,15 +95,17 @@ def test_task_send_gov_notify_bulk_email(mock_send_gov_notify_email):
 
     # Assert all submissions are now marked as sent
     submissions = Submission.objects.all()
-    submissions = [x for x in submissions if x.action_name == ACTION_NAME_GOV_NOTIFY_BULK_EMAIL]
+    submissions = [
+        x for x in submissions if x.action_name == ACTION_NAME_GOV_NOTIFY_BULK_EMAIL
+    ]
     assert [x.is_sent for x in submissions]
 
 
-@mock.patch('submission.helpers.send_gov_notify_letter')
+@mock.patch("submission.helpers.send_gov_notify_letter")
 def test_task_send_gov_notify_letter(mock_send_gov_notify_letter):
     kwargs = {
-        'template_id': '123456',
-        'personalisation': 'Hello',
+        "template_id": "123456",
+        "personalisation": "Hello",
     }
     tasks.send_gov_notify_letter(submission_id=1, **kwargs)
 
@@ -111,11 +113,11 @@ def test_task_send_gov_notify_letter(mock_send_gov_notify_letter):
     assert mock_send_gov_notify_letter.call_args == mock.call(**kwargs)
 
 
-@mock.patch('submission.helpers.send_pardot')
+@mock.patch("submission.helpers.send_pardot")
 def test_task_send_pardot(mock_send_pardot):
     kwargs = {
-        'pardot_url': 'http://www.example.com/some/submission/path/',
-        'payload': {'field': 'value'},
+        "pardot_url": "http://www.example.com/some/submission/path/",
+        "payload": {"field": "value"},
     }
     tasks.send_pardot(submission_id=1, **kwargs)
 
@@ -124,10 +126,9 @@ def test_task_send_pardot(mock_send_pardot):
 
 
 @pytest.mark.django_db
-@mock.patch('submission.helpers.send_gov_notify_email')
+@mock.patch("submission.helpers.send_gov_notify_email")
 def test_task_send_buy_from_uk_enquiries_as_csv(mock_send_gov_notify_email):
-    kwargs = {
-    }
+    kwargs = {}
     tasks.send_buy_from_uk_enquiries_as_csv(**kwargs)
 
     assert mock_send_gov_notify_email.call_count == 1

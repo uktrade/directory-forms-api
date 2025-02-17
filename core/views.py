@@ -16,9 +16,9 @@ HEALTH_CHECK_EXCEPTION = 1
 
 
 class PingDomView(TemplateView):
-    template_name = 'directory_healthcheck/pingdom.xml'
+    template_name = "directory_healthcheck/pingdom.xml"
 
-    status = 'OK'
+    status = "OK"
 
     @method_decorator(never_cache)
     def get(self, *args, **kwargs):
@@ -29,17 +29,23 @@ class PingDomView(TemplateView):
 
         if all(item[HEALTH_CHECK_STATUS] for item in checked.values()):
             return HttpResponse(
-                render_to_string(self.template_name, {'status': self.status, 'errors': []}),
+                render_to_string(
+                    self.template_name, {"status": self.status, "errors": []}
+                ),
                 status=200,
-                content_type='text/xml',
+                content_type="text/xml",
             )
         else:
-            self.status = 'FALSE'
+            self.status = "FALSE"
             errors = []
-            for service_result in filter(lambda x: x[HEALTH_CHECK_STATUS] is False, checked.values()):
+            for service_result in filter(
+                lambda x: x[HEALTH_CHECK_STATUS] is False, checked.values()
+            ):
                 errors.append(service_result[HEALTH_CHECK_EXCEPTION])
             return HttpResponse(
-                render_to_string(self.template_name, {'status': self.status, 'errors': errors}),
+                render_to_string(
+                    self.template_name, {"status": self.status, "errors": errors}
+                ),
                 status=500,
-                content_type='text/xml',
+                content_type="text/xml",
             )

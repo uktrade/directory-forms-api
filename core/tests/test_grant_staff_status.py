@@ -5,12 +5,12 @@ from django.core.management import call_command
 
 @pytest.mark.django_db
 def test_grant_staff_status():
-    username = 'testuser@.com'
+    username = "testuser@.com"
     user = User.objects.create_user(username=username)
     user.save()
 
     assert user.is_staff is False
-    call_command('grant_staff_status', username)
+    call_command("grant_staff_status", username)
     user.refresh_from_db()
     assert user.is_staff is True
 
@@ -18,5 +18,5 @@ def test_grant_staff_status():
 @pytest.mark.django_db
 def test_grant_staff_status_user_no_found():
 
-    username = 'testuser@testuser.com'
-    call_command('grant_staff_status', username)
+    username = "testuser@testuser.com"
+    call_command("grant_staff_status", username)

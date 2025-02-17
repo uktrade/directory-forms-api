@@ -16,9 +16,9 @@ def lookup_credentials(access_key_id):
     if not constant_time_compare(access_key_id, settings.ACTIVITY_STREAM_ACCESS_KEY_ID):
         raise HawkFail(f'No Hawk ID of {access_key_id}')
     return {
-        'id': settings.ACTIVITY_STREAM_ACCESS_KEY_ID,
-        'key': settings.ACTIVITY_STREAM_SECRET_ACCESS_KEY,
-        'algorithm': 'sha256',
+        "id": settings.ACTIVITY_STREAM_ACCESS_KEY_ID,
+        "key": settings.ACTIVITY_STREAM_SECRET_ACCESS_KEY,
+        "algorithm": "sha256",
     }
 
 
@@ -26,10 +26,14 @@ def seen_nonce(access_key_id, nonce, _):
     """Returns if the passed access_key_id/nonce combination has been
     used within 60 seconds
     """
-    cache_key = f'activity_stream:{access_key_id}:{nonce}'
+    cache_key = f"activity_stream:{access_key_id}:{nonce}"
 
     # cache.add only adds key if it isn't present
-    seen_cache_key = not cache.add(cache_key, True, timeout=60,)
+    seen_cache_key = not cache.add(
+        cache_key,
+        True,
+        timeout=60,
+    )
 
     if seen_cache_key:
         logger.warning(f'Already seen nonce {nonce}')
@@ -41,7 +45,7 @@ def authorise(request):
     """Raises a HawkFail if the passed request cannot be authenticated"""
     return Receiver(
         lookup_credentials,
-        request.META['HTTP_AUTHORIZATION'],
+        request.META["HTTP_AUTHORIZATION"],
         request.build_absolute_uri(),
         request.method,
         content=request.body,

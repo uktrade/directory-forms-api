@@ -8,13 +8,13 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('submission', '0003_auto_20181122_1553'),
+        ("submission", "0003_auto_20181122_1553"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='submission',
-            name='form_url',
+            model_name="submission",
+            name="form_url",
             field=models.TextField(blank=True, null=True),
         ),
     ]

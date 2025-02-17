@@ -3,20 +3,16 @@ from sigauth.helpers import RequestSignatureChecker
 
 from client import models
 
-MESSAGE_UNKNOWN_SENDER = 'Unknown sender'
-MESSAGE_INVALID_SENDER = 'Invalid sender'
-MESSAGE_INACTIVE_SENDER = 'Inactive sender'
+MESSAGE_UNKNOWN_SENDER = "Unknown sender"
+MESSAGE_INVALID_SENDER = "Invalid sender"
+MESSAGE_INACTIVE_SENDER = "Inactive sender"
 
 
 class RequestSignatureChecker(RequestSignatureChecker):
 
     def lookup_credentials(self, sender_id):
         client = lookup_client(sender_id)
-        return {
-            'id': sender_id,
-            'key': client.access_key,
-            'algorithm': self.algorithm
-        }
+        return {"id": sender_id, "key": client.access_key, "algorithm": self.algorithm}
 
 
 def lookup_client(identifier):

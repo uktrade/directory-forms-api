@@ -9,9 +9,5 @@ class TestView(View):
 
 
 urlpatterns = [
-    re_path(
-        r'^test/$',
-        TestView.as_view(),
-        name='test_view'
-    ),
+    re_path(r"^test/$", TestView.as_view(), name="test_view"),
 ]

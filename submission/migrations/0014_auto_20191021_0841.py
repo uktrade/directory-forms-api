@@ -6,20 +6,18 @@ from django.db import migrations
 
 
 def update_blacklist_reason(apps, schema_editor):
-    Sender = apps.get_model('submission', 'Sender')
+    Sender = apps.get_model("submission", "Sender")
     for sender in Sender.objects.filter(is_blacklisted=True):
-        sender.blacklisted_reason = 'MA'
+        sender.blacklisted_reason = "MA"
         sender.save()
 
 
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('submission', '0013_auto_20191017_1108'),
+        ("submission", "0013_auto_20191017_1108"),
     ]
 
     operations = [
-        migrations.RunPython(
-            update_blacklist_reason, migrations.RunPython.noop
-        ),
+        migrations.RunPython(update_blacklist_reason, migrations.RunPython.noop),
     ]

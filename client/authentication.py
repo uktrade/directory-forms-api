@@ -14,7 +14,7 @@ class ClientSenderIdAuthentication(authentication.BaseAuthentication):
             header = request.META.get(RequestSignatureChecker.authorisation_header_name)
 
         parsed_header = parse_authorization_header(header)
-        return self.authenticate_credentials(parsed_header['id'])
+        return self.authenticate_credentials(parsed_header["id"])
 
     def authenticate_credentials(self, client_identifier):
         try:

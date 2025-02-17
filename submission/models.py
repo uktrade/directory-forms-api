@@ -7,22 +7,22 @@ from submission import constants, helpers
 class Submission(core.helpers.TimeStampedModel):
 
     class Meta:
-        ordering = ['-created']
+        ordering = ["-created"]
 
     data = models.JSONField()
     meta = models.JSONField()
     is_sent = models.BooleanField(default=False)
     form_url = models.TextField(blank=True, null=True)
     client = models.ForeignKey(
-        'client.Client',
-        related_name='submissions',
+        "client.Client",
+        related_name="submissions",
         blank=True,
         null=True,
         on_delete=models.CASCADE,
     )
     sender = models.ForeignKey(
-        'submission.Sender',
-        related_name='submissions',
+        "submission.Sender",
+        related_name="submissions",
         blank=True,
         null=True,
         on_delete=models.CASCADE,
@@ -30,7 +30,7 @@ class Submission(core.helpers.TimeStampedModel):
 
     @property
     def action_name(self):
-        return self.meta.get('action_name', 'unknown action')
+        return self.meta.get("action_name", "unknown action")
 
     @property
     def recipient_email(self):
@@ -41,19 +41,19 @@ class Submission(core.helpers.TimeStampedModel):
         # This is to allow filtering in activity stream
         # Temp solution we should move this to a more generic solution
         if self.client:
-            return ''.join(self.client.name.split())
+            return "".join(self.client.name.split())
         else:
-            return 'Unknown'
+            return "Unknown"
 
     @property
     def funnel(self):
-        return self.meta.get('funnel_steps', [])
+        return self.meta.get("funnel_steps", [])
 
     @property
     def ip_address(self):
-        sender = self.meta.get('sender')
+        sender = self.meta.get("sender")
         if sender:
-            return sender.get('ip_address')
+            return sender.get("ip_address")
         return
 
 
@@ -63,7 +63,10 @@ class Sender(core.helpers.TimeStampedModel):
     is_blacklisted = models.BooleanField(default=False)
     is_whitelisted = models.BooleanField(default=False)
     blacklisted_reason = models.CharField(
-        max_length=15, choices=constants.BLACKLISTED_REASON_CHOICES, blank=True, null=True
+        max_length=15,
+        choices=constants.BLACKLISTED_REASON_CHOICES,
+        blank=True,
+        null=True,
     )
 
     def __str__(self):

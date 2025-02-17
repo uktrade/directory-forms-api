@@ -5,20 +5,33 @@ from client import models
 
 @admin.register(models.Client)
 class ClientAdmin(admin.ModelAdmin):
-    search_fields = ('name',)
-    list_display = ('name', 'identifier', 'is_active',)
-    list_filter = ('created', 'is_active',)
+    search_fields = ("name",)
+    list_display = (
+        "name",
+        "identifier",
+        "is_active",
+    )
+    list_filter = (
+        "created",
+        "is_active",
+    )
 
-    MESSAGE_CREATE = 'Client {obj.identifier} created. Key: {obj.access_key}'
+    MESSAGE_CREATE = "Client {obj.identifier} created. Key: {obj.access_key}"
 
     def get_exclude(self, request, obj=None):
         if obj:
-            return ('access_key',)
-        return ('identifier', 'access_key',)
+            return ("access_key",)
+        return (
+            "identifier",
+            "access_key",
+        )
 
     def get_readonly_fields(self, request, obj=None):
         if obj:
-            return ('identifier', 'access_key',)
+            return (
+                "identifier",
+                "access_key",
+            )
         return []
 
     def save_model(self, request, obj, form, change):

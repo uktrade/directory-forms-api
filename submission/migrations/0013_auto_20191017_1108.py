@@ -8,13 +8,18 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('submission', '0012_auto_20190705_1706'),
+        ("submission", "0012_auto_20190705_1706"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='sender',
-            name='blacklisted_reason',
-            field=models.CharField(blank=True, choices=[('MA', 'Manual'), ('IP', 'IP Restricted')], max_length=15, null=True),
+            model_name="sender",
+            name="blacklisted_reason",
+            field=models.CharField(
+                blank=True,
+                choices=[("MA", "Manual"), ("IP", "IP Restricted")],
+                max_length=15,
+                null=True,
+            ),
         ),
     ]

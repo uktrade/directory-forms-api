@@ -6,18 +6,18 @@ from django.db import migrations
 
 
 def get_sender_email_address(submission_meta):
-    action_name = submission_meta['action_name']
-    if action_name == 'zendesk':
-        return submission_meta['email_address']
-    elif action_name == 'email':
-        return submission_meta['reply_to'][0]
-    elif action_name == 'gov-notify':
-        return submission_meta['email_address']
+    action_name = submission_meta["action_name"]
+    if action_name == "zendesk":
+        return submission_meta["email_address"]
+    elif action_name == "email":
+        return submission_meta["reply_to"][0]
+    elif action_name == "gov-notify":
+        return submission_meta["email_address"]
 
 
 def create_sender(apps, schema_editor):
-    Submission = apps.get_model('submission', 'Submission')
-    Sender = apps.get_model('submission', 'Sender')
+    Submission = apps.get_model("submission", "Submission")
+    Sender = apps.get_model("submission", "Sender")
     for submission in Submission.objects.filter(sender__isnull=True):
         try:
             email = get_sender_email_address(submission.meta)
@@ -32,7 +32,7 @@ def create_sender(apps, schema_editor):
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('submission', '0009_auto_20190109_0904'),
+        ("submission", "0009_auto_20190109_0904"),
     ]
 
     operations = [

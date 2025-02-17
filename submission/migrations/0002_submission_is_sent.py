@@ -8,13 +8,13 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('submission', '0001_initial'),
+        ("submission", "0001_initial"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='submission',
-            name='is_sent',
+            model_name="submission",
+            name="is_sent",
             field=models.BooleanField(default=True),
             preserve_default=False,
         ),

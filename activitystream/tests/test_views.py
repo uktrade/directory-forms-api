@@ -360,5 +360,4 @@ def test_hcsat_success(api_client, submission_instance):
         "next": "http://testserver/activity-stream/v2/?after=1326542401.0_2",
     }
     assert response.status_code == status.HTTP_200_OK
-    breakpoint()
     assert response.json() == expected

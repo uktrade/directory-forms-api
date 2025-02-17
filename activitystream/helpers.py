@@ -14,7 +14,7 @@ def lookup_credentials(access_key_id):
     settings.ACTIVITY_STREAM_ACCESS_KEY_ID
     """
     if not constant_time_compare(access_key_id, settings.ACTIVITY_STREAM_ACCESS_KEY_ID):
-        raise HawkFail(f"No Hawk ID of {access_key_id}")
+        raise HawkFail(f'No Hawk ID of {access_key_id}')
     return {
         "id": settings.ACTIVITY_STREAM_ACCESS_KEY_ID,
         "key": settings.ACTIVITY_STREAM_SECRET_ACCESS_KEY,
@@ -36,7 +36,7 @@ def seen_nonce(access_key_id, nonce, _):
     )
 
     if seen_cache_key:
-        logger.warning(f"Already seen nonce {nonce}")
+        logger.warning(f'Already seen nonce {nonce}')
 
     return seen_cache_key
 

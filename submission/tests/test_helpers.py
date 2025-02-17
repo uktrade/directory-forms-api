@@ -476,5 +476,5 @@ def test_send_buy_from_uk_enquiries_as_csv_with_older_submission(mock_notify_cli
 
 
 def test_get_recipient_email_address_hcsat_submission(hcsat_instance):
-    email = helpers.get_recipient_email_address(hcsat_instance["meta"])
+    email = helpers.get_recipient_email_address(hcsat_instance)
     assert email is None

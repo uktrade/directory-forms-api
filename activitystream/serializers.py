@@ -52,25 +52,34 @@ class ActivityStreamDomesticHCSATUserFeedbackDataSerializer(serializers.Serializ
         prefix = "dit:domestic:HCSATFeedbackData"
         type = "Update"
 
+        try:
+            id = instance.id
+            data = instance.data
+        except AttributeError:
+            id = instance['id']
+            data = instance['data']
+
+        breakpoint()
+    
         return {
-            "id": f"{prefix}:{instance.id}:{type}",
+            "id": f"{prefix}:{id}:{type}",
             "type": f"{type}",
             "object": {
-                "id": f"{prefix}:{instance.data['id']}",
+                "id": f"{prefix}:{data['id']}",
                 "type": prefix,
-                "feedback_submission_date": instance.data["feedback_submission_date"],
-                "url": instance.data["url"],
-                "user_journey": instance.data["user_journey"],
-                "satisfaction_rating": instance.data["satisfaction_rating"],
-                "experienced_issues": instance.data["experienced_issues"],
-                "other_detail": instance.data["other_detail"],
-                "service_improvements_feedback": instance.data[
+                "feedback_submission_date": data["feedback_submission_date"],
+                "url": data["url"],
+                "user_journey": data["user_journey"],
+                "satisfaction_rating": data["satisfaction_rating"],
+                "experienced_issues": data["experienced_issues"],
+                "other_detail": data["other_detail"],
+                "service_improvements_feedback": data[
                     "service_improvements_feedback"
                 ],
-                "likelihood_of_return": instance.data["likelihood_of_return"],
-                "service_name": instance.data["service_name"],
-                "service_specific_feedback": instance.data["service_specific_feedback"],
-                "service_specific_feedback_other": instance.data[
+                "likelihood_of_return": data["likelihood_of_return"],
+                "service_name": data["service_name"],
+                "service_specific_feedback": data["service_specific_feedback"],
+                "service_specific_feedback_other": data[
                     "service_specific_feedback_other"
                 ],
             },

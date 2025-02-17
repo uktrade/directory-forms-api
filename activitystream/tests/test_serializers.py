@@ -6,12 +6,11 @@ from activitystream.serializers import (
 
 
 @pytest.mark.django_db
-def test_domestic_hcsat_feedback_serializer(hcsat_bulk_instance):
+def test_domestic_hcsat_feedback_serializer(submission_instance):
 
     serializer = ActivityStreamDomesticHCSATUserFeedbackDataSerializer()
 
-    data = hcsat_bulk_instance["hcsat_feedback_entries"][0]
-    output = serializer.to_representation(data)
+    output = serializer.to_representation(submission_instance)
 
     # Remove date due to timezone mismatch
 

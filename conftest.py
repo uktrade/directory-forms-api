@@ -267,6 +267,7 @@ def hcsat_bulk_instance():
 def submission_instance():
 
     return {
+        'id': 1,
         'data': {
             "id": "1",
             "feedback_submission_date": "2012-01-14 12:00:02",

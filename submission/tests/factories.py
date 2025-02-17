@@ -31,14 +31,3 @@ class SubmissionFactory(factory.django.DjangoModelFactory):
 
     class Meta:
         model = models.Submission
-
-
-class HCSatFactory(factory.django.DjangoModelFactory):
-    data = {}
-    meta = {}
-
-    client = factory.SubFactory(ClientFactory)
-    sender = factory.SubFactory(SenderFactory)
-
-    class Meta:
-        model = models.Submission

@@ -11,7 +11,7 @@ from rest_framework.test import APIClient
 
 from activitystream.serializers import SubmissionSerializer
 from submission.models import Submission
-from submission.tests.factories import HCSatFactory, SubmissionFactory
+from submission.tests.factories import SubmissionFactory
 
 URL = "http://testserver" + reverse("activity-stream")
 URL2 = "http://testserver" + reverse("activity-stream-hcsat")

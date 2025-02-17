@@ -1,16 +1,24 @@
+from freezegun import freeze_time
 import pytest
 
 from activitystream.serializers import (
     ActivityStreamDomesticHCSATUserFeedbackDataSerializer,
 )
-
+from submission.tests.factories import SubmissionFactory
 
 @pytest.mark.django_db
 def test_domestic_hcsat_feedback_serializer(submission_instance):
 
     serializer = ActivityStreamDomesticHCSATUserFeedbackDataSerializer()
 
-    output = serializer.to_representation(submission_instance)
+    with freeze_time("2019-09-08 12:00:01"):
+        submission = SubmissionFactory(
+            form_url="sub_a",
+            data=submission_instance["data"],
+            meta=submission_instance["meta"],
+        )
+
+    output = serializer.to_representation(submission)
 
     # Remove date due to timezone mismatch
 

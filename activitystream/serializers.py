@@ -51,16 +51,10 @@ class ActivityStreamDomesticHCSATUserFeedbackDataSerializer(serializers.Serializ
         """
         prefix = "dit:domestic:HCSATFeedbackData"
         type = "Update"
-
-        try:
-            id = instance.id
-            data = instance.data
-        except AttributeError:
-            id = instance['id']
-            data = instance['data']
+        data = instance.data
 
         return {
-            "id": f"{prefix}:{id}:{type}",
+            "id": f"{prefix}:{instance.id}:{type}",
             "type": f"{type}",
             "object": {
                 "id": f"{prefix}:{data['id']}",

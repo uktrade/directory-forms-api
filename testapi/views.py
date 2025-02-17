@@ -40,17 +40,17 @@ class SubmissionsTestAPIView(TestAPIView, DestroyAPIView, RetrieveAPIView):
     def get_submissions(self, email_address):
         results = []
         for submission in self.queryset.all():
-            if submission.meta["action_name"] == ACTION_NAME_PARDOT:
-                if submission.data["email"] == email_address:
+            if submission.meta['action_name'] == ACTION_NAME_PARDOT:
+                if submission.data['email'] == email_address:
                     results.append(self.data_and_meta(submission))
-            if submission.meta["action_name"] in [
+            if submission.meta['action_name'] in [
                 ACTION_NAME_GOV_NOTIFY_EMAIL,
                 ACTION_NAME_ZENDESK,
             ]:
-                if submission.meta["email_address"] == email_address:
+                if submission.meta['email_address'] == email_address:
                     results.append(self.data_and_meta(submission))
-            if submission.meta["action_name"] == ACTION_NAME_EMAIL:
-                if email_address in submission.meta["recipients"]:
+            if submission.meta['action_name'] == ACTION_NAME_EMAIL:
+                if email_address in submission.meta['recipients']:
                     results.append(self.data_and_meta(submission))
         return results
 

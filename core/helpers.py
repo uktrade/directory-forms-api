@@ -26,8 +26,8 @@ class DownloadCSVMixin:
 
 
 def generate_csv_response(queryset, filename, excluded_fields):
-    response = HttpResponse(content_type="text/csv")
-    response["Content-Disposition"] = f'attachment; filename="{filename}"'
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = f'attachment; filename="{filename}"'
     generate_csv(
         file_object=response, queryset=queryset, excluded_fields=excluded_fields
     )

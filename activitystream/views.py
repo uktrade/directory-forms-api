@@ -111,7 +111,7 @@ class ActivityStreamHCSATBaseView(ActivityStreamBaseView):
     pagination_class = ActivityStreamHCSATPagination
 
     def get_queryset(self):
-        return self.queryset.order_by("id")
+        return self.queryset.order_by('id')
 
 
 class ActivityStreamDomesticHCSATFeedbackDataView(ActivityStreamHCSATBaseView):

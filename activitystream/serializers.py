@@ -59,8 +59,6 @@ class ActivityStreamDomesticHCSATUserFeedbackDataSerializer(serializers.Serializ
             id = instance['id']
             data = instance['data']
 
-        breakpoint()
-    
         return {
             "id": f"{prefix}:{id}:{type}",
             "type": f"{type}",

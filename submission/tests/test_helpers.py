@@ -473,3 +473,8 @@ def test_send_buy_from_uk_enquiries_as_csv_with_older_submission(mock_notify_cli
 
         with pytest.raises(IndexError):
             csv_file[1]
+
+
+def test_get_recipient_email_address_hcsat_submission(hcsat_instance):
+    email = helpers.get_recipient_email_address(hcsat_instance["meta"])
+    assert email is None

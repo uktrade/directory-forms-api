@@ -49,7 +49,6 @@ class ActivityStreamDomesticHCSATUserFeedbackDataSerializer(serializers.Serializ
         """
         Prefix field names to match activity stream format
         """
-        breakpoint()
         prefix = "dit:domestic:HCSATFeedbackData"
         type = "Update"
         data = instance.data
@@ -66,7 +65,9 @@ class ActivityStreamDomesticHCSATUserFeedbackDataSerializer(serializers.Serializ
                 "satisfaction_rating": data["satisfaction_rating"],
                 "experienced_issues": data["experienced_issues"],
                 "other_detail": data["other_detail"],
-                "service_improvements_feedback": data["service_improvements_feedback"],
+                "service_improvements_feedback": data[
+                    "service_improvements_feedback"
+                ],
                 "likelihood_of_return": data["likelihood_of_return"],
                 "service_name": data["service_name"],
                 "service_specific_feedback": data["service_specific_feedback"],

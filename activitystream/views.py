@@ -92,6 +92,12 @@ class ActivityStreamView(ListAPIView):
 
 class ActivityStreamDomesticHCSATFeedbackDataView(ActivityStreamView):
 
+    @staticmethod
+    def _build_after(request, after_ts, after_id):
+        return request.build_absolute_uri(
+            reverse("activity-stream-hcsat")
+        ) + "?after={}_{}".format(str(after_ts.timestamp()), str(after_id))
+
     def list(self, request):
         """A single page of activities"""
         filter = SubmissionFilter(

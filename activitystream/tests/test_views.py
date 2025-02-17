@@ -324,7 +324,7 @@ def test_hcsat_success(api_client, submission_instance):
                 "object": {
                     "id": "dit:domestic:HCSATFeedbackData:1",
                     "type": "dit:domestic:HCSATFeedbackData",
-                    "feedback_submission_date": "2012-01-14 12:00:02",
+                    "feedback_submission_date": "2012-01-14 12:00:01",
                     "url": "https://great.gov.uk/export-academy",
                     "user_journey": "xxxx",
                     "satisfaction_rating": "xxxx",
@@ -343,7 +343,7 @@ def test_hcsat_success(api_client, submission_instance):
                 "object": {
                     "id": "dit:domestic:HCSATFeedbackData:1",
                     "type": "dit:domestic:HCSATFeedbackData",
-                    "feedback_submission_date": "2012-01-14 12:00:02",
+                    "feedback_submission_date": "2012-01-14 12:00:01",
                     "url": "https://great.gov.uk/export-academy",
                     "user_journey": "xxxx",
                     "satisfaction_rating": "xxxx",
@@ -359,5 +359,6 @@ def test_hcsat_success(api_client, submission_instance):
         ],
         "next": "http://testserver/activity-stream/v2/?after=1326542401.0_2",
     }
+
     assert response.status_code == status.HTTP_200_OK
     assert response.json() == expected

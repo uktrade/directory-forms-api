@@ -270,7 +270,7 @@ def submission_instance():
         'id': 1,
         'data': {
             "id": "1",
-            "feedback_submission_date": "2012-01-14 12:00:02",
+            "feedback_submission_date": "2012-01-14 12:00:01",
             "url": "https://great.gov.uk/export-academy",
             "user_journey": "xxxx",
             "satisfaction_rating": "xxxx",

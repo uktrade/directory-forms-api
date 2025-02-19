@@ -4,7 +4,7 @@ def strip_password_data(event, hint):
     """
 
     try:
-        event['request']['data']['password'] = None
+        event["request"]["data"]["password"] = None
     except KeyError:
         pass
 

@@ -16,7 +16,7 @@ class BaseTask(celery.Task):
     The BaseTask class sets retry / error handling defaults.
     """
 
-    retry_kwargs = {'max_retries': 5}
+    retry_kwargs = {"max_retries": 5}
     exponential_backoff = 2
     retry_jitter = False
 
@@ -91,6 +91,10 @@ action_map = {
         no_operation,
         serializers.SaveInDatabaseOnlySerializer,
     ),
+    constants.ACTION_NAME_HCSAT_SUBMISSION: (
+        no_operation,
+        serializers.SaveInDatabaseOnlySerializer,
+    ),
 }
 
 
@@ -99,10 +103,7 @@ def execute_for_submission(submission):
         task, kwargs_builder_class = action_map[submission.action_name]
         kwargs_builder = kwargs_builder_class.from_submission(submission)
         kwargs_builder.is_valid(raise_exception=True)
-        task.delay(
-            **kwargs_builder.validated_data,
-            submission_id=submission.pk
-        )
+        task.delay(**kwargs_builder.validated_data, submission_id=submission.pk)
 
 
 @app.task()
@@ -122,14 +123,18 @@ def send_gov_notify_bulk_email():
     submissions = Submission.objects.filter(is_sent=False, created__gte=time_delay)
 
     # We have to do a secondary filter here as Django ORM does not support filtering on @property methods.
-    submissions = [x for x in submissions if x.action_name == constants.ACTION_NAME_GOV_NOTIFY_BULK_EMAIL]
+    submissions = [
+        x
+        for x in submissions
+        if x.action_name == constants.ACTION_NAME_GOV_NOTIFY_BULK_EMAIL
+    ]
 
     for submission in submissions:
         try:
             helpers.send_gov_notify_email(
-                template_id=submission.meta['template_id'],
+                template_id=submission.meta["template_id"],
                 email_address=submission.recipient_email,
-                personalisation=submission.data
+                personalisation=submission.data,
             )
             # Mark email as sent
             submission.is_sent = True
@@ -137,5 +142,6 @@ def send_gov_notify_bulk_email():
 
         except Exception as e:
             sentry_sdk.capture_message(
-                f'Sending gov.notify bulk email notification failed for {submission.id}: {e}', 'fatal'
+                f"Sending gov.notify bulk email notification failed for {submission.id}: {e}",
+                "fatal",
             )

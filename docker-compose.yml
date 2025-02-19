@@ -59,4 +59,3 @@ networks:
     driver: bridge
   outside-network:
     driver: bridge
-

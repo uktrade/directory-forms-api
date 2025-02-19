@@ -25,9 +25,7 @@ def pprint_json(data):
 class ZendeskClient:
 
     def __init__(self, email, token, subdomain, custom_field_id):
-        self.client = Zenpy(
-            timeout=5, email=email, token=token, subdomain=subdomain
-        )
+        self.client = Zenpy(timeout=5, email=email, token=token, subdomain=subdomain)
         self.custom_field_id = custom_field_id
 
     def get_or_create_user(self, full_name, email_address):
@@ -36,7 +34,9 @@ class ZendeskClient:
 
     def create_ticket(self, subject, payload, zendesk_user, service_name):
         sort_fields_alphabetically = payload.get('_sort_fields_alphabetically', True)
-        items = sorted(payload.items()) if sort_fields_alphabetically else payload.items()
+        items = (
+            sorted(payload.items()) if sort_fields_alphabetically else payload.items()
+        )
         description = [
             '{0}: {1}'.format(key.title().replace('_', ' '), value)
             for key, value in items
@@ -88,7 +88,7 @@ def send_email(subject, reply_to, recipients, text_body, html_body=None):
         to=recipients,
     )
     if html_body:
-        message.attach_alternative(html_body, "text/html")
+        message.attach_alternative(html_body, 'text/html')
     message.send()
 
 
@@ -142,6 +142,8 @@ def get_sender_email_address(submission_meta):
         return None
     elif action_name == constants.ACTION_NAME_GOV_NOTIFY_LETTER:
         return None
+    elif action_name == constants.ACTION_NAME_HCSAT_SUBMISSION:
+        return None
 
 
 def get_recipient_email_address(submission_meta):
@@ -160,6 +162,8 @@ def get_recipient_email_address(submission_meta):
         return None
     elif action_name == constants.ACTION_NAME_GOV_NOTIFY_LETTER:
         return None
+    elif action_name == constants.ACTION_NAME_HCSAT_SUBMISSION:
+        return None
 
 
 def is_ratelimited(ip_address):
@@ -169,61 +173,68 @@ def is_ratelimited(ip_address):
         return False
     request = RequestFactory().get('/', REMOTE_ADDR=ip_address)
     return ratelimit.utils.is_ratelimited(
-        request=request, group='submission', key='ip', rate=settings.RATELIMIT_RATE, increment=True
+        request=request,
+        group='submission',
+        key='ip',
+        rate=settings.RATELIMIT_RATE,
+        increment=True,
     )
 
 
 def send_buy_from_uk_enquiries_as_csv(form_url='/international/trade/contact/'):
-    """A method to create last seven days data for buy from uk contact details"""
+    '''A method to create last seven days data for buy from uk contact details'''
     today = timezone.now()
     week_ago = today - timedelta(days=7)
     submissions = models.Submission.objects.filter(
-        created__gte=week_ago,
-        form_url=form_url
+        created__gte=week_ago, form_url=form_url
     )
 
     with open('email.csv', 'w+') as csvfile:
         filewriter = csv.writer(csvfile)
-        filewriter.writerow([
-            'Sender',
-            'body',
-            'sector',
-            'source',
-            'country',
-            'given_name',
-            'family_name',
-            'country_name',
-            'phone_number',
-            'source_other',
-            'email_address',
-            'organisation_name',
-            'organisation_size',
-            'email_contact_consent',
-            'telephone_contact_consent',
-            'Form',
-            'Created'
-        ])
+        filewriter.writerow(
+            [
+                'Sender',
+                'body',
+                'sector',
+                'source',
+                'country',
+                'given_name',
+                'family_name',
+                'country_name',
+                'phone_number',
+                'source_other',
+                'email_address',
+                'organisation_name',
+                'organisation_size',
+                'email_contact_consent',
+                'telephone_contact_consent',
+                'Form',
+                'Created',
+            ]
+        )
 
         for submission in submissions:
-            filewriter.writerow([
-                submission.sender,
-                submission.data['body'],
-                submission.data['sector'],
-                submission.data['source'],
-                submission.data['country'],
-                submission.data['given_name'],
-                submission.data['family_name'],
-                submission.data['country_name'],
-                submission.data['phone_number'],
-                submission.data['source_other'],
-                submission.data['email_address'],
-                submission.data['organisation_name'],
-                submission.data['organisation_size'],
-                submission.data['email_contact_consent'],
-                submission.data['telephone_contact_consent'],
-                submission.form_url,
-                submission.created,
-            ])
+            filewriter.writerow(
+                [
+                    submission.sender,
+                    submission.data['body'],
+                    submission.data['sector'],
+                    submission.data['source'],
+                    submission.data['country'],
+                    submission.data['given_name'],
+                    submission.data['family_name'],
+                    submission.data['country_name'],
+                    submission.data['phone_number'],
+                    submission.data['source_other'],
+                    submission.data['email_address'],
+                    submission.data['organisation_name'],
+                    submission.data['organisation_size'],
+                    submission.data['email_contact_consent'],
+                    submission.data['telephone_contact_consent'],
+                    submission.form_url,
+                    submission.created,
+                ]
+            )
 
     with open('email.csv', 'rb') as f:
 
@@ -231,5 +242,5 @@ def send_buy_from_uk_enquiries_as_csv(form_url='/international/trade/contact/'):
             template_id=settings.BUY_FROM_UK_ENQUIRY_TEMPLATE_ID,
             email_address=settings.BUY_FROM_UK_EMAIL_ADDRESS,
             personalisation={'link_to_file': prepare_upload(f)},
-            email_reply_to_id=settings.BUY_FROM_UK_REPLY_TO_EMAIL_ADDRESS
+            email_reply_to_id=settings.BUY_FROM_UK_REPLY_TO_EMAIL_ADDRESS,
         )

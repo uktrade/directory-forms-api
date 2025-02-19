@@ -31,11 +31,13 @@ class ZendeskActionSerializer(serializers.Serializer):
     def from_submission(cls, submission, *args, **kwargs):
         data = {
             **submission.meta,
-            'payload': {
+            "payload": {
                 **submission.data,
-                'ingress_url': submission.meta.get('ingress_url'),
-                '_sort_fields_alphabetically': submission.meta.get('sort_fields_alphabetically')
-            }
+                "ingress_url": submission.meta.get("ingress_url"),
+                "_sort_fields_alphabetically": submission.meta.get(
+                    "sort_fields_alphabetically"
+                ),
+            },
         }
         return cls(data=data, *args, **kwargs)
 
@@ -61,7 +63,7 @@ class GovNotifyEmailSerializer(serializers.Serializer):
 
     @classmethod
     def from_submission(cls, submission, *args, **kwargs):
-        data = {**submission.meta, 'personalisation': submission.data}
+        data = {**submission.meta, "personalisation": submission.data}
         return cls(data=data, *args, **kwargs)
 
 
@@ -85,7 +87,9 @@ class GovNotifyBulkEmailSerializer(serializers.Serializer):
     """
 
     template_id = serializers.CharField()
-    bulk_email_entries = serializers.ListField(child=GovNotifyBulkEmailEntrySerializer())
+    bulk_email_entries = serializers.ListField(
+        child=GovNotifyBulkEmailEntrySerializer()
+    )
     email_reply_to_id = serializers.CharField(required=False)
 
 
@@ -95,7 +99,7 @@ class GovNotifyLetterSerializer(serializers.Serializer):
 
     @classmethod
     def from_submission(cls, submission, *args, **kwargs):
-        data = {**submission.meta, 'personalisation': submission.data}
+        data = {**submission.meta, "personalisation": submission.data}
         return cls(data=data, *args, **kwargs)
 
 
@@ -106,7 +110,7 @@ class PardotSerializer(serializers.Serializer):
 
     @classmethod
     def from_submission(cls, submission, *args, **kwargs):
-        data = {**submission.meta, 'payload': submission.data}
+        data = {**submission.meta, "payload": submission.data}
         return cls(data=data, *args, **kwargs)
 
 
@@ -115,29 +119,54 @@ class SubmissionModelSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Submission
         fields = (
-            'data',
-            'meta',
-            'form_url',
-            'sender',
+            "data",
+            "meta",
+            "form_url",
+            "sender",
         )
-        extra_kwargs = {'sender': {'required': True}}
+        extra_kwargs = {"sender": {"required": True}}
 
     def create(self, validated_data):
-        sender_email_address = helpers.get_sender_email_address(validated_data['meta'])
+        sender_email_address = helpers.get_sender_email_address(validated_data["meta"])
         if sender_email_address:
             sender, _ = models.Sender.objects.get_or_create(
                 email_address=sender_email_address
             )
-            validated_data['sender_id'] = sender.id
+            validated_data["sender_id"] = sender.id
         return super().create(validated_data)
 
     def to_internal_value(self, data):
-        data['form_url'] = data['meta'].pop('form_url', '')
-        data['client'] = self.context['request'].user
+        data["form_url"] = data["meta"].pop("form_url", "")
+        data["client"] = self.context["request"].user
         # This is required for legacy to support old gov-notify action
         # Can be removed when all client are using the new action constant
-        if data['meta']['action_name'] == 'gov-notify':
-            data['meta']['action_name'] = (
-                constants.ACTION_NAME_GOV_NOTIFY_EMAIL
-            )
+        if data["meta"]["action_name"] == "gov-notify":
+            data["meta"]["action_name"] = constants.ACTION_NAME_GOV_NOTIFY_EMAIL
         return data
+
+
+class HCSatEntrySerializer(serializers.Serializer):
+    id = (serializers.IntegerField(),)
+    feedback_submission_date = serializers.CharField()
+    url = serializers.CharField()
+    user_journey = serializers.CharField(allow_null=True, allow_blank=True)
+    satisfaction_rating = serializers.CharField()
+    experienced_issues = serializers.ListField(
+        child=serializers.CharField(allow_null=True, allow_blank=True), allow_null=True
+    )
+    other_detail = serializers.CharField(allow_null=True, allow_blank=True)
+    service_improvements_feedback = serializers.CharField(
+        allow_null=True, allow_blank=True
+    )
+    likelihood_of_return = serializers.CharField(allow_null=True, allow_blank=True)
+    service_name = serializers.CharField(allow_null=True, allow_blank=True)
+    service_specific_feedback = serializers.ListField(
+        child=serializers.CharField(allow_null=True, allow_blank=True), allow_null=True
+    )
+    service_specific_feedback_other = serializers.CharField(
+        allow_null=True, allow_blank=True
+    )
+
+
+class HCSatSerializer(serializers.Serializer):
+    hcsat_feedback_entries = serializers.ListField(child=HCSatEntrySerializer())

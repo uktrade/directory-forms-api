@@ -8,18 +8,18 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('submission', '0008_submission_sender'),
+        ("submission", "0008_submission_sender"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='sender',
-            name='is_blacklisted',
+            model_name="sender",
+            name="is_blacklisted",
             field=models.BooleanField(default=False),
         ),
         migrations.AlterField(
-            model_name='sender',
-            name='is_whitelisted',
+            model_name="sender",
+            name="is_whitelisted",
             field=models.BooleanField(default=False),
         ),
     ]

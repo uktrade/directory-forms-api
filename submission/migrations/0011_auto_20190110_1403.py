@@ -8,13 +8,13 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('submission', '0010_auto_20190109_0915'),
+        ("submission", "0010_auto_20190109_0915"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='sender',
-            name='email_address',
+            model_name="sender",
+            name="email_address",
             field=models.EmailField(max_length=254, unique=True),
         ),
     ]

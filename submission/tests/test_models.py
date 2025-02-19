@@ -8,13 +8,13 @@ from submission.tests import factories
 @pytest.fixture
 def submission():
     return models.Submission(
-        data={'title': 'hello'},
+        data={"title": "hello"},
         meta={
-            'action_name': constants.ACTION_NAME_EMAIL,
-            'recipients': ['foo@bar.com'],
-            'form_url': '/the/form/',
-            'funnel_steps': ['one', 'two', 'three'],
-            'reply_to': 'test@testsubmission.com',
+            "action_name": constants.ACTION_NAME_EMAIL,
+            "recipients": ["foo@bar.com"],
+            "form_url": "/the/form/",
+            "funnel_steps": ["one", "two", "three"],
+            "reply_to": "test@testsubmission.com",
         },
         client=ClientFactory.build(),
     )
@@ -27,7 +27,7 @@ def test_submission_action_name(submission):
 
 @pytest.mark.django_db
 def test_submission_funnel(submission):
-    assert submission.funnel == ['one', 'two', 'three']
+    assert submission.funnel == ["one", "two", "three"]
 
 
 @pytest.mark.django_db
@@ -44,13 +44,16 @@ def test_submission_ip_no_sender(submission):
 
 @pytest.mark.django_db
 def test_submission_ip(submission):
-    submission.meta['sender'] = {'email_address': 'test@tdfsf.com', 'ip_address': '192.893.21.1'}
-    assert submission.ip_address == '192.893.21.1'
+    submission.meta["sender"] = {
+        "email_address": "test@tdfsf.com",
+        "ip_address": "192.893.21.1",
+    }
+    assert submission.ip_address == "192.893.21.1"
 
 
 @pytest.mark.django_db
 def test_submission_recipient_email(submission):
-    assert submission.recipient_email == 'foo@bar.com'
+    assert submission.recipient_email == "foo@bar.com"
 
 
 @pytest.mark.django_db
@@ -61,4 +64,4 @@ def test_submission_type(submission):
 @pytest.mark.django_db
 def test_submission_type_unknown(submission):
     submission.client = None
-    assert submission.submission_type == 'Unknown'
+    assert submission.submission_type == "Unknown"

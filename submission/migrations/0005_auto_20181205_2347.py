@@ -8,10 +8,10 @@ from django.db import migrations
 
 
 def set_form_url(apps, schema_editor):
-    Submission = apps.get_model('submission', 'Submission')
+    Submission = apps.get_model("submission", "Submission")
     for submission in Submission.objects.filter(data__form_url__isnull=False):
         try:
-            parsed = urlparse(submission.data['form_url'])
+            parsed = urlparse(submission.data["form_url"])
         except AttributeError:
             pass
         else:
@@ -22,11 +22,9 @@ def set_form_url(apps, schema_editor):
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('submission', '0004_submission_form_url'),
+        ("submission", "0004_submission_form_url"),
     ]
 
     operations = [
         migrations.RunPython(set_form_url, migrations.RunPython.noop),
     ]
-
-

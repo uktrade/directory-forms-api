@@ -10,7 +10,7 @@ from rest_framework.test import APIClient
 from client.tests.factories import ClientFactory
 from core.pingdom.services import DatabaseHealthCheck
 
-URL = 'http://testserver' + reverse('pingdom')
+URL = "http://testserver" + reverse("pingdom")
 
 
 @pytest.fixture
@@ -21,7 +21,7 @@ def user():
 @pytest.fixture
 def api_client(user):
     client = APIClient()
-    settings.SIGAUTH_URL_NAMES_WHITELIST = ['pingdom']
+    settings.SIGAUTH_URL_NAMES_WHITELIST = ["pingdom"]
     client.force_authenticate(user=user)
     return client
 
@@ -39,16 +39,16 @@ def reload_urlconf(urlconf=None):
 def test_force_staff_sso(client):
     """Test that URLs and redirects are in place."""
     settings.FEATURE_ENFORCE_STAFF_SSO_ENABLED = True
-    settings.AUTHBROKER_CLIENT_ID = 'debug'
-    settings.AUTHBROKER_CLIENT_SECRET = 'debug'
-    settings.AUTHBROKER_URL = 'https://test.com'
+    settings.AUTHBROKER_CLIENT_ID = "debug"
+    settings.AUTHBROKER_CLIENT_SECRET = "debug"
+    settings.AUTHBROKER_URL = "https://test.com"
     reload_urlconf()
 
-    assert reverse('authbroker_client:login') == '/auth/login/'
-    assert reverse('authbroker_client:callback') == '/auth/callback/'
-    response = client.get(reverse('admin:login'))
+    assert reverse("authbroker_client:login") == "/auth/login/"
+    assert reverse("authbroker_client:callback") == "/auth/callback/"
+    response = client.get(reverse("admin:login"))
     assert response.status_code == 302
-    assert response.url == '/auth/login/'
+    assert response.url == "/auth/login/"
 
     settings.FEATURE_ENFORCE_STAFF_SSO_ENABLED = False
     reload_urlconf()
@@ -63,11 +63,11 @@ def test_pingdom_database_healthcheck_ok(api_client):
 
 
 @pytest.mark.django_db
-@mock.patch.object(DatabaseHealthCheck, 'check')
+@mock.patch.object(DatabaseHealthCheck, "check")
 def test_pingdom_database_healthcheck_false(mock_database_check, api_client):
     mock_database_check.return_value = (
         False,
-        'Database Error',
+        "Database Error",
     )
 
     response = api_client.get(

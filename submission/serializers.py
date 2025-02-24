@@ -150,7 +150,7 @@ class HCSatEntrySerializer(serializers.Serializer):
     feedback_submission_date = serializers.CharField()
     url = serializers.CharField()
     user_journey = serializers.CharField(allow_null=True, allow_blank=True)
-    satisfaction_rating = serializers.CharField()
+    satisfaction_rating = serializers.CharField(allow_null=True, allow_blank=True)
     experienced_issues = serializers.ListField(
         child=serializers.CharField(allow_null=True, allow_blank=True), allow_null=True
     )
